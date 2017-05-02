@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ScFrame_darker_gray">#aaaaaa</color>
+    <color name="ScFrame_white">#ffffff</color>
+    <color name="ScFrame_text_gray">#8a8a8a</color>
+
+    <color name="ScFrame_loading_dialog_message">#595959</color>
+</resources>
