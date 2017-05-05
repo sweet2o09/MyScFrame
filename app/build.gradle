@@ -72,4 +72,5 @@ dependencies {
     //    compile 'com.jakewharton.rxbinding2:rxbinding-design:2.0.0'
     //    compile 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:2.0.0'
     //    compile 'com.jakewharton.rxbinding2:rxbinding-leanback-v17:2.0.0'
+    compile project(path: ':ScFrame')
 }

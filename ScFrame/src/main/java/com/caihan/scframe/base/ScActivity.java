@@ -13,8 +13,8 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.caihan.scframe.common.ScActStack;
-import com.caihan.scframe.utils.permission.ScPermission;
 import com.caihan.scframe.utils.permission.OnPermissionListener;
+import com.caihan.scframe.utils.permission.ScPermission;
 
 import java.util.ArrayList;
 
