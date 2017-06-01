@@ -17,8 +17,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.caihan.scframe.R;
-import com.caihan.scframe.utilcode.util.LogUtils;
 import com.caihan.scframe.utils.motionevent.GestureUtils;
 
 

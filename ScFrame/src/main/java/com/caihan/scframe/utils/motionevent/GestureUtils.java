@@ -2,7 +2,7 @@ package com.caihan.scframe.utils.motionevent;
 
 import android.view.MotionEvent;
 
-import com.caihan.scframe.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.LogUtils;
 
 
 /**

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
-import com.caihan.scframe.utilcode.util.ImageUtils;
+import com.blankj.utilcode.util.ImageUtils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

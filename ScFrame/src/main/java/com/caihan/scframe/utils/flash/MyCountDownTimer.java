@@ -2,7 +2,7 @@ package com.caihan.scframe.utils.flash;
 
 import android.os.CountDownTimer;
 
-import com.caihan.scframe.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.LogUtils;
 
 
 /**

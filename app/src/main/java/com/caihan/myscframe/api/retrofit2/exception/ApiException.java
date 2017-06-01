@@ -1,7 +1,8 @@
 package com.caihan.myscframe.api.retrofit2.exception;
 
-import static com.caihan.scframe.api.retrofit2.ApiConfig.WRONG_1;
-import static com.caihan.scframe.api.retrofit2.ApiConfig.WRONG_2;
+
+import static com.caihan.myscframe.api.retrofit2.ApiConfig.WRONG_1;
+import static com.caihan.myscframe.api.retrofit2.ApiConfig.WRONG_2;
 
 /**
  * Created by caihan on 2017/1/14.

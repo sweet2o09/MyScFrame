@@ -2,10 +2,10 @@ package com.caihan.myscframe.api.retrofit2;
 
 import android.util.Log;
 
+import com.caihan.myscframe.api.retrofit2.interceptor.CommonParamsInterceptor;
+import com.caihan.myscframe.api.retrofit2.interceptor.HeaderInterceptor;
+import com.caihan.myscframe.api.retrofit2.interceptor.HttpLogInterceptor;
 import com.caihan.scframe.ScFrame;
-import com.caihan.scframe.api.retrofit2.interceptor.CommonParamsInterceptor;
-import com.caihan.scframe.api.retrofit2.interceptor.HeaderInterceptor;
-import com.caihan.scframe.api.retrofit2.interceptor.HttpLogInterceptor;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,11 +24,11 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.caihan.scframe.api.retrofit2.ApiConfig.BASE_URL;
-import static com.caihan.scframe.api.retrofit2.ApiConfig.DEFAULT_CACHE_SIZE;
-import static com.caihan.scframe.api.retrofit2.ApiConfig.DEFAULT_CONNECT_TIMEOUT;
-import static com.caihan.scframe.api.retrofit2.ApiConfig.DEFAULT_READ_TIMEOUT;
-import static com.caihan.scframe.api.retrofit2.ApiConfig.DEFAULT_WRITE_TIMEOUT;
+import static com.caihan.myscframe.api.retrofit2.ApiConfig.BASE_URL;
+import static com.caihan.myscframe.api.retrofit2.ApiConfig.DEFAULT_CACHE_SIZE;
+import static com.caihan.myscframe.api.retrofit2.ApiConfig.DEFAULT_CONNECT_TIMEOUT;
+import static com.caihan.myscframe.api.retrofit2.ApiConfig.DEFAULT_READ_TIMEOUT;
+import static com.caihan.myscframe.api.retrofit2.ApiConfig.DEFAULT_WRITE_TIMEOUT;
 
 
 /**

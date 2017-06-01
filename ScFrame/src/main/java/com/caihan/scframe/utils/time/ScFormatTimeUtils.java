@@ -1,8 +1,8 @@
 package com.caihan.scframe.utils.time;
 
-import com.caihan.scframe.utilcode.constant.TimeConstants;
-import com.caihan.scframe.utilcode.util.TimeUtils;
 
+import com.blankj.utilcode.constant.TimeConstants;
+import com.blankj.utilcode.util.TimeUtils;
 
 /**
  * Created by caihan on 2017/5/2.

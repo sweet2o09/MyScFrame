@@ -8,7 +8,8 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.caihan.scframe.utilcode.util.PhoneUtils;
+import com.blankj.utilcode.util.PhoneUtils;
+
 
 /**
  * Created by caihan on 2017/5/5.

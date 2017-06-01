@@ -2,7 +2,7 @@ package com.caihan.myscframe.api.retrofit2.exception;
 
 import android.net.ParseException;
 
-import com.caihan.scframe.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.google.gson.JsonParseException;
 
 import org.apache.http.conn.ConnectTimeoutException;

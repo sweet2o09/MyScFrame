@@ -9,9 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.EmptyUtils;
 import com.caihan.scframe.R;
-import com.caihan.scframe.utilcode.util.EmptyUtils;
-import com.caihan.scframe.utils.ScOutdatedUtils;
+import com.caihan.scframe.utils.ScOutdatedUtil;
 
 /**
  * Created by caihan on 2017/5/2.
@@ -37,7 +37,7 @@ public class ScLoadingDialog extends Dialog {
         loadingView = (LinearLayout) findViewById(R.id.loading_layout);
         loadingMessage.setPadding(0, 15, 0, 0);
         drawable.setColor(Color.WHITE);
-        ScOutdatedUtils.setBackground(loadingView, drawable);
+        ScOutdatedUtil.setBackground(loadingView, drawable);
     }
 
     public static ScLoadingDialog with(Context context) {
@@ -59,7 +59,7 @@ public class ScLoadingDialog extends Dialog {
 
     public ScLoadingDialog setBackgroundColor(@ColorInt int color) {
         drawable.setColor(color);
-        ScOutdatedUtils.setBackground(loadingView, drawable);
+        ScOutdatedUtil.setBackground(loadingView, drawable);
         return dialog;
     }
 

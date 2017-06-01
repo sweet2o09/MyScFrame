@@ -1,7 +1,7 @@
 package com.caihan.myscframe.api.retrofit2.observer;
 
 
-import com.caihan.scframe.api.retrofit2.resmodel.HttpResult;
+import com.caihan.myscframe.api.retrofit2.resmodel.HttpResult;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;

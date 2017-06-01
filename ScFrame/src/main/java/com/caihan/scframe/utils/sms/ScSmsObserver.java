@@ -8,7 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
 
-import com.caihan.scframe.utilcode.util.EmptyUtils;
+import com.blankj.utilcode.util.EmptyUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

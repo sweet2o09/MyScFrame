@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ScrollView;
 
-import com.caihan.scframe.utilcode.util.SizeUtils;
+import com.blankj.utilcode.util.SizeUtils;
 import com.caihan.scframe.utils.motionevent.GestureUtils;
 
 

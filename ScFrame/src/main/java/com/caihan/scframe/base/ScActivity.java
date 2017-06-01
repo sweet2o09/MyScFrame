@@ -13,8 +13,13 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.caihan.scframe.common.ScActStack;
+import com.caihan.scframe.utils.evenbus.Event;
+import com.caihan.scframe.utils.evenbus.EventBusUtil;
 import com.caihan.scframe.utils.permission.OnPermissionListener;
 import com.caihan.scframe.utils.permission.ScPermission;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -52,6 +57,9 @@ public abstract class ScActivity extends AppCompatActivity implements ICallback 
         mContext = this;
         initData(savedInstanceState);
         initView();
+        if (isRegisterEventBus()) {
+            EventBusUtil.register(this);
+        }
     }
 
     /**
@@ -77,6 +85,15 @@ public abstract class ScActivity extends AppCompatActivity implements ICallback 
         if (parentView != null && Build.VERSION.SDK_INT >= 14) {
             parentView.setFitsSystemWindows(true);
         }
+    }
+
+    /**
+     * 是否注册事件分发
+     *
+     * @return true绑定EventBus事件分发，默认不绑定，子类需要绑定的话复写此方法返回true.
+     */
+    protected boolean isRegisterEventBus() {
+        return false;
     }
 
     /**
@@ -132,6 +149,41 @@ public abstract class ScActivity extends AppCompatActivity implements ICallback 
     protected void onDestroy() {
         super.onDestroy();
         ScActStack.getInstance().finishActivity();
+        if (isRegisterEventBus()) {
+            EventBusUtil.unregister(this);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventBusCome(Event event) {
+        if (event != null) {
+            receiveEvent(event);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onStickyEventBusCome(Event event) {
+        if (event != null) {
+            receiveStickyEvent(event);
+        }
+    }
+
+    /**
+     * 接收到分发到事件
+     *
+     * @param event 事件
+     */
+    protected void receiveEvent(Event event) {
+
+    }
+
+    /**
+     * 接受到分发的粘性事件,事件处理完之后调用super执行removeStickyEvent
+     *
+     * @param event 粘性事件
+     */
+    protected void receiveStickyEvent(Event event) {
+        EventBusUtil.removeStickyEvent(event);
     }
 
 }

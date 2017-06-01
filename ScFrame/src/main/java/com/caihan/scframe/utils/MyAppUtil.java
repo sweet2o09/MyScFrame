@@ -8,7 +8,8 @@ import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
-import com.caihan.scframe.utilcode.util.IntentUtils;
+import com.blankj.utilcode.util.IntentUtils;
+
 
 /**
  * Created by caihan on 2017/4/17.

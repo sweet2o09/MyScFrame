@@ -3,6 +3,7 @@ package com.caihan.scframe.widget.webview;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -44,13 +45,22 @@ public class ScWebView extends WebView implements View.OnLongClickListener{
         this(context, null);
     }
 
+    /**
+     * 不能直接调用this(context, attrs,0),最后style是0的话，会导致无法响应点击动作。
+     * 但是如果直接把最后一位写成 com.android.internal.R.attr.webViewStyle 编译时会弹出错误提示，原因：
+     * You cannot access id's of com.android.internal.R at compile time, but you can access the
+     * defined internal resources at runtime and get the resource by name.
+     * You should be aware that this is slower than direct access and there is no guarantee.
+     */
     public ScWebView(Context context, AttributeSet attrs) {
-        this(context, attrs, com.android.internal.R.attr.webViewStyle);
+        this(context, attrs, Resources.getSystem().getIdentifier("webViewStyle","attr","android"));
     }
 
     public ScWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+        if (!isInEditMode()) {
+            init(context);
+        }
     }
 
     /**

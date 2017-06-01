@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.caihan.scframe.R;
 import com.caihan.scframe.ScFrame;
-import com.caihan.scframe.utils.ScOutdatedUtils;
+import com.caihan.scframe.utils.ScOutdatedUtil;
 
 /**
  * Toast
@@ -78,7 +78,7 @@ public class ScToast {
     public static Toast warning(@NonNull String message, int duration, boolean withIcon) {
         Drawable icon = null;
         if (withIcon) {
-            icon = ScOutdatedUtils.getDrawable(R.drawable.toast_warning);
+            icon = ScOutdatedUtil.getDrawable(R.drawable.toast_warning);
         }
         return custom(message, icon, WARNING_COLOR, duration);
     }
@@ -94,7 +94,7 @@ public class ScToast {
     public static Toast info(@NonNull String message, int duration, boolean withIcon) {
         Drawable icon = null;
         if (withIcon) {
-            icon = ScOutdatedUtils.getDrawable(R.drawable.toast_info);
+            icon = ScOutdatedUtil.getDrawable(R.drawable.toast_info);
         }
         return custom(message, icon, INFO_COLOR, duration);
     }
@@ -110,7 +110,7 @@ public class ScToast {
     public static Toast success(@NonNull String message, int duration, boolean withIcon) {
         Drawable icon = null;
         if (withIcon) {
-            icon = ScOutdatedUtils.getDrawable(R.drawable.toast_success);
+            icon = ScOutdatedUtil.getDrawable(R.drawable.toast_success);
         }
         return custom(message, icon, SUCCESS_COLOR, duration);
     }
@@ -126,7 +126,7 @@ public class ScToast {
     public static Toast error(@NonNull String message, int duration, boolean withIcon) {
         Drawable icon = null;
         if (withIcon) {
-            icon = ScOutdatedUtils.getDrawable(R.drawable.toast_error);
+            icon = ScOutdatedUtil.getDrawable(R.drawable.toast_error);
         }
         return custom(message, icon, ERROR_COLOR, duration);
     }
@@ -149,7 +149,7 @@ public class ScToast {
 
     public static Toast custom(@NonNull String message, @DrawableRes int iconRes,
                                @ColorInt int textColor, @ColorInt int tintColor, int duration) {
-        return custom(message, ScOutdatedUtils.getDrawable(iconRes), textColor, tintColor, duration);
+        return custom(message, ScOutdatedUtil.getDrawable(iconRes), textColor, tintColor, duration);
     }
 
     /**
@@ -169,14 +169,14 @@ public class ScToast {
         ImageView toastIcon = (ImageView) toastLayout.findViewById(R.id.xtoast_icon);
         TextView toastText = (TextView) toastLayout.findViewById(R.id.xtoast_text);
 
-        Drawable drawableFrame = ScOutdatedUtils.getDrawable(R.drawable.toast_frame);
+        Drawable drawableFrame = ScOutdatedUtil.getDrawable(R.drawable.toast_frame);
         drawableFrame.setColorFilter(new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN));
-        ScOutdatedUtils.setBackground(toastLayout, drawableFrame);
+        ScOutdatedUtil.setBackground(toastLayout, drawableFrame);
 
         if (icon == null) {
             toastIcon.setVisibility(View.GONE);
         } else {
-            ScOutdatedUtils.setBackground(toastIcon, icon);
+            ScOutdatedUtil.setBackground(toastIcon, icon);
         }
 
         toastText.setTextColor(textColor);

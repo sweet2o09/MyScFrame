@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.caihan.scframe.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.BarUtils;
 
 import java.lang.reflect.Method;
 

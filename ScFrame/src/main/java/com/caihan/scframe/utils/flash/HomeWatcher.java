@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import com.caihan.scframe.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.LogUtils;
 
 
 /**

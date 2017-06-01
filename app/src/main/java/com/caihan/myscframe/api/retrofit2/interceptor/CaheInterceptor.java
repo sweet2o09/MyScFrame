@@ -2,7 +2,7 @@ package com.caihan.myscframe.api.retrofit2.interceptor;
 
 import android.util.Log;
 
-import com.caihan.scframe.utilcode.util.NetworkUtils;
+import com.blankj.utilcode.util.NetworkUtils;
 
 import java.io.IOException;
 

@@ -11,10 +11,11 @@ import retrofit2.Converter;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.caihan.scframe.api.retrofit2.ApiConfig.BASE_URL;
-import static com.caihan.scframe.api.retrofit2.ApiConfig.DEFAULT_CONNECT_TIMEOUT;
-import static com.caihan.scframe.api.retrofit2.ApiConfig.DEFAULT_READ_TIMEOUT;
-import static com.caihan.scframe.api.retrofit2.ApiConfig.DEFAULT_WRITE_TIMEOUT;
+import static com.caihan.myscframe.api.retrofit2.ApiConfig.BASE_URL;
+import static com.caihan.myscframe.api.retrofit2.ApiConfig.DEFAULT_CONNECT_TIMEOUT;
+import static com.caihan.myscframe.api.retrofit2.ApiConfig.DEFAULT_READ_TIMEOUT;
+import static com.caihan.myscframe.api.retrofit2.ApiConfig.DEFAULT_WRITE_TIMEOUT;
+
 
 /**
  * Created by caihan on 2017/5/5.
