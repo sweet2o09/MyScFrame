@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.caihan.scframe.utils.evenbus.Event;
-import com.caihan.scframe.utils.evenbus.EventBusUtil;
+import com.caihan.scframe.utils.evenbus.EventBusUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -17,15 +17,15 @@ import org.greenrobot.eventbus.ThreadMode;
  * Created by caihan on 2017/4/17.
  * Fragment基类
  */
-public abstract class ScFragment extends Fragment implements ICallback{
+public abstract class ScFragment extends Fragment implements ICallback {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        if (getLayoutResId()>0){
-            return inflater.inflate(getLayoutResId(),container,false);
-        }else {
+        if (getLayoutResId() > 0) {
+            return inflater.inflate(getLayoutResId(), container, false);
+        } else {
             return super.onCreateView(inflater, container, savedInstanceState);
         }
     }
@@ -33,10 +33,10 @@ public abstract class ScFragment extends Fragment implements ICallback{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initData(savedInstanceState);
         initView();
+        initData(savedInstanceState);
         if (isRegisterEventBus()) {
-            EventBusUtil.register(this);
+            EventBusUtils.register(this);
         }
     }
 
@@ -44,7 +44,7 @@ public abstract class ScFragment extends Fragment implements ICallback{
     public void onDestroyView() {
         super.onDestroyView();
         if (isRegisterEventBus()) {
-            EventBusUtil.unregister(this);
+            EventBusUtils.unregister(this);
         }
     }
 

@@ -3,7 +3,7 @@ package com.caihan.scframe.update.agent;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.caihan.scframe.update.ScUpdateUtil;
+import com.caihan.scframe.update.ScUpdateUtils;
 import com.caihan.scframe.update.builder.IUpdateChecker;
 import com.caihan.scframe.update.builder.IUpdateDownloader;
 import com.caihan.scframe.update.builder.IUpdateParser;
@@ -156,7 +156,7 @@ public class ScUpdateAgent implements ICheckAgent, IUpdateAgent, IDownloadAgent 
     @Override
     public void update() {
         mApkFile = new File(mContext.getExternalCacheDir(), mInfo.md5 + ".apk");
-        if (ScUpdateUtil.verify(mApkFile, mInfo.md5)) {
+        if (ScUpdateUtils.verify(mApkFile, mInfo.md5)) {
             doInstall();
         } else {
             doDownload();
@@ -165,7 +165,7 @@ public class ScUpdateAgent implements ICheckAgent, IUpdateAgent, IDownloadAgent 
 
     @Override
     public void ignore() {
-        ScUpdateUtil.setIgnore(mContext, getInfo().md5);
+        ScUpdateUtils.setIgnore(mContext, getInfo().md5);
     }
 
     @Override
@@ -206,15 +206,15 @@ public class ScUpdateAgent implements ICheckAgent, IUpdateAgent, IDownloadAgent 
 
 
     public void check() {
-        ScUpdateUtil.log("check");
+        ScUpdateUtils.log("check");
         if (mIsWifiOnly) {
-            if (ScUpdateUtil.checkWifi(mContext)) {
+            if (ScUpdateUtils.checkWifi(mContext)) {
                 doCheck();
             } else {
                 doFailure(new UpdateError(CHECK_NO_WIFI));
             }
         } else {
-            if (ScUpdateUtil.checkNetwork(mContext)) {
+            if (ScUpdateUtils.checkNetwork(mContext)) {
                 doCheck();
             } else {
                 doFailure(new UpdateError(CHECK_NO_NETWORK));
@@ -242,7 +242,7 @@ public class ScUpdateAgent implements ICheckAgent, IUpdateAgent, IDownloadAgent 
     }
 
     void doCheckFinish() {
-        ScUpdateUtil.log("check finish");
+        ScUpdateUtils.log("check finish");
         UpdateError error = mError;
         if (error != null) {
             doFailure(error);
@@ -252,16 +252,16 @@ public class ScUpdateAgent implements ICheckAgent, IUpdateAgent, IDownloadAgent 
                 doFailure(new UpdateError(CHECK_UNKNOWN));
             } else if (!info.hasUpdate) {
                 doFailure(new UpdateError(UPDATE_NO_NEWER));
-            } else if (ScUpdateUtil.isIgnore(mContext, info.md5)) {
+            } else if (ScUpdateUtils.isIgnore(mContext, info.md5)) {
                 doFailure(new UpdateError(UPDATE_IGNORED));
             } else {
-                ScUpdateUtil.log("update md5" + mInfo.md5);
-                ScUpdateUtil.ensureExternalCacheDir(mContext);
-                ScUpdateUtil.setUpdate(mContext, mInfo.md5);
+                ScUpdateUtils.log("update md5" + mInfo.md5);
+                ScUpdateUtils.ensureExternalCacheDir(mContext);
+                ScUpdateUtils.setUpdate(mContext, mInfo.md5);
                 mTmpFile = new File(mContext.getExternalCacheDir(), info.md5);
                 mApkFile = new File(mContext.getExternalCacheDir(), info.md5 + ".apk");
 
-                if (ScUpdateUtil.verify(mApkFile, mInfo.md5)) {
+                if (ScUpdateUtils.verify(mApkFile, mInfo.md5)) {
                     doInstall();
                 } else if (info.isSilent) {
                     doDownload();
@@ -282,7 +282,7 @@ public class ScUpdateAgent implements ICheckAgent, IUpdateAgent, IDownloadAgent 
     }
 
     void doInstall() {
-        ScUpdateUtil.install(mContext, mApkFile, mInfo.isForce);
+        ScUpdateUtils.install(mContext, mApkFile, mInfo.isForce);
     }
 
     void doFailure(UpdateError error) {

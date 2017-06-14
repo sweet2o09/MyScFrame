@@ -40,7 +40,7 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 
-public class ScUpdateUtil {
+public class ScUpdateUtils {
     private static final String TAG = "ScUpdateUtil";
     private static final String PREFS = "ScUpdateUtil.prefs";
     private static final String KEY_IGNORE = "ScUpdateUtil.prefs.ignore";
@@ -57,7 +57,7 @@ public class ScUpdateUtil {
 
     public static void clean(Context context) {
         File file = new File(context.getExternalCacheDir(), sSPUtils.getString(KEY_UPDATE, "") + ".apk");
-        ScUpdateUtil.log("apk ==> " + file.toString());
+        ScUpdateUtils.log("apk ==> " + file.toString());
         if (file.exists()) {
             file.delete();
         }
@@ -70,7 +70,7 @@ public class ScUpdateUtil {
         }
         String old = sSPUtils.getString(KEY_UPDATE, "");
         if (md5.equals(old)) {
-            ScUpdateUtil.log("same md5");
+            ScUpdateUtils.log("same md5");
             return;
         }
         File oldFile = new File(context.getExternalCacheDir(), old);
@@ -115,7 +115,7 @@ public class ScUpdateUtil {
     public static void install(Context context, boolean force) {
         String md5 = sSPUtils.getString(KEY_UPDATE, "");
         File apk = new File(context.getExternalCacheDir(), md5 + ".apk");
-        if (ScUpdateUtil.verify(apk, md5)) {
+        if (ScUpdateUtils.verify(apk, md5)) {
             install(context, apk, force);
         }
     }

@@ -27,7 +27,7 @@ public class ScUpdateManager {
     }
 
     public static ScUpdateBuilder create(Context context) {
-        ScUpdateUtil.ensureExternalCacheDir(context);
+        ScUpdateUtils.ensureExternalCacheDir(context);
         return new ScUpdateBuilder(context).setWifiOnly(sIsWifiOnly);
     }
 }

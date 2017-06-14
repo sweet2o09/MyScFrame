@@ -6,7 +6,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
 
-import com.caihan.scframe.update.ScUpdateUtil;
+import com.caihan.scframe.update.ScUpdateUtils;
 import com.caihan.scframe.update.agent.IDownloadAgent;
 import com.caihan.scframe.update.error.UpdateError;
 
@@ -83,7 +83,7 @@ public class ScUpdateDownloader extends AsyncTask<Void, Integer, Long> {
                 mAgent.setError(new UpdateError(DOWNLOAD_CANCELLED));
             } else if (result == -1) {
                 mAgent.setError(new UpdateError(DOWNLOAD_UNKNOWN));
-            } else if (!ScUpdateUtil.verify(mTemp, mTemp.getName())) {
+            } else if (!ScUpdateUtils.verify(mTemp, mTemp.getName())) {
                 mAgent.setError(new UpdateError(DOWNLOAD_VERIFY));
             }
         } catch (UpdateError e) {
@@ -128,7 +128,7 @@ public class ScUpdateDownloader extends AsyncTask<Void, Integer, Long> {
     }
 
     void checkNetwork() throws UpdateError {
-        if (!ScUpdateUtil.checkNetwork(mContext)) {
+        if (!ScUpdateUtils.checkNetwork(mContext)) {
             throw new UpdateError(DOWNLOAD_NETWORK_BLOCKED);
         }
     }
@@ -142,7 +142,7 @@ public class ScUpdateDownloader extends AsyncTask<Void, Integer, Long> {
 
     void checkSpace(long loaded, long total) throws UpdateError {
         long storage = getAvailableStorage();
-        ScUpdateUtil.log("need = " + (total - loaded) + " = " + total + " - " + loaded + "\nspace = " + storage);
+        ScUpdateUtils.log("need = " + (total - loaded) + " = " + total + " - " + loaded + "\nspace = " + storage);
         if (total - loaded > storage) {
             throw new UpdateError(DOWNLOAD_DISK_NO_SPACE);
         }
@@ -188,7 +188,7 @@ public class ScUpdateDownloader extends AsyncTask<Void, Integer, Long> {
 
         if (isCancelled()) {
         } else if ((mBytesTemp + bytesCopied) != mBytesTotal && mBytesTotal != -1) {
-            ScUpdateUtil.log("download incomplete(" + mBytesTemp + " + " + bytesCopied + " != " + mBytesTotal + ")");
+            ScUpdateUtils.log("download incomplete(" + mBytesTemp + " + " + bytesCopied + " != " + mBytesTotal + ")");
             throw new UpdateError(DOWNLOAD_INCOMPLETE);
         }
 

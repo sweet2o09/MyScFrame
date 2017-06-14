@@ -1,6 +1,6 @@
 package com.caihan.scframe.update.checker;
 
-import com.caihan.scframe.update.ScUpdateUtil;
+import com.caihan.scframe.update.ScUpdateUtils;
 import com.caihan.scframe.update.agent.ICheckAgent;
 import com.caihan.scframe.update.builder.IUpdateChecker;
 import com.caihan.scframe.update.error.UpdateError;
@@ -48,7 +48,7 @@ public class ScUpdateChecker implements IUpdateChecker {
             }
 
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                agent.setInfo(ScUpdateUtil.readString(connection.getInputStream()));
+                agent.setInfo(ScUpdateUtils.readString(connection.getInputStream()));
             } else {
                 agent.setError(new UpdateError(CHECK_HTTP_STATUS, "" + connection.getResponseCode()));
             }

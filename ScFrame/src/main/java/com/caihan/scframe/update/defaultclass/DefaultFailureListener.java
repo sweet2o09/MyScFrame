@@ -3,7 +3,7 @@ package com.caihan.scframe.update.defaultclass;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.caihan.scframe.update.ScUpdateUtil;
+import com.caihan.scframe.update.ScUpdateUtils;
 import com.caihan.scframe.update.error.UpdateError;
 import com.caihan.scframe.update.listener.OnFailureListener;
 
@@ -20,7 +20,7 @@ public class DefaultFailureListener implements OnFailureListener {
 
     @Override
     public void onFailure(UpdateError error) {
-        ScUpdateUtil.log(error.toString());
+        ScUpdateUtils.log(error.toString());
         Toast.makeText(mContext, error.toString(), Toast.LENGTH_LONG).show();
     }
 }

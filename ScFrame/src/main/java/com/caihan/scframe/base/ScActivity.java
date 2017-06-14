@@ -14,7 +14,7 @@ import android.view.WindowManager;
 
 import com.caihan.scframe.common.ScActStack;
 import com.caihan.scframe.utils.evenbus.Event;
-import com.caihan.scframe.utils.evenbus.EventBusUtil;
+import com.caihan.scframe.utils.evenbus.EventBusUtils;
 import com.caihan.scframe.utils.permission.OnPermissionListener;
 import com.caihan.scframe.utils.permission.ScPermission;
 
@@ -55,10 +55,10 @@ public abstract class ScActivity extends AppCompatActivity implements ICallback 
 //        setFitsSystemWindows();//对根布局设置setFitsSystemWindows属性
 //        androidBug5497Workaround();//webview软键盘弹出bug
         mContext = this;
-        initData(savedInstanceState);
         initView();
+        initData(savedInstanceState);
         if (isRegisterEventBus()) {
-            EventBusUtil.register(this);
+            EventBusUtils.register(this);
         }
     }
 
@@ -150,7 +150,7 @@ public abstract class ScActivity extends AppCompatActivity implements ICallback 
         super.onDestroy();
         ScActStack.getInstance().finishActivity();
         if (isRegisterEventBus()) {
-            EventBusUtil.unregister(this);
+            EventBusUtils.unregister(this);
         }
     }
 
@@ -183,7 +183,7 @@ public abstract class ScActivity extends AppCompatActivity implements ICallback 
      * @param event 粘性事件
      */
     protected void receiveStickyEvent(Event event) {
-        EventBusUtil.removeStickyEvent(event);
+        EventBusUtils.removeStickyEvent(event);
     }
 
 }

@@ -7,8 +7,8 @@ android {
         applicationId "com.caihan.myscframe"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -53,10 +53,6 @@ dependencies {
     //JakeWharton 黄油刀,减少findbuyId
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
-
-    //EventBus代替Intent,Handler,广播等
-    compile 'org.greenrobot:eventbus:3.0.0'
-    annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'
 
     //全新网络请求框架Rxjava2+RxAndroid2+ReTrofit2+okHttp3
     compile 'com.squareup.retrofit2:retrofit:2.2.0'

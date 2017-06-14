@@ -8,7 +8,7 @@ import com.blankj.utilcode.util.TimeUtils;
  * Created by caihan on 2017/5/2.
  * 用来计算显示的时间是多久之前的
  */
-public class ScFormatTimeUtils {
+public final class ScFormatTimeUtils {
 
     private ScFormatTimeUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
@@ -20,7 +20,7 @@ public class ScFormatTimeUtils {
      * @param millis 开始时间戳
      * @return
      */
-    public String getTimeSpanByNow1(long millis) {
+    public static String getTimeSpanByNow1(long millis) {
         return TimeUtils.getFriendlyTimeSpanByNow(millis);
     }
 

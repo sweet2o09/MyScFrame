@@ -11,7 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
 import com.caihan.scframe.R;
-import com.caihan.scframe.utils.MyAppUtil;
+import com.caihan.scframe.utils.MyAppUtils;
 
 import java.util.ArrayList;
 
@@ -118,7 +118,7 @@ public class ScPermission {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
-                                if (mNeedFinish) MyAppUtil.restart(mActivity);
+                                if (mNeedFinish) MyAppUtils.restart(mActivity);
                             }
                         })
                 .setCancelable(false)
@@ -232,14 +232,14 @@ public class ScPermission {
                 .setPositiveButton("去设置", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        MyAppUtil.getAppDetailsSettings(mActivity, SETTINGS_REQUEST_CODE);
+                        MyAppUtils.getAppDetailsSettings(mActivity, SETTINGS_REQUEST_CODE);
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
-                        if (mNeedFinish) MyAppUtil.restart(mActivity);
+                        if (mNeedFinish) MyAppUtils.restart(mActivity);
                     }
                 })
                 .setCancelable(false)
