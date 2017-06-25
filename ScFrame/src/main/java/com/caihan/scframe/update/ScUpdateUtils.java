@@ -45,7 +45,7 @@ public class ScUpdateUtils {
     private static final String PREFS = "ScUpdateUtil.prefs";
     private static final String KEY_IGNORE = "ScUpdateUtil.prefs.ignore";
     private static final String KEY_UPDATE = "ScUpdateUtil.prefs.update";
-    private static SPUtils sSPUtils = new SPUtils(PREFS);
+    private static SPUtils sSPUtils = SPUtils.getInstance(PREFS);
 
     static boolean DEBUG = true;
 
@@ -167,7 +167,7 @@ public class ScUpdateUtils {
     }
 
     public static int getVersionCode(Context context) {
-        return AppUtils.getAppVersionCode(context);
+        return AppUtils.getAppVersionCode();
     }
 
     /**

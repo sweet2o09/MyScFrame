@@ -3,8 +3,6 @@ package com.caihan.scframe;
 import android.content.Context;
 import android.content.res.Resources;
 
-import com.blankj.utilcode.util.ScreenUtils;
-
 
 /**
  * Created by caihan on 2017/4/17.
@@ -29,8 +27,8 @@ public final class ScFrame {
      */
     public static void init(Context context) {
         ScFrame.sContext = context;
-        sScreenHeight = ScreenUtils.getScreenHeight();
-        sScreenWidth = ScreenUtils.getScreenWidth();
+//        sScreenHeight = ScreenUtils.getScreenHeight();
+//        sScreenWidth = ScreenUtils.getScreenWidth();
     }
 
     /**

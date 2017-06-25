@@ -33,6 +33,7 @@ public class ScWebView extends WebView implements View.OnLongClickListener{
     private long mOldTime;
     private String mWebViewUrl = "";
     private boolean mTouchEventToParent = false;//是否把事件交给父控件处理
+    private boolean mTouchForeverToParent = false;//点击的时候就把事件交给父控件处理
     private boolean mLessThanLOLLIPOP = false;//SDK小于21是否做处理
     private boolean mNoCopy = true;//禁止长按出现复制黏贴
     private boolean mNoClickL = false;//不执行Click事件
@@ -82,6 +83,18 @@ public class ScWebView extends WebView implements View.OnLongClickListener{
      */
     public ScWebView setTouchEventToParent(boolean touchEventToParent) {
         mTouchEventToParent = touchEventToParent;
+        return this;
+    }
+
+    /**
+     * 点击的时候就把事件交给父控件处理,默认false
+     *
+     * @param touchForeverToParent
+     * @return
+     */
+    public ScWebView setTouchForeverToParent(boolean touchForeverToParent) {
+        mTouchForeverToParent = touchForeverToParent;
+        mTouchEventToParent = touchForeverToParent;
         return this;
     }
 
@@ -240,8 +253,8 @@ public class ScWebView extends WebView implements View.OnLongClickListener{
         final int action = event.getAction();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+                this.getParent().requestDisallowInterceptTouchEvent(!mTouchForeverToParent);
                 mGestureUtils.actionDown(event);
-                this.getParent().requestDisallowInterceptTouchEvent(true);
                 mNoClickL = false;
                 mIsTop = isTop();
                 break;

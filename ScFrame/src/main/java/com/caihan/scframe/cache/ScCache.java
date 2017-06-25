@@ -376,7 +376,7 @@ public class ScCache {
         if (getAsBinary(key) == null) {
             return null;
         }
-        return ImageUtils.bytes2Drawable(null, getAsBinary(key));
+        return ImageUtils.bytes2Drawable(getAsBinary(key));
     }
 
     /**

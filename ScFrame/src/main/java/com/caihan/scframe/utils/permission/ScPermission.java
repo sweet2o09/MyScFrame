@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 
 import com.caihan.scframe.R;
 import com.caihan.scframe.utils.MyAppUtils;
@@ -22,17 +23,16 @@ import java.util.ArrayList;
 public class ScPermission {
     private static final String TAG = "ScPermission";
 
-    private Activity mActivity;
     // For Android 6.0
-    private OnPermissionListener mListener;
+    private static OnPermissionListener sListener;
     //申请标记值
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
     //手动开启权限requestCode
     private static final int SETTINGS_REQUEST_CODE = 200;
     //拒绝权限后是否关闭界面或APP
-    private boolean mNeedFinish = false;
+    private static boolean sNeedFinish = false;
     //界面传递过来的权限列表,用于二次申请
-    private ArrayList<String> mPermissionsList = new ArrayList<>();
+    private static ArrayList<String> sPermissionsList = new ArrayList<>();
     //必要全选,如果这几个权限没通过的话,就无法使用APP
     public static final ArrayList<String> FORCE_REQUIRE_PERMISSIONS = new ArrayList<String>() {
         {
@@ -44,10 +44,6 @@ public class ScPermission {
         }
     };
 
-    public ScPermission(Activity activity) {
-        mActivity = activity;
-    }
-
     /**
      * 权限允许或拒绝对话框
      *
@@ -55,29 +51,29 @@ public class ScPermission {
      * @param needFinish  如果必须的权限没有允许的话，是否需要finish当前 Activity
      * @param callback    回调对象
      */
-    public void requestPermission(final ArrayList<String> permissions, final boolean needFinish,
-                                  final OnPermissionListener callback) {
+    public static void requestPermission(Activity activity, ArrayList<String> permissions, boolean needFinish,
+                                         OnPermissionListener callback) {
         if (permissions == null || permissions.size() == 0) {
-            if (mListener != null) {
-                mListener.onPermissionGranted();
+            if (sListener != null) {
+                sListener.onPermissionGranted();
             }
             return;
         }
-        mNeedFinish = needFinish;
-        mListener = callback;
-        mPermissionsList = permissions;
+        sNeedFinish = needFinish;
+        sListener = callback;
+        sPermissionsList = permissions;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            ArrayList<String> newPermissions = checkEachSelfPermission(permissions);
+            ArrayList<String> newPermissions = checkEachSelfPermission(activity, permissions);
             if (newPermissions.size() > 0) {// 检查是否声明了权限
-                requestEachPermissions(newPermissions.toArray(new String[newPermissions.size()]));
+                requestEachPermissions(activity, newPermissions.toArray(new String[newPermissions.size()]));
             } else {// 已经申请权限
-                if (mListener != null) {
-                    mListener.onPermissionGranted();
+                if (sListener != null) {
+                    sListener.onPermissionGranted();
                 }
             }
         } else {
-            if (mListener != null) {
-                mListener.onPermissionGranted();
+            if (sListener != null) {
+                sListener.onPermissionGranted();
             }
         }
     }
@@ -87,11 +83,11 @@ public class ScPermission {
      *
      * @param permissions
      */
-    private void requestEachPermissions(String[] permissions) {
-        if (shouldShowRequestPermissionRationale(permissions)) {// 需要再次声明
-            showRationaleDialog(permissions);
+    private static void requestEachPermissions(Activity activity, String[] permissions) {
+        if (shouldShowRequestPermissionRationale(activity, permissions)) {// 需要再次声明
+            showRationaleDialog(activity, permissions);
         } else {
-            ActivityCompat.requestPermissions(mActivity, permissions,
+            ActivityCompat.requestPermissions(activity, permissions,
                     REQUEST_CODE_ASK_PERMISSIONS);
         }
     }
@@ -101,15 +97,15 @@ public class ScPermission {
      *
      * @param permissions
      */
-    private void showRationaleDialog(final String[] permissions) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+    private static void showRationaleDialog(final Activity activity, final String[] permissions) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(R.string.tips)
                 .setMessage(R.string.permission_desc)
                 .setPositiveButton(R.string.confrim,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(mActivity, permissions,
+                                ActivityCompat.requestPermissions(activity, permissions,
                                         REQUEST_CODE_ASK_PERMISSIONS);
                             }
                         })
@@ -118,7 +114,7 @@ public class ScPermission {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
-                                if (mNeedFinish) MyAppUtils.restart(mActivity);
+                                if (sNeedFinish) MyAppUtils.restart(activity);
                             }
                         })
                 .setCancelable(false)
@@ -131,10 +127,10 @@ public class ScPermission {
      * @param permissions
      * @return newPermissions.size > 0 表示有权限需要申请
      */
-    private ArrayList<String> checkEachSelfPermission(ArrayList<String> permissions) {
+    private static ArrayList<String> checkEachSelfPermission(Activity activity, ArrayList<String> permissions) {
         ArrayList<String> newPermissions = new ArrayList<String>();
         for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(mActivity, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
                 newPermissions.add(permission);
             }
         }
@@ -147,9 +143,9 @@ public class ScPermission {
      * @param permissions
      * @return
      */
-    private boolean shouldShowRequestPermissionRationale(String[] permissions) {
+    private static boolean shouldShowRequestPermissionRationale(Activity activity, String[] permissions) {
         for (String permission : permissions) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(mActivity, permission)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
                 return true;
             }
         }
@@ -163,12 +159,12 @@ public class ScPermission {
      * @param permissions
      * @param grantResults
      */
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public static void onRequestPermissionsResult(Activity activity, int requestCode, @NonNull String[] permissions,
+                                                  @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CODE_ASK_PERMISSIONS && permissions != null) {
             ArrayList<String> deniedPermissions = new ArrayList<>();
             for (String permission : permissions) {
-                if (ContextCompat.checkSelfPermission(mActivity, permission) != PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
                     deniedPermissions.add(permission);
                 }
             }
@@ -177,17 +173,17 @@ public class ScPermission {
                     checkForceRequirePermissionDenied(FORCE_REQUIRE_PERMISSIONS, deniedPermissions);
             if (forceRequirePermissionsDenied != null && forceRequirePermissionsDenied.size() > 0) {
                 // 必备的权限被拒绝，
-                if (mNeedFinish) {
-                    showPermissionSettingDialog();
+                if (sNeedFinish) {
+                    showPermissionSettingDialog(activity);
                 } else {
-                    if (mListener != null) {
-                        mListener.onPermissionDenied();
+                    if (sListener != null) {
+                        sListener.onPermissionDenied();
                     }
                 }
             } else {
                 // 不存在必备的权限被拒绝，可以进首页
-                if (mListener != null) {
-                    mListener.onPermissionGranted();
+                if (sListener != null) {
+                    sListener.onPermissionGranted();
                 }
             }
         }
@@ -208,7 +204,7 @@ public class ScPermission {
         return true;
     }
 
-    private ArrayList<String> checkForceRequirePermissionDenied(
+    private static ArrayList<String> checkForceRequirePermissionDenied(
             ArrayList<String> forceRequirePermissions, ArrayList<String> deniedPermissions) {
         ArrayList<String> forceRequirePermissionsDenied = new ArrayList<>();
         if (forceRequirePermissions != null && forceRequirePermissions.size() > 0
@@ -225,31 +221,31 @@ public class ScPermission {
     /**
      * 手动开启权限弹窗
      */
-    private void showPermissionSettingDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+    private static void showPermissionSettingDialog(final Activity activity) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("提示")
                 .setMessage("必要的权限被拒绝")
                 .setPositiveButton("去设置", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        MyAppUtils.getAppDetailsSettings(mActivity, SETTINGS_REQUEST_CODE);
+                        MyAppUtils.getAppDetailsSettings(activity, SETTINGS_REQUEST_CODE);
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
-                        if (mNeedFinish) MyAppUtils.restart(mActivity);
+                        if (sNeedFinish) MyAppUtils.restart(activity);
                     }
                 })
                 .setCancelable(false)
                 .show();
     }
 
-    public void onActivityResult(int requestCode) {
+    public static void onActivityResult(Activity activity, int requestCode) {
         //如果需要跳转系统设置页后返回自动再次检查和执行业务 如果不需要则不需要重写onActivityResult
         if (requestCode == SETTINGS_REQUEST_CODE) {
-            requestPermission(mPermissionsList, mNeedFinish, mListener);
+            requestPermission(activity, sPermissionsList, sNeedFinish, sListener);
         }
     }
 }

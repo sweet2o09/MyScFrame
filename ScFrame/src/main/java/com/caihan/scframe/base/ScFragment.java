@@ -1,5 +1,6 @@
 package com.caihan.scframe.base;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,27 +14,41 @@ import com.caihan.scframe.utils.evenbus.EventBusUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * Created by caihan on 2017/4/17.
  * Fragment基类
  */
 public abstract class ScFragment extends Fragment implements ICallback {
 
+    Unbinder unbinder;
+    protected Context mContext;
+    protected View mRootView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         if (getLayoutResId() > 0) {
-            return inflater.inflate(getLayoutResId(), container, false);
+            mRootView = inflater.inflate(getLayoutResId(), container, false);
         } else {
-            return super.onCreateView(inflater, container, savedInstanceState);
+            mRootView = super.onCreateView(inflater, container, savedInstanceState);
         }
+        if (isRegisterButterKnife()) {
+            unbinder = ButterKnife.bind(this, mRootView);
+        }
+        return mRootView;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mContext = getActivity();
+        initToolbar();
         initView();
+        setListener();
         initData(savedInstanceState);
         if (isRegisterEventBus()) {
             EventBusUtils.register(this);
@@ -46,6 +61,9 @@ public abstract class ScFragment extends Fragment implements ICallback {
         if (isRegisterEventBus()) {
             EventBusUtils.unregister(this);
         }
+        if (isRegisterButterKnife()) {
+            unbinder.unbind();
+        }
     }
 
     /**
@@ -57,18 +75,24 @@ public abstract class ScFragment extends Fragment implements ICallback {
         return false;
     }
 
+    /**
+     * 是否注册黄油刀
+     * @return
+     */
+    protected boolean isRegisterButterKnife(){
+        return false;
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventBusCome(Event event) {
-        if (event != null) {
-            receiveEvent(event);
-        }
+        if (!isAdded() || event == null) return;
+        receiveEvent(event);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onStickyEventBusCome(Event event) {
-        if (event != null) {
-            receiveStickyEvent(event);
-        }
+        if (!isAdded() || event == null) return;
+        receiveStickyEvent(event);
     }
 
     /**

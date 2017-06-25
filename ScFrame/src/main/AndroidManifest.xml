@@ -1,31 +1,55 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.caihan.scframe">
 
+    <!-- SMS -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.READ_SMS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+
     <!-- 网络权限 start -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <!-- 网络权限 end -->
+
+
+    <!-- 获取用户手机的IMEI，用来唯一的标识用户 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
+    <!-- QQ、QQ空间所需权限 -->
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+
+    <!-- 存储卡权限 start -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <!-- 存储卡权限 end -->
+
+
+    <!-- 拨打电话权限 start -->
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <!-- 拨打电话权限 end -->
+
+
+    <!-- 微信支付权限 start -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <!-- 微信支付权限 end -->
+
+
+    <!-- ShareSDK新增的权限  start -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <!-- ShareSDK新增的权限  end -->
+
 
     <!-- 获取地理位置  start -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <!-- 获取地理位置  end -->
 
-    <!--获取短信权限 start -->
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <uses-permission android:name="android.permission.READ_SMS"/>
-    <!--获取短信权限 end -->
-
-    <!-- 存储权限  start -->
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18"/>
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18"/>
-    <!--存储权限 end -->
+    <uses-permission android:name="android.permission.RESTART_PACKAGES"/>
 
     <application
         android:allowBackup="true"

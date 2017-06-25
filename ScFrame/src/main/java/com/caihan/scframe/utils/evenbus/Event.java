@@ -5,23 +5,23 @@ package com.caihan.scframe.utils.evenbus;
  * EventBus 定义事件Event
  */
 public class Event<T> {
-    private int code;
+    private String code;
     private T data;
 
-    public Event(int code) {
+    public Event(String code) {
         this.code = code;
     }
 
-    public Event(int code, T data) {
+    public Event(String code, T data) {
         this.code = code;
         this.data = data;
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

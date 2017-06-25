@@ -1,6 +1,5 @@
 package com.caihan.scframe.base;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
@@ -9,7 +8,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.Utils;
 import com.caihan.scframe.ScFrame;
-import com.caihan.scframe.utils.flash.FlashUtil;
+import com.caihan.scframe.utils.flash.FlashUtils;
 
 /**
  * Created by caihan on 2017/4/17.
@@ -49,7 +48,7 @@ public abstract class ScApplication extends Application {
      */
     private void initUtilCode(Context context) {
         Utils.init(context);
-        CrashUtils.getInstance().init();
+        CrashUtils.init();
     }
 
     /**
@@ -59,7 +58,7 @@ public abstract class ScApplication extends Application {
      */
     private void initSpUtils(String SpTag) {
         if (sSPUtils == null) {
-            sSPUtils = new SPUtils(SpTag);
+            sSPUtils = SPUtils.getInstance(SpTag);
         }
     }
 
@@ -71,8 +70,8 @@ public abstract class ScApplication extends Application {
      * @param flashAct         闪屏Activity
      * @param noFlashClassName 不需要闪屏的ActivityClassName
      */
-    protected void initFlashUtil(Activity flashAct, String... noFlashClassName) {
-        FlashUtil.getInstance()
+    protected void initFlashUtil(Class flashAct, String... noFlashClassName) {
+        FlashUtils.getInstance()
                 .addNoFlashActClassName(noFlashClassName)
                 .setFlashAct(flashAct);
     }
@@ -89,8 +88,7 @@ public abstract class ScApplication extends Application {
                 .setGlobalTag(tag)// 设置log全局标签，默认为空
                 // 当全局标签不为空时，我们输出的log全部为该tag，
                 // 为空时，如果传入的tag为空那就显示类名，否则显示tag
-                .setLog2FileSwitch(false)// 打印log时是否存到文件的开关，默认关
-                .setBorderSwitch(true)// 输出日志是否带边框开关，默认开
-                .setLogFilter(LogUtils.V);// log过滤器，和logcat过滤器同理，默认Verbose
+                .setLog2FileSwitch(logSwitch)// 打印log时是否存到文件的开关，默认关
+                .setBorderSwitch(true);// 输出日志是否带边框开关，默认开
     }
 }

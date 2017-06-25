@@ -23,6 +23,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+
 /**
  * Created by caihan on 2017/4/17.
  * Activity基类
@@ -31,7 +33,6 @@ public abstract class ScActivity extends AppCompatActivity implements ICallback 
     private static final String TAG = "ScActivity";
 
     protected Context mContext;
-    protected ScPermission mPermission;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -55,7 +56,12 @@ public abstract class ScActivity extends AppCompatActivity implements ICallback 
 //        setFitsSystemWindows();//对根布局设置setFitsSystemWindows属性
 //        androidBug5497Workaround();//webview软键盘弹出bug
         mContext = this;
+        if (isRegisterButterKnife()) {
+            ButterKnife.bind(this);
+        }
+        initToolbar();
         initView();
+        setListener();
         initData(savedInstanceState);
         if (isRegisterEventBus()) {
             EventBusUtils.register(this);
@@ -97,14 +103,19 @@ public abstract class ScActivity extends AppCompatActivity implements ICallback 
     }
 
     /**
+     * 是否注册黄油刀
+     *
+     * @return
+     */
+    protected boolean isRegisterButterKnife() {
+        return false;
+    }
+
+    /**
      * webview软键盘弹出bug
      */
     protected void androidBug5497Workaround() {
         MyBug5497.assistActivity(this);
-    }
-
-    protected void initPermission() {
-        mPermission = new ScPermission(this);
     }
 
     /**
@@ -116,9 +127,7 @@ public abstract class ScActivity extends AppCompatActivity implements ICallback 
      */
     protected void requestPermission(final ArrayList<String> permissions, final boolean needFinish,
                                      final OnPermissionListener callback) {
-        if (mPermission != null) {
-            mPermission.requestPermission(permissions, needFinish, callback);
-        }
+        ScPermission.requestPermission(this, permissions, needFinish, callback);
     }
 
     /**
@@ -131,17 +140,13 @@ public abstract class ScActivity extends AppCompatActivity implements ICallback 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[]
             grantResults) {
-        if (mPermission != null) {
-            mPermission.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
+        ScPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (mPermission != null) {
-            mPermission.onActivityResult(requestCode);
-        }
+        ScPermission.onActivityResult(this, requestCode);
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -156,16 +161,14 @@ public abstract class ScActivity extends AppCompatActivity implements ICallback 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventBusCome(Event event) {
-        if (event != null) {
-            receiveEvent(event);
-        }
+        if (isFinishing() || event == null) return;
+        receiveEvent(event);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onStickyEventBusCome(Event event) {
-        if (event != null) {
-            receiveStickyEvent(event);
-        }
+        if (isFinishing() || event == null) return;
+        receiveStickyEvent(event);
     }
 
     /**

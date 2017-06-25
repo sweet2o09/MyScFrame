@@ -1,14 +1,14 @@
 package com.caihan.scframe.utils;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
+import android.provider.Settings;
 import android.text.TextUtils;
-
-import com.blankj.utilcode.util.IntentUtils;
 
 
 /**
@@ -86,8 +86,9 @@ public class MyAppUtils {
      */
     public static void getAppDetailsSettings(Context context, String packageName, int requestCode) {
         if (isSpace(packageName)) return;
-        ((AppCompatActivity) context).startActivityForResult(
-                IntentUtils.getAppDetailsSettingsIntent(packageName), requestCode);
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + context.getPackageName()));
+        ((Activity)context).startActivityForResult(intent,requestCode);
     }
 
     private static boolean isSpace(String s) {

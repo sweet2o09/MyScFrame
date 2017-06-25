@@ -36,15 +36,17 @@ public class MyCountDownTimer extends CountDownTimer {
     @Override
     public void onFinish() {
         mFlashTime = 0;
-        LogUtils.e(TAG, "MyCountDownTimer onFinish");
+        LogUtils.e(TAG, "onFinish");
     }
 
     public void timerStart(){
+        LogUtils.e(TAG, "timerStart");
         mIsStart = true;
         this.start();
     }
 
     public void timerCancel(){
+        LogUtils.e(TAG, "timerCancel");
         mIsStart = false;
         this.cancel();
     }
