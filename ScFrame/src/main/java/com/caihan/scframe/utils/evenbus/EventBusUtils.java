@@ -38,7 +38,7 @@ public class EventBusUtils {
      * 分发粘性事件
      * @param event
      */
-    public static void postSticky(Event event){
+    public static void postSticky(EventSticky event){
         BusProvider.eventBusPostSticky(event);
     }
 
@@ -55,7 +55,7 @@ public class EventBusUtils {
     /**
      * 粘性事件执行后必须手动删除
      *
-     * @param msg
+     * @param event
      */
     public static void removeStickyEvent(Object event) {
         BusProvider.removeStickyEvent(event);

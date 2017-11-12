@@ -17,8 +17,12 @@ import com.caihan.scframe.R;
 import java.util.List;
 
 /**
- * Created by caihan on 2017/6/21.
- * 公告轮播
+ * 作者：caihan
+ * 创建时间：2017/10/25
+ * 邮箱：93234929@qq.com
+ * 实现功能：公告轮播View
+ * 备注：
+ * 使用方式
  * noticeView.addNotice(notices);
  * noticeView.startFlipping();
  */
@@ -54,8 +58,8 @@ public class NoticeView extends ViewFlipper implements View.OnClickListener {
         // 内边距5dp
         setPadding(dp2px(5f), dp2px(5f), dp2px(5f), dp2px(5f));
         // 设置enter和leave动画
-        setInAnimation(AnimationUtils.loadAnimation(mContext, R.anim.notice_in));
-        setOutAnimation(AnimationUtils.loadAnimation(mContext, R.anim.notice_out));
+        setInAnimation(AnimationUtils.loadAnimation(mContext, R.anim.notice_view_in));
+        setOutAnimation(AnimationUtils.loadAnimation(mContext, R.anim.notice_view_out));
     }
 
     private int dp2px(float dpValue) {

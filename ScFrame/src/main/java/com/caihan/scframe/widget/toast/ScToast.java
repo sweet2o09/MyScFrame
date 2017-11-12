@@ -20,28 +20,31 @@ import com.caihan.scframe.ScFrame;
 import com.caihan.scframe.utils.ScOutdatedUtils;
 
 /**
- * Toast
+ * 作者：caihan
+ * 创建时间：2017/10/25
+ * 邮箱：93234929@qq.com
+ * 实现功能：自定义Toast样式
+ * 备注：
  */
 public class ScToast {
     private static final
     @ColorInt
     int DEFAULT_TEXT_COLOR = Color.parseColor("#FFFFFF");
 
-    private static final
     @ColorInt
-    int ERROR_COLOR = Color.parseColor("#D8524E");
-    private static final
+    private static final int ERROR_COLOR = Color.parseColor("#D8524E");
+
     @ColorInt
-    int INFO_COLOR = Color.parseColor("#3278B5");
-    private static final
+    private static final int INFO_COLOR = Color.parseColor("#3278B5");
+
     @ColorInt
-    int SUCCESS_COLOR = Color.parseColor("#5BB75B");
-    private static final
+    private static final int SUCCESS_COLOR = Color.parseColor("#5BB75B");
+
     @ColorInt
-    int WARNING_COLOR = Color.parseColor("#FB9B4D");
-    private static final
+    private static final int WARNING_COLOR = Color.parseColor("#FB9B4D");
+
     @ColorInt
-    int NORMAL_COLOR = Color.parseColor("#444344");
+    private static final int NORMAL_COLOR = Color.parseColor("#444344");
 
     private static final String TOAST_TYPEFACE = "sans-serif-condensed";
 
@@ -165,9 +168,9 @@ public class ScToast {
     public static Toast custom(@NonNull String message, Drawable icon,
                                @ColorInt int textColor, @ColorInt int tintColor, int duration) {
         Toast currentToast = new Toast(context);
-        View toastLayout = LayoutInflater.from(context).inflate(R.layout.xtoast_view, null);
-        ImageView toastIcon = (ImageView) toastLayout.findViewById(R.id.xtoast_icon);
-        TextView toastText = (TextView) toastLayout.findViewById(R.id.xtoast_text);
+        View toastLayout = LayoutInflater.from(context).inflate(R.layout.toast_layout, null);
+        ImageView toastIcon = (ImageView) toastLayout.findViewById(R.id.toast_icon);
+        TextView toastText = (TextView) toastLayout.findViewById(R.id.toast_text);
 
         Drawable drawableFrame = ScOutdatedUtils.getDrawable(R.drawable.toast_frame);
         drawableFrame.setColorFilter(new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN));

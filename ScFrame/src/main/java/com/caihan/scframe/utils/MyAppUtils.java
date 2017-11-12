@@ -12,9 +12,12 @@ import android.text.TextUtils;
 
 
 /**
- * Created by caihan on 2017/4/17.
+ * 作者：caihan
+ * 创建时间：2017/10/25
+ * 邮箱：93234929@qq.com
+ * 实现功能：App相关工具类
+ * 备注：
  */
-
 public class MyAppUtils {
 
     /**

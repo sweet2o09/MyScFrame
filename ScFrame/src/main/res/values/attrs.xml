@@ -1,53 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--解放button写drawable(selector)的Button Start-->
-    <declare-styleable name="ScStateButton">
-
-        <!--text color-->
-        <attr name="normalTextColor" format="color|reference"/>
-        <attr name="pressedTextColor" format="color|reference"/>
-        <attr name="unableTextColor" format="color|reference"/>
-
-        <!--stroke width and color, dash width, dash gap-->
-        <attr name="strokeDashWidth" format="dimension|reference"/>
-        <attr name="strokeDashGap" format="dimension|reference"/>
-        <attr name="normalStrokeWidth" format="dimension|reference"/>
-        <attr name="pressedStrokeWidth" format="dimension|reference"/>
-        <attr name="unableStrokeWidth" format="dimension|reference"/>
-        <attr name="normalStrokeColor" format="color|reference"/>
-        <attr name="pressedStrokeColor" format="color|reference"/>
-        <attr name="unableStrokeColor" format="color|reference"/>
-
-        <!--background color-->
-        <attr name="normalBackgroundColor" format="color|reference"/>
-        <attr name="pressedBackgroundColor" format="color|reference"/>
-        <attr name="unableBackgroundColor" format="color|reference"/>
-
-        <!--background radius-->
-        <attr name="radius" format="dimension|reference"/>
-        <attr name="round" format="boolean|reference"/>
-
-        <!--animation duration-->
-        <attr name="animationDuration" format="integer|reference"/>
-
-    </declare-styleable>
-    <!--解放button写drawable(selector)的Button End-->
-
-
-    <!--解决根据击状态设置不同图片的ImageView Start-->
-    <declare-styleable name="ScStateImageView">
-        <attr name="normalBackground" format="color|reference"/>
-        <attr name="pressedBackground" format="color|reference"/>
-        <attr name="unableBackground" format="color|reference"/>
-
-        <!--animation duration-->
-        <attr name="AnimationDuration" format="integer|reference"/>
-    </declare-styleable>
-    <!--解决根据击状态设置不同图片的ImageView End-->
-
-
     <!--解决TextView中Drawable不与文字居中的TextView Start-->
-    <declare-styleable name="ScDrawableTextView">
+    <declare-styleable name="DrawableTextView">
         <attr name="leftDrawable" format="reference|color"/>
         <attr name="rightDrawable" format="reference|color"/>
         <attr name="topDrawable" format="reference|color"/>
@@ -64,19 +18,4 @@
         <attr name="bottomDrawableHeight" format="reference|dimension"/>
     </declare-styleable>
     <!--解决TextView中Drawable不与文字居中的TextView End-->
-
-    <!--仿微信SwitchBtn/仿iOS的UiSwitch控件 Start-->
-    <declare-styleable name="WeChatSwitchBtn">
-        <attr name="switch_bg_color_closed" format="color"/>
-        <attr name="switch_bg_color_open" format="color"/>
-        <attr name="switch_bg_side_status" format="boolean"/>
-        <attr name="switch_bg_side_size" format="dimension"/>
-        <attr name="switch_bg_side_color" format="color"/>
-        <attr name="switch_ball_color" format="color"/>
-        <attr name="switch_ball_side_status" format="boolean"/>
-        <attr name="switch_ball_side_size" format="dimension"/>
-        <attr name="switch_ball_side_color" format="color"/>
-    </declare-styleable>
-    <!--仿微信SwitchBtn/仿iOS的UiSwitch控件 End-->
-
 </resources>

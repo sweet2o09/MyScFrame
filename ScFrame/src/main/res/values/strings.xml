@@ -1,12 +1,4 @@
 <resources>
     <string name="app_name">ScFrame</string>
-    <string name="tips">提示信息</string>
-    <string name="cancle">取消</string>
-    <string name="confrim">确认</string>
-    <string name="permission_desc">为了应用可以正常使用，请您点击确认申请权限。</string>
-    <string name="loading_dialog_message">正在加载中</string>
-    <string name="loading_no_network_text">无网络连接，请检查你的网络</string>
-    <string name="loading_error_text">加载失败，请稍后再试</string>
-    <string name="loading_empty_text">暂无数据</string>
-    <string name="loading_retry_text">点击重试</string>
+
 </resources>

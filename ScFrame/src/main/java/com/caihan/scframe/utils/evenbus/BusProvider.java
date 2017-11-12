@@ -18,6 +18,7 @@ public class BusProvider {
     public static EventBus getInstance() {
         if (sEventBus == null){
             // 只设置一次，并且要在我们第一次使用EventBus之前进行设置
+            // 启用EventBus3.0加速功能
             EventBus.builder().addIndex(new MyEventBusIndex()).installDefaultEventBus();
             // 这样每次获取到默认实例，都是使用Subscriber Index的了，代码得到了精简。
             sEventBus = EventBus.getDefault();

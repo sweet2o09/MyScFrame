@@ -5,8 +5,11 @@ import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.TimeUtils;
 
 /**
- * Created by caihan on 2017/5/2.
- * 用来计算显示的时间是多久之前的
+ * 作者：caihan
+ * 创建时间：2017/10/25
+ * 邮箱：93234929@qq.com
+ * 实现功能：用来计算显示的时间是多久之前的
+ * 备注：
  */
 public final class ScFormatTimeUtils {
 
@@ -62,6 +65,5 @@ public final class ScFormatTimeUtils {
             return String.format("%tF", millis);
         }
     }
-
 
 }

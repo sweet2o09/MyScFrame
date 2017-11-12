@@ -1,251 +1,206 @@
 package com.caihan.scframe.utils.permission;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
+import android.content.Intent;
 
-import com.caihan.scframe.R;
+import com.blankj.utilcode.util.LogUtils;
 import com.caihan.scframe.utils.MyAppUtils;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionNo;
+import com.yanzhenjie.permission.PermissionYes;
+import com.yanzhenjie.permission.Rationale;
+import com.yanzhenjie.permission.RationaleListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by caihan on 2017/4/17.
- * 权限申请工具类
+ * 作者：caihan
+ * 创建时间：2017/4/17
+ * 邮箱：93234929@qq.com
+ * 实现功能：权限申请工具类
+ * 备注：下列权限需要动态申请,属于危险权限http://blog.csdn.net/wwdlss/article/details/52909098
+ * <p>
+ * Dangerous Permissions:
+ * group:android.permission-group.CONTACTS
+ * permission:android.permission.WRITE_CONTACTS
+ * permission:android.permission.GET_ACCOUNTS
+ * permission:android.permission.READ_CONTACTS
+ * <p>
+ * group:android.permission-group.PHONE
+ * permission:android.permission.READ_CALL_LOG
+ * permission:android.permission.READ_PHONE_STATE
+ * permission:android.permission.CALL_PHONE
+ * permission:android.permission.WRITE_CALL_LOG
+ * permission:android.permission.USE_SIP
+ * permission:android.permission.PROCESS_OUTGOING_CALLS
+ * permission:com.android.voicemail.permission.ADD_VOICEMAIL
+ * <p>
+ * group:android.permission-group.CALENDAR
+ * permission:android.permission.READ_CALENDAR
+ * permission:android.permission.WRITE_CALENDAR
+ * <p>
+ * group:android.permission-group.CAMERA
+ * permission:android.permission.CAMERA
+ * <p>
+ * group:android.permission-group.SENSORS
+ * permission:android.permission.BODY_SENSORS
+ * <p>
+ * group:android.permission-group.LOCATION
+ * permission:android.permission.ACCESS_FINE_LOCATION
+ * permission:android.permission.ACCESS_COARSE_LOCATION
+ * <p>
+ * group:android.permission-group.STORAGE
+ * permission:android.permission.READ_EXTERNAL_STORAGE
+ * permission:android.permission.WRITE_EXTERNAL_STORAGE
+ * <p>
+ * group:android.permission-group.MICROPHONE
+ * permission:android.permission.RECORD_AUDIO
+ * <p>
+ * group:android.permission-group.SMS
+ * permission:android.permission.READ_SMS
+ * permission:android.permission.RECEIVE_WAP_PUSH
+ * permission:android.permission.RECEIVE_MMS
+ * permission:android.permission.RECEIVE_SMS
+ * permission:android.permission.SEND_SMS
+ * permission:android.permission.READ_CELL_BROADCASTS
+ * <p>
+ * Rationale能力:
+ * Android运行时权限有一个特点，在拒绝过一次权限后，再此申请该权限，在申请框会多一个不再提示的复选框，
+ * 当用户勾选了不再提示并拒绝了权限后，下次再申请该权限将直接回调申请失败。
+ * 因此Rationale功能是在用户拒绝一次权限后，再次申请时检测到已经申请过一次该权限了，
+ * 允许开发者弹窗说明申请权限的目的，获取用户的同意后再申请权限，避免用户勾选不再提示，导致不能再次申请权限。
  */
 public class ScPermission {
     private static final String TAG = "ScPermission";
-
-    // For Android 6.0
-    private static OnPermissionListener sListener;
     //申请标记值
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
     //手动开启权限requestCode
-    private static final int SETTINGS_REQUEST_CODE = 200;
+    private static final int REQUEST_CODE_SETTING = 200;
+
+    private Activity mActivity;
+    // For Android 6.0
+    private OnPermissionListener mListener;
     //拒绝权限后是否关闭界面或APP
-    private static boolean sNeedFinish = false;
-    //界面传递过来的权限列表,用于二次申请
-    private static ArrayList<String> sPermissionsList = new ArrayList<>();
-    //必要全选,如果这几个权限没通过的话,就无法使用APP
-    public static final ArrayList<String> FORCE_REQUIRE_PERMISSIONS = new ArrayList<String>() {
-        {
-            add(Manifest.permission.INTERNET);
-            add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            add(Manifest.permission.ACCESS_FINE_LOCATION);
-            add(Manifest.permission.ACCESS_COARSE_LOCATION);
-        }
-    };
+    private boolean mNeedFinish = false;
+
+    private ArrayList<String> permissionList;
+
+    public ScPermission(Activity act, OnPermissionListener listener) {
+        this.mActivity = act;
+        this.mListener = listener;
+    }
 
     /**
-     * 权限允许或拒绝对话框
+     * 权限被拒绝后是否直接关闭界面
      *
-     * @param permissions 需要申请的权限
-     * @param needFinish  如果必须的权限没有允许的话，是否需要finish当前 Activity
-     * @param callback    回调对象
+     * @param needFinish
      */
-    public static void requestPermission(Activity activity, ArrayList<String> permissions, boolean needFinish,
-                                         OnPermissionListener callback) {
-        if (permissions == null || permissions.size() == 0) {
-            if (sListener != null) {
-                sListener.onPermissionGranted();
-            }
-            return;
-        }
-        sNeedFinish = needFinish;
-        sListener = callback;
-        sPermissionsList = permissions;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            ArrayList<String> newPermissions = checkEachSelfPermission(activity, permissions);
-            if (newPermissions.size() > 0) {// 检查是否声明了权限
-                requestEachPermissions(activity, newPermissions.toArray(new String[newPermissions.size()]));
-            } else {// 已经申请权限
-                if (sListener != null) {
-                    sListener.onPermissionGranted();
-                }
-            }
-        } else {
-            if (sListener != null) {
-                sListener.onPermissionGranted();
-            }
-        }
+    private void setNeedFinish(boolean needFinish) {
+        mNeedFinish = needFinish;
     }
 
-    /**
-     * 申请权限前判断是否需要声明
-     *
-     * @param permissions
-     */
-    private static void requestEachPermissions(Activity activity, String[] permissions) {
-        if (shouldShowRequestPermissionRationale(activity, permissions)) {// 需要再次声明
-            showRationaleDialog(activity, permissions);
-        } else {
-            ActivityCompat.requestPermissions(activity, permissions,
-                    REQUEST_CODE_ASK_PERMISSIONS);
-        }
+    public void requestPermission(String[]... permissionsArray) {
+        requestPermission(false, permissionsArray);
     }
 
-    /**
-     * 弹出声明的 Dialog
-     *
-     * @param permissions
-     */
-    private static void showRationaleDialog(final Activity activity, final String[] permissions) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle(R.string.tips)
-                .setMessage(R.string.permission_desc)
-                .setPositiveButton(R.string.confrim,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(activity, permissions,
-                                        REQUEST_CODE_ASK_PERMISSIONS);
-                            }
-                        })
-                .setNegativeButton(R.string.cancle,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                if (sNeedFinish) MyAppUtils.restart(activity);
-                            }
-                        })
-                .setCancelable(false)
-                .show();
-    }
-
-    /**
-     * 检察每个权限是否申请
-     *
-     * @param permissions
-     * @return newPermissions.size > 0 表示有权限需要申请
-     */
-    private static ArrayList<String> checkEachSelfPermission(Activity activity, ArrayList<String> permissions) {
-        ArrayList<String> newPermissions = new ArrayList<String>();
-        for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
-                newPermissions.add(permission);
-            }
-        }
-        return newPermissions;
-    }
-
-    /**
-     * 再次申请权限时，是否需要声明
-     *
-     * @param permissions
-     * @return
-     */
-    private static boolean shouldShowRequestPermissionRationale(Activity activity, String[] permissions) {
-        for (String permission : permissions) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 申请权限结果的回调
-     *
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
-     */
-    public static void onRequestPermissionsResult(Activity activity, int requestCode, @NonNull String[] permissions,
-                                                  @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CODE_ASK_PERMISSIONS && permissions != null) {
-            ArrayList<String> deniedPermissions = new ArrayList<>();
-            for (String permission : permissions) {
-                if (ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
-                    deniedPermissions.add(permission);
-                }
-            }
-            // 判断被拒绝的权限中是否有包含必须具备的权限
-            ArrayList<String> forceRequirePermissionsDenied =
-                    checkForceRequirePermissionDenied(FORCE_REQUIRE_PERMISSIONS, deniedPermissions);
-            if (forceRequirePermissionsDenied != null && forceRequirePermissionsDenied.size() > 0) {
-                // 必备的权限被拒绝，
-                if (sNeedFinish) {
-                    showPermissionSettingDialog(activity);
-                } else {
-                    if (sListener != null) {
-                        sListener.onPermissionDenied();
-                    }
-                }
-            } else {
-                // 不存在必备的权限被拒绝，可以进首页
-                if (sListener != null) {
-                    sListener.onPermissionGranted();
-                }
-            }
-        }
-    }
-
-    /**
-     * 检查回调结果
-     *
-     * @param grantResults
-     * @return
-     */
-    private boolean checkEachPermissionsGranted(int[] grantResults) {
-        for (int result : grantResults) {
-            if (result != PackageManager.PERMISSION_GRANTED) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static ArrayList<String> checkForceRequirePermissionDenied(
-            ArrayList<String> forceRequirePermissions, ArrayList<String> deniedPermissions) {
-        ArrayList<String> forceRequirePermissionsDenied = new ArrayList<>();
-        if (forceRequirePermissions != null && forceRequirePermissions.size() > 0
-                && deniedPermissions != null && deniedPermissions.size() > 0) {
-            for (String forceRequire : forceRequirePermissions) {
-                if (deniedPermissions.contains(forceRequire)) {
-                    forceRequirePermissionsDenied.add(forceRequire);
-                }
-            }
-        }
-        return forceRequirePermissionsDenied;
-    }
-
-    /**
-     * 手动开启权限弹窗
-     */
-    private static void showPermissionSettingDialog(final Activity activity) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle("提示")
-                .setMessage("必要的权限被拒绝")
-                .setPositiveButton("去设置", new DialogInterface.OnClickListener() {
+    public void requestPermission(boolean needFinish, String[]... permissionsArray) {
+        LogUtils.d(TAG, needFinish,permissionsArray);
+        setNeedFinish(needFinish);
+        AndPermission.with(mActivity)
+                .requestCode(REQUEST_CODE_ASK_PERMISSIONS)
+                .permission(permissionsArray)
+                .callback(this)
+                // rationale作用是：用户拒绝一次权限，再次申请时先征求用户同意，再打开授权对话框；
+                // 这样避免用户勾选不再提示，导致以后无法申请权限。
+                // 你也可以不设置。
+                .rationale(new RationaleListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        MyAppUtils.getAppDetailsSettings(activity, SETTINGS_REQUEST_CODE);
+                    public void showRequestPermissionRationale(int requestCode, Rationale rationale) {
+                        // 这里的对话框可以自定义，只要调用rationale.resume()就可以继续申请。
+                        showRationaleDialog(rationale);
                     }
                 })
+                .start();
+    }
+
+    @PermissionYes(REQUEST_CODE_ASK_PERMISSIONS)
+    public void yes(List<String> permissions) {
+        if (this.mListener != null) {
+            this.mListener.onPermissionGranted();
+        }
+    }
+
+    @PermissionNo(REQUEST_CODE_ASK_PERMISSIONS)
+    public void no(List<String> permissions) {
+        if (permissionList == null) {
+            permissionList = new ArrayList<>();
+        }
+        permissionList.addAll(permissions);
+        // 用户否勾选了不再提示并且拒绝了权限，那么提示用户到设置中授权。
+        if (AndPermission.hasAlwaysDeniedPermission(mActivity, permissions)) {
+            // 第一种：用默认的提示语。
+            showDefaultSettingDialog();
+        }
+        if (this.mListener != null) {
+            this.mListener.onPermissionDenied();
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        LogUtils.d(TAG, requestCode,resultCode);
+        switch (requestCode) {
+            case REQUEST_CODE_SETTING: {
+                //从设置那边回来后看是否还需要继续检查权限
+                if (permissionList != null && permissionList.size() > 0) {
+                    requestPermission(permissionList.toArray(new String[permissionList.size()]));
+                }
+                break;
+            }
+        }
+    }
+
+    /**
+     * 提示用户必要权限被关闭了
+     *
+     * @param rationale
+     */
+    private void showRationaleDialog(Rationale rationale) {
+        LogUtils.d(TAG, "showRationaleDialog");
+        AndPermission.rationaleDialog(mActivity, rationale)
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        if (sNeedFinish) MyAppUtils.restart(activity);
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        if (mNeedFinish && mActivity != null) {
+                            MyAppUtils.restart(mActivity);
+                        }
                     }
-                })
-                .setCancelable(false)
-                .show();
+                }).show();
     }
 
-    public static void onActivityResult(Activity activity, int requestCode) {
-        //如果需要跳转系统设置页后返回自动再次检查和执行业务 如果不需要则不需要重写onActivityResult
-        if (requestCode == SETTINGS_REQUEST_CODE) {
-            requestPermission(activity, sPermissionsList, sNeedFinish, sListener);
-        }
+    /**
+     * 提示去设置界面更改权限Dialog
+     */
+    private void showDefaultSettingDialog() {
+        LogUtils.d(TAG, "showDefaultSettingDialog");
+        AndPermission.defaultSettingDialog(mActivity, REQUEST_CODE_SETTING)
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        if (mNeedFinish && mActivity != null) {
+                            MyAppUtils.restart(mActivity);
+                        }
+                    }
+                }).show();
+    }
+
+    public void onDestroy() {
+        mActivity = null;
+        mListener = null;
+        mNeedFinish = false;
+        permissionList = null;
     }
 }

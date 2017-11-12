@@ -1,13 +1,3 @@
 <resources>
-    <dimen name="ScFrame_spacing_small">8dp</dimen>
-    <dimen name="ScFrame_spacing">10dp</dimen>
-    <dimen name="ScFrame_spacing_large">16dp</dimen>
-
-    <dimen name="ScFrame_text_size_small">13sp</dimen>
-    <dimen name="ScFrame_text_size">15sp</dimen>
-
-    <dimen name="ScFrame_adapter_icon_size">24dp</dimen>
-    <dimen name="ScFrame_progressbar_size">24dp</dimen>
-    <dimen name="ScFrame_radius">6dp</dimen>
 
 </resources>

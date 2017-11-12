@@ -15,7 +15,11 @@ import android.view.View;
 import com.caihan.scframe.ScFrame;
 
 /**
- * 此类主要是用来放一些系统过时方法的处理
+ * 作者：caihan
+ * 创建时间：2017/10/25
+ * 邮箱：93234929@qq.com
+ * 实现功能：此类主要是用来放一些系统过时方法的处理
+ * 备注：
  */
 public class ScOutdatedUtils {
 
@@ -99,4 +103,5 @@ public class ScOutdatedUtils {
     public static ColorStateList getColorStateList(@ColorRes int id, @Nullable Resources.Theme theme) {
         return ResourcesCompat.getColorStateList(ScFrame.getResources(), id, theme);
     }
+
 }

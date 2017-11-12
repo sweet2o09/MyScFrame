@@ -1,14 +1,15 @@
 package com.caihan.scframe.widget.textview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IntDef;
-import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.widget.TextView;
 
 import com.caihan.scframe.R;
 
@@ -19,7 +20,8 @@ import java.lang.annotation.RetentionPolicy;
  * Created by caihan on 2017/5/2.
  * 解决TextView中Drawable不与文字居中的问题
  */
-public class ScDrawableTextView extends AppCompatTextView {
+@SuppressLint("AppCompatCustomView")
+public class ScDrawableTextView extends TextView {
     private Drawable[] drawables;
     private int[] widths;
     private int[] heights;
@@ -54,21 +56,21 @@ public class ScDrawableTextView extends AppCompatTextView {
         heights = new int[4];
         setGravity(Gravity.CENTER);
 
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.ScDrawableTextView);
-        drawables[0] = array.getDrawable(R.styleable.ScDrawableTextView_leftDrawable);
-        drawables[1] = array.getDrawable(R.styleable.ScDrawableTextView_topDrawable);
-        drawables[2] = array.getDrawable(R.styleable.ScDrawableTextView_rightDrawable);
-        drawables[3] = array.getDrawable(R.styleable.ScDrawableTextView_bottomDrawable);
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.DrawableTextView);
+        drawables[0] = array.getDrawable(R.styleable.DrawableTextView_leftDrawable);
+        drawables[1] = array.getDrawable(R.styleable.DrawableTextView_topDrawable);
+        drawables[2] = array.getDrawable(R.styleable.DrawableTextView_rightDrawable);
+        drawables[3] = array.getDrawable(R.styleable.DrawableTextView_bottomDrawable);
 
-        widths[0] = array.getDimensionPixelSize(R.styleable.ScDrawableTextView_leftDrawableWidth, 0);
-        widths[1] = array.getDimensionPixelSize(R.styleable.ScDrawableTextView_topDrawableWidth, 0);
-        widths[2] = array.getDimensionPixelSize(R.styleable.ScDrawableTextView_rightDrawableWidth, 0);
-        widths[3] = array.getDimensionPixelSize(R.styleable.ScDrawableTextView_bottomDrawableWidth, 0);
+        widths[0] = array.getDimensionPixelSize(R.styleable.DrawableTextView_leftDrawableWidth, 0);
+        widths[1] = array.getDimensionPixelSize(R.styleable.DrawableTextView_topDrawableWidth, 0);
+        widths[2] = array.getDimensionPixelSize(R.styleable.DrawableTextView_rightDrawableWidth, 0);
+        widths[3] = array.getDimensionPixelSize(R.styleable.DrawableTextView_bottomDrawableWidth, 0);
 
-        heights[0] = array.getDimensionPixelSize(R.styleable.ScDrawableTextView_leftDrawableHeight, 0);
-        heights[1] = array.getDimensionPixelSize(R.styleable.ScDrawableTextView_topDrawableHeight, 0);
-        heights[2] = array.getDimensionPixelSize(R.styleable.ScDrawableTextView_rightDrawableHeight, 0);
-        heights[3] = array.getDimensionPixelSize(R.styleable.ScDrawableTextView_bottomDrawableHeight, 0);
+        heights[0] = array.getDimensionPixelSize(R.styleable.DrawableTextView_leftDrawableHeight, 0);
+        heights[1] = array.getDimensionPixelSize(R.styleable.DrawableTextView_topDrawableHeight, 0);
+        heights[2] = array.getDimensionPixelSize(R.styleable.DrawableTextView_rightDrawableHeight, 0);
+        heights[3] = array.getDimensionPixelSize(R.styleable.DrawableTextView_bottomDrawableHeight, 0);
 
         array.recycle();
     }

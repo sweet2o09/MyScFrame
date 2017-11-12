@@ -6,11 +6,14 @@ import com.blankj.utilcode.util.LogUtils;
 
 
 /**
- * Created by caihan on 2017/2/23.
- * 倒计时
+ * 作者：caihan
+ * 创建时间：2017/10/25
+ * 邮箱：93234929@qq.com
+ * 实现功能：倒计时功能
+ * 备注：
  */
 public class MyCountDownTimer extends CountDownTimer {
-    private static final String TAG = "MyCountDownTimer";
+    private static final String TAG = "FlashLock_CountDownTimer";
 
     private int mFlashTime = 0;
     private boolean mIsStart = false;//是否已经开始倒计时

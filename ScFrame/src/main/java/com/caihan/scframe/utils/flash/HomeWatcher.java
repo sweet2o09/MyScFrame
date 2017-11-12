@@ -6,21 +6,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import com.blankj.utilcode.util.LogUtils;
-
 
 /**
- * Created by caihan on 2016/11/23.
- * Home键监听
+ * 作者：caihan
+ * 创建时间：2017/10/25
+ * 邮箱：93234929@qq.com
+ * 实现功能：Home键监听
+ * 备注：
  */
 public class HomeWatcher {
-    private static final String TAG = "HomeWatcher";
+    private static final String TAG = "FlashLock_HomeWatcher";
+
+    private volatile static HomeWatcher sHomeWatcher = null;
+
     private IntentFilter mFilter = null;
     private OnHomePressedListener mListener = null;
-    private InnerRecevier mRecevier = null;
-    private volatile static HomeWatcher sHomeWatcher = null;
-    private static boolean isRegisterReceiver = false;
-    private MyCountDownTimer mCountDownTimer;
+    private InnerRecevier mRecevier = null;//Home键监听
+    private boolean isRegisterReceiver = false;//是否已经注册过
+    private MyCountDownTimer mCountDownTimer;//倒计时功能
 
     public static HomeWatcher getInstance() {
         if (sHomeWatcher == null) {
@@ -66,7 +69,6 @@ public class HomeWatcher {
 
             @Override
             public void onHomePressed() {
-                LogUtils.d(TAG, "onHomePressed :");
                 mCountDownTimer.timerStart();
             }
 
@@ -120,7 +122,6 @@ public class HomeWatcher {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            LogUtils.d(TAG, "onReceive :" + intent.getAction());
             String action = intent.getAction();
             if (action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
                 String reason = intent.getStringExtra(SYSTEM_DIALOG_REASON_KEY);
