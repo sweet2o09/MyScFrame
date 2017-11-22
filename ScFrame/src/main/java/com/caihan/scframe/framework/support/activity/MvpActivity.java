@@ -1,34 +1,33 @@
 package com.caihan.scframe.framework.support.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.caihan.scframe.framework.base.MvpPresenter;
 import com.caihan.scframe.framework.base.MvpView;
 import com.caihan.scframe.framework.base.ScActivity;
-import com.caihan.scframe.framework.support.MvpCallback;
+
 
 
 
 /**
  * 作者：caihan
- * 创建时间：2017/10/25
+ * 创建时间：2017/11/22
  * 邮箱：93234929@qq.com
- * 说明：集成MVP的Activity
- * 第一重代理->MvpActivity
- * 特点一：实现目标接口(可有可无)
- * 特点二：持有目标对象
- * <p>
- * 第二个代理->关联MVP,目标对象->MvpActivity
- * 特点:实现目标接口
- *
+ * 说明：
+ * MVP设计模式,Activity基类
+ * MvpActivity是ActivityMvpDelegateCallback具体的实现类
  * 一个界面对应一个MvpView,一个MvpPresenter,可以有多个Mode
  */
+@SuppressLint("NewApi")
 public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>> extends ScActivity
-        implements MvpCallback<V, P>, MvpView {
+        implements ActivityMvpDelegateCallback<V, P>, MvpView {
 
     private P presenter;
     private ActivityMvpDelegate<V, P> activityMvpDelegate;
+    //是否保存数据
+    private boolean retainInstance;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,11 +79,6 @@ public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>> 
     }
 
     @Override
-    public P createPresenter() {
-        return presenter;
-    }
-
-    @Override
     public P getPresenter() {
         return presenter;
     }
@@ -99,4 +93,19 @@ public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>> 
         return (V) this;
     }
 
+    @Override
+    public boolean isRetainInstance() {
+        return retainInstance;
+    }
+
+    @Override
+    public void setRetainInstance(boolean retaionInstance) {
+        this.retainInstance = retaionInstance;
+    }
+
+    @Override
+    public boolean shouldInstanceBeRetained() {
+        //说明Activity出现了异常情况才缓存数据
+        return this.retainInstance && isChangingConfigurations();
+    }
 }

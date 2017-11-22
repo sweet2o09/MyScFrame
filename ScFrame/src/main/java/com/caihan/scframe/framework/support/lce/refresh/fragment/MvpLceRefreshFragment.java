@@ -69,7 +69,7 @@ public abstract class MvpLceRefreshFragment<D, V extends MvpLceView<D>,
     }
 
     public void initRefreshView(View contentView) {
-        mRefreshView = (ScRefreshLayout) contentView.findViewById(R.id.refreshView);
+        mRefreshView = contentView.findViewById(R.id.refreshView);
         //设置
         mRefreshView.setEnableRefresh(true);
         mRefreshView.setEnableLoadmore(false);//默认是关闭状态
@@ -104,8 +104,8 @@ public abstract class MvpLceRefreshFragment<D, V extends MvpLceView<D>,
 
     //LCE设计
     @Override
-    public void bindData(D data, boolean isPullRefresh) {
-        super.bindData(data, isPullRefresh);
+    public void bindData(D data) {
+        super.bindData(data);
         //数据返回成功->判定刷新状态(两种类型：下拉刷新、上拉加载)
         //抽象下拉刷新组件功能功能
         if (isDownPullRefresh()) {

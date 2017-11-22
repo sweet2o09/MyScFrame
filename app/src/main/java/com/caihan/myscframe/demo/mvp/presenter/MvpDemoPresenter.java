@@ -12,7 +12,8 @@ import com.caihan.scframe.framework.base.impl.MvpBasePresenter;
  * 说明：
  */
 
-public class MvpDemoPresenter extends MvpBasePresenter<MvpDemoContract.View> implements MvpDemoContract.Presenter {
+public class MvpDemoPresenter extends MvpBasePresenter<MvpDemoContract.View>
+        implements MvpDemoContract.Presenter {
 
     MvpDemoModel mModel;
 

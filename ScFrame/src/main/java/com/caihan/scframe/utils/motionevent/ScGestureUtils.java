@@ -7,10 +7,10 @@ import com.blankj.utilcode.util.LogUtils;
 
 /**
  * 作者：caihan
- * 创建时间：2017/10/25
+ * 创建时间：2017/11/20
  * 邮箱：93234929@qq.com
- * 实现功能：手势判断工具类
- * 备注：
+ * 说明：
+ * 手势判断工具类
  */
 public class ScGestureUtils {
     private static final String TAG = "ScGestureUtils";

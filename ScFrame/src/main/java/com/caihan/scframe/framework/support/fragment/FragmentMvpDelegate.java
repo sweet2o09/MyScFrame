@@ -1,5 +1,6 @@
 package com.caihan.scframe.framework.support.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
@@ -15,24 +16,28 @@ import com.caihan.scframe.framework.base.MvpView;
  */
 public interface FragmentMvpDelegate<V extends MvpView, P extends MvpPresenter<V>> {
 
-    public void onCreate(Bundle savedInstanceState);
+    void onCreate(Bundle savedInstanceState);
 
-    public void onActivityCreated(Bundle savedInstanceState);
+    void onActivityCreated(Bundle savedInstanceState);
 
-    public void onViewCreated(View view, Bundle savedInstanceState);
+    void onViewCreated(View view, Bundle savedInstanceState);
 
-    public void onStart();
+    void onStart();
 
-    public void onPause();
+    void onPause();
 
-    public void onResume();
+    void onResume();
 
-    public void onStop();
+    void onStop();
 
-    public void onDestroyView();
+    void onDestroyView();
 
-    public void onDestroy();
+    void onDestroy();
 
-    public void onDetach();
+    void onSaveInstanceState(Bundle outState);
+
+    void onAttach(Context context);
+
+    void onDetach();
 
 }

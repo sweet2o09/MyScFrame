@@ -169,8 +169,8 @@ public class ScToast {
                                @ColorInt int textColor, @ColorInt int tintColor, int duration) {
         Toast currentToast = new Toast(context);
         View toastLayout = LayoutInflater.from(context).inflate(R.layout.toast_layout, null);
-        ImageView toastIcon = (ImageView) toastLayout.findViewById(R.id.toast_icon);
-        TextView toastText = (TextView) toastLayout.findViewById(R.id.toast_text);
+        ImageView toastIcon = toastLayout.findViewById(R.id.toast_icon);
+        TextView toastText = toastLayout.findViewById(R.id.toast_text);
 
         Drawable drawableFrame = ScOutdatedUtils.getDrawable(R.drawable.toast_frame);
         drawableFrame.setColorFilter(new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN));

@@ -1,6 +1,7 @@
 package com.caihan.scframe.framework.support.lce.activity;
 
-import com.caihan.scframe.R;
+import android.view.View;
+
 import com.caihan.scframe.framework.base.MvpPresenter;
 import com.caihan.scframe.framework.support.activity.MvpActivity;
 import com.caihan.scframe.framework.support.lce.animator.ILceAnimator;
@@ -19,15 +20,18 @@ import com.caihan.scframe.framework.support.lce.animator.ILceAnimator;
 public abstract class MvpLceActivity<D, V extends MvpLceView<D>, P extends MvpPresenter<V>>
         extends MvpActivity<V, P> implements MvpLceView<D> {
 
-    private MvpLceViewImpl<D> mvpLceView;
+    private MvpLceViewImpl<D> lceViewImpl;
     //是否是第一次网络请求
     private boolean isFirstRequest = true;
 
-    private MvpLceViewImpl<D> getMvpLceView() {
-        if (this.mvpLceView == null) {
-            this.mvpLceView = new MvpLceViewImpl<D>();
-        }
-        return mvpLceView;
+
+    /**
+     * 提供给子类配置自己想要的动画策略
+     *
+     * @param lceAnimator
+     */
+    public void setLceAnimator(ILceAnimator lceAnimator) {
+        lceViewImpl.setLceAnimator(lceAnimator);
     }
 
     public boolean isFirstRequest() {
@@ -48,41 +52,54 @@ public abstract class MvpLceActivity<D, V extends MvpLceView<D>, P extends MvpPr
     @Override
     public void onContentChanged() {
         super.onContentChanged();
-        getMvpLceView().initView(findViewById(R.id.rootView));
+        lceViewImpl = new MvpLceViewImpl<D>();
+        initLceView(getWindow().getDecorView());
     }
 
-    //子类设置指定动画策略
-    public void setLceAnimator(ILceAnimator lceAnimator) {
-        getMvpLceView().setLceAnimator(lceAnimator);
+    private void initLceView(View v) {
+        lceViewImpl.initLceView(v);
+        lceViewImpl.setOnErrorViewClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                onErrorClick();
+            }
+        });
+        //初始化的时候先展示LoadingView
+        showLoading(false);
     }
 
     @Override
     public void showLoading(boolean isPullRefresh) {
-        if (isFirstRequest()){
-            getMvpLceView().showLoading(isPullRefresh);
+        if (isFirstRequest()) {
+            //注意：记得加判断，因为下拉刷新组件有正在加载头部视图，不需要显示加载过程了
+            lceViewImpl.showLoading(isPullRefresh);
         }
     }
 
     @Override
-    public void showContent(boolean isPullRefresh) {
-        getMvpLceView().showContent(isPullRefresh);
+    public void showContent() {
+        lceViewImpl.showContent();
     }
 
     @Override
-    public void showError(boolean isPullRefresh) {
-        if (isFirstRequest()){
-            getMvpLceView().showError(isPullRefresh);
+    public void showError() {
+        if (isFirstRequest()) {
+            lceViewImpl.showError();
         }
     }
 
     @Override
-    public void bindData(D data, boolean isPullRefresh) {
-        getMvpLceView().bindData(data, isPullRefresh);
+    public void bindData(D data) {
+        lceViewImpl.bindData(data);
     }
 
     @Override
     public void loadData(boolean isPullRefresh) {
-        getMvpLceView().loadData(isPullRefresh);
+        lceViewImpl.loadData(isPullRefresh);
     }
 
+    public void onErrorClick() {
+        loadData(false);
+    }
 }

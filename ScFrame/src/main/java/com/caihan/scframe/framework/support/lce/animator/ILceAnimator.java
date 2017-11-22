@@ -17,7 +17,7 @@ public interface ILceAnimator {
      * @param contentView
      * @param errorView
      */
-    void showLoadingView(View loadingView, View contentView, View errorView);
+    void showLoading(View loadingView, View contentView, View errorView);
 
     /**
      * 显示内容页
@@ -25,7 +25,7 @@ public interface ILceAnimator {
      * @param contentView
      * @param errorView
      */
-    void showContentView(View loadingView, View contentView, View errorView);
+    void showContent(View loadingView, View contentView, View errorView);
 
     /**
      * 显示错误页

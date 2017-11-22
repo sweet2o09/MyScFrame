@@ -102,6 +102,10 @@
         </activity>
         <activity android:name=".demo.MvpAct">
         </activity>
+        <activity android:name=".demo.EventBusAct">
+        </activity>
+        <activity android:name=".demo.LceDemoAct">
+        </activity>
     </application>
 
 </manifest>

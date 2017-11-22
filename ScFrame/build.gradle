@@ -4,12 +4,12 @@ version = "1.1.0"
 group = "com.caihan.scframe" //一般填你唯一的包名
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 26
+    buildToolsVersion '26.0.3'
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 20
         versionName version
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -54,26 +54,29 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    api 'com.android.support:support-v4:26.1.0'
+    api 'com.android.support:appcompat-v7:26.1.0'
+    api 'com.android.support:design:26.1.0'
+    api 'com.android.support:recyclerview-v7:26.1.0'
 
-    compile 'com.blankj:utilcode:1.9.8'
+    api 'com.blankj:utilcode:1.9.8'//安卓工具类库
 
-    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
+    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'//Android智能下拉刷新框架
+    api 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.3'//没有使用特殊Header，可以不加这行
 
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'//RecyclerAdapter框架
 
-    compile 'com.gyf.barlibrary:barlibrary:2.3.0'
+    api 'com.gyf.barlibrary:barlibrary:2.3.0'//ImmersionBar沉浸式状态栏和沉浸式导航栏管理
 
-    compile 'org.greenrobot:eventbus:3.1.1'
+    api 'org.greenrobot:eventbus:3.1.1'
     annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'//EventBus加速模式
 
-    compile 'com.yanzhenjie:permission:1.1.2'
+    api 'com.yanzhenjie:permission:1.1.2'//运行权限管理库,兼容了国产机
 
-    compile 'com.jakewharton:butterknife:8.8.1'
+    api 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    api 'com.nineoldandroids:library:2.4.0'//高仿新版58加载动画使用
 
 }

@@ -1,31 +1,34 @@
 package com.caihan.scframe.framework.support.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.caihan.scframe.framework.base.MvpPresenter;
 import com.caihan.scframe.framework.base.MvpView;
-import com.caihan.scframe.framework.support.MvpCallback;
+import com.caihan.scframe.framework.base.ScFragment;
 
 
 /**
  * 作者：caihan
- * 创建时间：2017/10/25
+ * 创建时间：2017/11/22
  * 邮箱：93234929@qq.com
- * 实现功能：MVP->Fragment
- * 备注：
- * 第一重代理->MvpFragment
- * 特点一：实现目标接口(可有可无)
- * 特点二：持有目标对象
- * <p>
- * 第二个代理->关联MVP,目标对象->MvpFragment
- * 特点:实现目标接口
+ * 说明：
+ * MVP设计模式,Fragment基类
+ * 实现V层,P层的绑定以及解绑
  */
-public class MvpFragment<V extends MvpView, P extends MvpPresenter<V>> extends Fragment implements MvpCallback<V, P>, MvpView {
+public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>> extends ScFragment
+        implements FragmentMvpDelegateCallback<V, P>, MvpView {
 
+    private P presenter;
     private FragmentMvpDelegate<V, P> activityMvpDelegate;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        getFragmentMvpDelegate().onAttach(context);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,12 +91,6 @@ public class MvpFragment<V extends MvpView, P extends MvpPresenter<V>> extends F
         return this.activityMvpDelegate;
     }
 
-    private P presenter;
-
-    @Override
-    public P createPresenter() {
-        return presenter;
-    }
 
     @Override
     public P getPresenter() {
@@ -105,9 +102,26 @@ public class MvpFragment<V extends MvpView, P extends MvpPresenter<V>> extends F
         this.presenter = presenter;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public V getMvpView() {
         return (V) this;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getFragmentMvpDelegate().onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean isRetainInstance() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldInstanceBeRetained() {
+        return false;
     }
 
 }

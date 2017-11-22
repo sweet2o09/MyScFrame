@@ -18,9 +18,9 @@ public interface MvpLceView<D> extends MvpView {
      * 一种：下拉刷新组件类型->自带加载页面
      * 一种：需要添加加载页面
      *
-     * @param isPullRefresh 是否是下拉刷新组件
+     * @param pullToRefresh 是否是下拉刷新组件
      */
-    void showLoading(boolean isPullRefresh);
+    void showLoading(boolean pullToRefresh);
 
     /**
      * 显示Content页面
@@ -28,9 +28,8 @@ public interface MvpLceView<D> extends MvpView {
      * 一种：下拉刷新组件类型->自带加载页面
      * 一种：需要添加加载页面
      *
-     * @param isPullRefresh 是否是下拉刷新组件
      */
-    void showContent(boolean isPullRefresh);
+    void showContent();
 
     /**
      * 显示Error页面
@@ -38,23 +37,21 @@ public interface MvpLceView<D> extends MvpView {
      * 一种：下拉刷新组件类型->自带加载页面
      * 一种：需要添加加载页面
      *
-     * @param isPullRefresh 是否是下拉刷新组件
      */
-    void showError(boolean isPullRefresh);
+    void showError();
 
     /**
      * 绑定数据
      *
      * @param data
-     * @param isPullRefresh
      */
-    void bindData(D data, boolean isPullRefresh);
+    void bindData(D data);
 
     /**
      * 加载数据
      *
-     * @param isPullRefresh
+     * @param pullToRefresh
      */
-    void loadData(boolean isPullRefresh);
+    void loadData(boolean pullToRefresh);
 
 }

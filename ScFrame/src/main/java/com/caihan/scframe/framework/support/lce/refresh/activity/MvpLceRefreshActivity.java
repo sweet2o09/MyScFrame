@@ -1,5 +1,6 @@
 package com.caihan.scframe.framework.support.lce.refresh.activity;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.caihan.scframe.framework.base.MvpPresenter;
@@ -24,8 +25,26 @@ public abstract class MvpLceRefreshActivity<D, V extends MvpLceView<D>,
 
     private A mAdapter;
 
+    private LinearLayoutManager linearLayoutManager;
+
     //是否是下拉刷新
-    private boolean isDownPullRefresh;
+    private boolean isDownRefresh = true;
+
+    public ScRefreshLayout getRefreshView() {
+        return mRefreshView;
+    }
+
+    public A getAdapter() {
+        return mAdapter;
+    }
+
+    public LinearLayoutManager getLinearLayoutManager() {
+        return linearLayoutManager;
+    }
+
+    public boolean isDownRefresh() {
+        return isDownRefresh;
+    }
 
 
 }

@@ -16,13 +16,15 @@ import com.caihan.scframe.R;
 
 import java.util.List;
 
+
 /**
  * 作者：caihan
- * 创建时间：2017/10/25
+ * 创建时间：2017/11/20
  * 邮箱：93234929@qq.com
- * 实现功能：公告轮播View
- * 备注：
- * 使用方式
+ * 说明：
+ * 公告轮播View
+ * <p>
+ * 使用方式:
  * noticeView.addNotice(notices);
  * noticeView.startFlipping();
  */

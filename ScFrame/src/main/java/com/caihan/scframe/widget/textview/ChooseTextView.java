@@ -10,10 +10,10 @@ import android.widget.TextView;
 
 /**
  * 作者：caihan
- * 创建时间：2017/9/25
+ * 创建时间：2017/11/20
  * 邮箱：93234929@qq.com
- * 实现功能：实现选中状态自动切换背景与字体颜色功能
- * 备注：
+ * 说明：
+ * 实现选中状态自动切换背景与字体颜色功能
  */
 
 @SuppressLint("AppCompatCustomView")
@@ -36,7 +36,8 @@ public class ChooseTextView extends TextView {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public ChooseTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public ChooseTextView(Context context, @Nullable AttributeSet attrs,
+                          int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

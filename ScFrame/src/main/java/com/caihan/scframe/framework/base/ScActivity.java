@@ -39,7 +39,7 @@ import butterknife.ButterKnife;
  * 数据变更智能刷新
  */
 
-public abstract class ScActivity extends AppCompatActivity implements ScActView {
+public abstract class ScActivity extends AppCompatActivity implements ScActivityView {
 
     protected Context mContext;
     protected Bundle mSavedInstanceState;
@@ -154,8 +154,50 @@ public abstract class ScActivity extends AppCompatActivity implements ScActView 
         }
     }
 
+    /**
+     * 是否支持横屏
+     *
+     * @return
+     */
+    protected boolean isCanLandscape() {
+        return false;
+    }
 
-    /*********************沉浸式解决方案*************************/
+    /**
+     * 是否在输入框弹出的时候顶起布局
+     *
+     * @return true布局被顶起
+     */
+    protected boolean isRegisterAdjustPAN() {
+        return false;
+    }
+
+    /**
+     * webview软键盘弹出bug
+     */
+    protected void androidBug5497Workaround() {
+        MyBug5497.assistActivity(this);
+    }
+
+    /**
+     * 是否注册黄油刀
+     *
+     * @return
+     */
+    protected boolean isRegisterButterKnife() {
+        return true;
+    }
+
+    protected void bindButterKnife() {
+        ButterKnife.bind(this);
+    }
+
+    protected void hideSoftKeyBoard() {
+        KeyboardUtils.hideSoftInput(this);
+    }
+
+
+    //**********沉浸式解决方案 start****************************************//
     /**
      * 是否可以使用沉浸式
      * Is immersion bar enabled boolean.
@@ -183,44 +225,10 @@ public abstract class ScActivity extends AppCompatActivity implements ScActView 
             mImmersionBar = null;
         }
     }
-    /*******************************************************/
+    //**********沉浸式解决方案 end****************************************//
 
-    /**
-     * 是否支持横屏
-     *
-     * @return
-     */
-    protected boolean isCanLandscape() {
-        return false;
-    }
 
-    /**
-     * 是否在输入框弹出的时候顶起布局
-     *
-     * @return true布局被顶起
-     */
-    protected boolean isRegisterAdjustPAN() {
-        return false;
-    }
-
-    /**
-     * 是否注册黄油刀
-     *
-     * @return
-     */
-    protected boolean isRegisterButterKnife() {
-        return true;
-    }
-
-    protected void bindButterKnife() {
-        ButterKnife.bind(this);
-    }
-
-    protected void hideSoftKeyBoard() {
-        KeyboardUtils.hideSoftInput(this);
-    }
-
-    /**********************EventBus解决方案***************************/
+    //**********EventBus解决方案 start****************************************//
     /**
      * 是否注册事件分发
      *
@@ -233,7 +241,7 @@ public abstract class ScActivity extends AppCompatActivity implements ScActView 
     /**
      * 注册EventBus
      */
-    protected void registerEventBus() {
+    private void registerEventBus() {
         if (isRegisterEventBus()) {
             EventBusUtils.register(this);
         }
@@ -242,7 +250,7 @@ public abstract class ScActivity extends AppCompatActivity implements ScActView 
     /**
      * 注销EventBus
      */
-    protected void unregisterEventBus() {
+    private void unregisterEventBus() {
         if (isRegisterEventBus()) {
             EventBusUtils.unregister(this);
         }
@@ -277,17 +285,10 @@ public abstract class ScActivity extends AppCompatActivity implements ScActView 
     protected void receiveStickyEvent(EventSticky event) {
         EventBusUtils.removeStickyEvent(event);
     }
-    /*******************************************************/
-
-    /**
-     * webview软键盘弹出bug
-     */
-    protected void androidBug5497Workaround() {
-        MyBug5497.assistActivity(this);
-    }
+    //**********EventBus解决方案 end****************************************//
 
 
-    /*********************6.0权限解决方案*************************/
+    //**********6.0权限解决方案 start****************************************//
     protected void requestPermission(OnPermissionListener listener,
                                      String[]... permissionsArray) {
         if (mPermission == null) {
@@ -318,9 +319,11 @@ public abstract class ScActivity extends AppCompatActivity implements ScActView 
             mPermission = null;
         }
     }
-    /*******************************************************/
+    //**********6.0权限解决方案 end****************************************//
 
-    /*********************数据变更智能刷新*************************/
+
+
+    //**********数据变更智能刷新 start****************************************//
     /**
      * 智能刷新数据完成,在网络请求回调成功的时候调用该方法
      */
@@ -340,6 +343,5 @@ public abstract class ScActivity extends AppCompatActivity implements ScActView 
      */
     protected void autoRequest() {
     }
-
-    /*******************************************************/
+    //**********数据变更智能刷新 end****************************************//
 }

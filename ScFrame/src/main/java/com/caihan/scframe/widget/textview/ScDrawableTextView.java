@@ -17,7 +17,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Created by caihan on 2017/5/2.
+ * 作者：caihan
+ * 创建时间：2017/11/20
+ * 邮箱：93234929@qq.com
+ * 说明：
  * 解决TextView中Drawable不与文字居中的问题
  */
 @SuppressLint("AppCompatCustomView")
