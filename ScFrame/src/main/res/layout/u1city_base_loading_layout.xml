@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@id/loadingView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <ProgressBar
+        style="@style/U1cityProgressBar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:background="@drawable/pb_bg"
+        android:padding="5dp"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+</RelativeLayout>

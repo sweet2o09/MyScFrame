@@ -5,7 +5,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <com.caihan.scframe.widget.loadingview.shapeloading.LoadingView
+    <com.caihan.scframe.dialog.loading.shapeloading.LoadingView
         android:id="@+id/loadView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

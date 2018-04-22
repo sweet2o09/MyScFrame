@@ -1,4 +1,37 @@
 <resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!--<item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>-->
+    </style>
+
+    <style name="AppTheme.Toolbar" parent="Widget.AppCompat.ActionBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    </style>
+
+
+    <style name="BaseAppTheme.SplashTheme" parent="AppTheme">
+        <!--<item name="android:windowBackground">@drawable/loading</item>-->
+        <!--全屏模式-->
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <!-- 防止欢迎页白屏或者黑屏，设置图片 -->
+    <style name="AppTheme.SplashTheme" parent="BaseAppTheme.SplashTheme"/>
+    <!--在Android 4.4之前的版本上运行，直接跟随系统主题-->
+    <style name="AppTheme.ImageTranslucentTheme" parent="BaseAppTheme.SplashTheme"/>
+
+    <style name="AppTheme.ColorTranslucentTheme" parent="BaseAppTheme.SplashTheme"/>
+
+
+
     <style name="loading_dialog" parent="android:Theme.Dialog">
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowIsTranslucent">false</item>
@@ -9,4 +42,11 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.4</item>
     </style>
+
+    <style name="U1cityProgressBar" parent="@android:style/Widget.DeviceDefault.Light.ProgressBar.Small.Title">
+        <item name="android:indeterminateDrawable">@drawable/progress_small</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
 </resources>

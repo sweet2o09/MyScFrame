@@ -1,50 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.caihan.myscframe.demo.LceDemoAct">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        style="@style/AppTheme.Toolbar"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        app:title="LCE设计Demo"/>
-
-    <LinearLayout
-        android:id="@id/contentView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_flight_info_activity_m"
-        android:orientation="vertical">
-
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout
-            android:id="@+id/refreshLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:srlEnablePureScrollMode="true">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:overScrollMode="never"
-                tools:listitem="@android:layout/simple_list_item_2"/>
-        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-    </LinearLayout>
-
-    <include
-        layout="@layout/lce_loading_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"/>
-
-    <include
-        layout="@layout/lce_error_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"/>
-</LinearLayout>
+<?xml version="1.0" encoding="utf-8"?><LinearLayout    xmlns:android="http://schemas.android.com/apk/res/android"    xmlns:app="http://schemas.android.com/apk/res-auto"    xmlns:tools="http://schemas.android.com/tools"    android:layout_width="match_parent"    android:layout_height="match_parent"    android:orientation="vertical"    tools:context="com.caihan.myscframe.demo.LceDemoAct">    <android.support.v7.widget.Toolbar        android:id="@+id/toolbar"        style="@style/AppTheme.Toolbar"        app:navigationIcon="?attr/homeAsUpIndicator"        app:title="LCE设计Demo"/>    <LinearLayout        android:id="@id/contentView"        android:layout_width="match_parent"        android:layout_height="match_parent"        android:background="@drawable/bg_flight_info_activity_m"        android:orientation="vertical">        <com.scwang.smartrefresh.layout.SmartRefreshLayout            android:id="@+id/refreshLayout"            android:layout_width="match_parent"            android:layout_height="match_parent"            app:srlEnablePureScrollMode="true">            <android.support.v7.widget.RecyclerView                android:id="@+id/recyclerView"                android:layout_width="match_parent"                android:layout_height="wrap_content"                android:overScrollMode="never"                tools:listitem="@android:layout/simple_list_item_2"/>        </com.scwang.smartrefresh.layout.SmartRefreshLayout>    </LinearLayout>    <include        layout="@layout/lce_loading_layout"        android:layout_width="match_parent"        android:layout_height="match_parent"        android:visibility="gone"/>    <include        layout="@layout/lce_error_layout"        android:layout_width="match_parent"        android:layout_height="match_parent"        android:visibility="gone"/></LinearLayout>

@@ -23,3 +23,19 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#运行权限管理库,兼容了国产机com.yanzhenjie:permission:1.1.2
+-keepclassmembers class ** {
+    @com.yanzhenjie.permission.PermissionYes <methods>;
+}
+-keepclassmembers class ** {
+    @com.yanzhenjie.permission.PermissionNo <methods>;
+}
+
+#工具类com.blankj:utilcode:1.10.0
+-keep class com.blankj.utilcode.** { *; }
+-keepclassmembers class com.blankj.utilcode.** { *; }
+-dontwarn com.blankj.utilcode.**
+
+#沉浸式效果com.gyf.barlibrary:barlibrary:2.3.0
+-keep class com.gyf.barlibrary.* {*;}

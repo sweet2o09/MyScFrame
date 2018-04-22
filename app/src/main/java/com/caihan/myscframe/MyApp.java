@@ -1,37 +1,1 @@
-package com.caihan.myscframe;
-
-import com.caihan.scframe.framework.ScApplication;
-
-import java.util.ArrayList;
-
-/**
- * Created by caihan on 2017/6/13.
- */
-
-public class MyApp extends ScApplication {
-    public static final String TAG = "MyScFrame";
-    public static MyApp app = null;
-    private final static int RE_TIME = 30 * 1000;//后台运行30秒后启动闪屏
-    public static Class sLockActClass = null;
-    public static String sLockActName = "LockAct";
-    public static ArrayList<String> sActForUnLockList = new ArrayList<>();
-
-
-    static {
-        sActForUnLockList.add("WelcomeAct");
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        app = this;
-//        initFlash();
-        initLogUtils(true, TAG);
-        initSpUtils(TAG);
-    }
-
-    private void initFlash() {
-        initFlashUtil(app, sLockActClass, sActForUnLockList, RE_TIME);
-    }
-
-}
+package com.caihan.myscframe;import com.caihan.scframe.framework.U1CityApplication;import com.squareup.leakcanary.LeakCanary;import com.squareup.leakcanary.RefWatcher;/** *  * * @author caihan * @date 2018/4/22 * @e-mail 93234929@qq.com * 维护者  */public class MyApp extends U1CityApplication {    public static final String TAG = "MyScFrame";    private RefWatcher mRefWatcher;    @Override    public void onCreate() {        super.onCreate();        initLeakCanary();        initLogUtils(true, TAG);        initUtilCodeSpUtils(TAG);    }    private void initLeakCanary() {        if (LeakCanary.isInAnalyzerProcess(this)) {            return;        }        mRefWatcher = LeakCanary.install(this);    }    public RefWatcher getRefWatcher() {        return mRefWatcher;    }}

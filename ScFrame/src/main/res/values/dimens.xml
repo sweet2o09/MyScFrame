@@ -9,4 +9,11 @@
     <dimen name="ScFrame_adapter_icon_size">24dp</dimen>
     <dimen name="ScFrame_progressbar_size">24dp</dimen>
     <dimen name="ScFrame_radius">6dp</dimen>
+
+    <dimen name="lce_content_view_animation_translate_y">40dp</dimen>
+
+    <!--新框架,统一-->
+    <dimen name="u1city_frame_toolbar_height">44dp</dimen>
+    <dimen name="u1city_frame_toolbar_text_size">20sp</dimen>
+    <dimen name="u1city_frame_toolbar_right_text_size">16sp</dimen>
 </resources>
