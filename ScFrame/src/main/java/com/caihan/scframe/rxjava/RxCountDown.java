@@ -1,6 +1,6 @@
 package com.caihan.scframe.rxjava;
 
-import com.caihan.scframe.utils.log.U1CityLog;
+import com.caihan.scframe.utils.log.ScLog;
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,14 +33,14 @@ public class RxCountDown {
                 .map(new Function<Long, Boolean>() {
                     @Override
                     public Boolean apply(Long aLong) throws Exception {
-                        U1CityLog.debug("map Function apply = " + aLong.intValue());
+                        ScLog.debug("map Function apply = " + aLong.intValue());
                         return aLong.intValue() >= countTime;
                     }
                 })
                 .filter(new Predicate<Boolean>() {
                     @Override
                     public boolean test(Boolean b) throws Exception {
-                        U1CityLog.debug("filter Predicate test = " + b);
+                        ScLog.debug("filter Predicate test = " + b);
                         return b;
                     }
                 });

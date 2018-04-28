@@ -5,7 +5,7 @@ import android.graphics.BitmapFactory;
 import android.support.annotation.IntRange;
 
 import com.blankj.utilcode.util.ImageUtils;
-import com.caihan.scframe.utils.log.U1CityLog;
+import com.caihan.scframe.utils.log.ScLog;
 
 
 /**
@@ -33,7 +33,7 @@ public class ScaleImage {
 
             BitmapFactory.decodeFile(imagePath, options);
             //图片压缩
-            U1CityLog.debug("scale before -- outWidth:" + options.outWidth
+            ScLog.debug("scale before -- outWidth:" + options.outWidth
                     + " -- outHeight:" + options.outHeight + " -- degree = " + degree);
             int width = options.outWidth;
             int height = options.outHeight;
@@ -58,7 +58,7 @@ public class ScaleImage {
             options.inPurgeable = true;//内存不足时候可以被回收
             options.inInputShareable = true;//设置可以深拷贝
 
-            U1CityLog.debug("scale -- outWidth:" + options.outWidth
+            ScLog.debug("scale -- outWidth:" + options.outWidth
                     + " -- outHeight:" + options.outHeight + " -- inSampleSize:" + inSampleSize);
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
             //如果图片有旋转要更正过来
@@ -82,7 +82,7 @@ public class ScaleImage {
 
         BitmapFactory.decodeFile(imagePath, options);
         //图片压缩
-        U1CityLog.d(TAG, "scale -- outWidth:" + options.outWidth
+        ScLog.d(TAG, "scale -- outWidth:" + options.outWidth
                 + " -- outHeight:" + options.outHeight);
         float scaleWidth = 1;
         float scaleHeight = 1;

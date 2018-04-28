@@ -21,23 +21,23 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
  * @e-mail 93234929@qq.com
  * 维护者
  */
-public class U1CityRefreshLayout extends SmartRefreshLayout {
+public class ScRefreshLayout extends SmartRefreshLayout {
 
     Context mContext;
     MaterialHeader mMaterialHeader;
     BaseQuickAdapter mQuickAdapter;
 
-    public U1CityRefreshLayout(Context context) {
+    public ScRefreshLayout(Context context) {
         super(context);
         this.initialization(context);
     }
 
-    public U1CityRefreshLayout(Context context, AttributeSet attrs) {
+    public ScRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.initialization(context);
     }
 
-    public U1CityRefreshLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ScRefreshLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.initialization(context);
     }

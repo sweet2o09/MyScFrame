@@ -20,12 +20,12 @@ import com.blankj.utilcode.util.LogUtils;
 import com.caihan.scframe.dialog.request.DefaultRequestLoading;
 import com.caihan.scframe.dialog.request.IRequestLoad;
 import com.caihan.scframe.framework.v1.support.mvp.BaseView;
-import com.caihan.scframe.immersion.U1CityImmersionBar;
+import com.caihan.scframe.immersion.ScImmersionBar;
 import com.caihan.scframe.immersion.base.OnImmersionListener;
-import com.caihan.scframe.permission.U1CityPermission;
+import com.caihan.scframe.permission.ScPermission;
 import com.caihan.scframe.permission.base.OnPermissionListener;
 import com.caihan.scframe.refresh.AutoRefreshListener;
-import com.caihan.scframe.utils.toast.U1CityToast;
+import com.caihan.scframe.utils.toast.ScToast;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
@@ -52,7 +52,7 @@ import java.util.ArrayList;
  */
 public abstract class BaseActivity
         extends RxAppCompatActivity
-        implements OnPermissionListener, OnImmersionListener, AutoRefreshListener, BaseView {
+        implements OnImmersionListener, AutoRefreshListener, BaseView {
 
     protected Context mContext;
     protected Bundle mSavedInstanceState;
@@ -60,12 +60,12 @@ public abstract class BaseActivity
     /**
      * 动态权限申请
      */
-    protected U1CityPermission mPermission;
+    protected ScPermission mPermission;
 
     /**
      * 沉浸式
      */
-    private U1CityImmersionBar mImmersionBar = null;
+    private ScImmersionBar mImmersionBar = null;
 
     /**
      * 数据变更智能刷新,变更后是否需要自动刷新数据,刷新后记得设置成false
@@ -201,47 +201,41 @@ public abstract class BaseActivity
         return false;
     }
 
+
     /**
      * 动态权限申请
      *
-     * @param permissionDelegate
+     * @param listener
      * @param permissionArray
      */
-    public void requestPermission(@NonNull U1CityPermission permissionDelegate,
+    public void requestPermission(OnPermissionListener listener,
                                   @NonNull String[]... permissionArray) {
         onDestroyPermission();
-        mPermission = permissionDelegate;
+        mPermission = new ScPermission.Builder(mContext)
+                .setListener(listener).build();
         mPermission.request(permissionArray);
     }
 
     /**
      * 动态权限申请
      *
-     * @param permissionDelegate
-     * @param permissionsList
+     * @param listener
+     * @param permissionArray
      */
-    public void requestPermission(@NonNull U1CityPermission permissionDelegate,
-                                  @NonNull ArrayList<String> permissionsList) {
+    public void requestPermission(OnPermissionListener listener,
+                                  @NonNull ArrayList<String> permissionArray) {
         onDestroyPermission();
-        mPermission = permissionDelegate;
-        mPermission.request(permissionsList);
-    }
-
-    @Override
-    public void onPermissionSuccessful() {
-
-    }
-
-    @Override
-    public void onPermissionFailure() {
-
+        mPermission = new ScPermission.Builder(mContext)
+                .setListener(listener).build();
+        mPermission.request(permissionArray);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (mPermission != null) {
+        if (mPermission != null && mPermission.isPermissionRequest(requestCode)) {
             mPermission.onActivityResult(requestCode, resultCode, data);
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -333,9 +327,9 @@ public abstract class BaseActivity
     }
 
     @Override
-    public U1CityImmersionBar getImmersion() {
+    public ScImmersionBar getImmersion() {
         if (mImmersionBar == null) {
-            mImmersionBar = new U1CityImmersionBar(this);
+            mImmersionBar = new ScImmersionBar(this);
         }
         return mImmersionBar;
     }
@@ -426,7 +420,7 @@ public abstract class BaseActivity
      */
     @Override
     public void showToast(@NonNull String msg) {
-        U1CityToast.showToast(msg);
+        ScToast.showToast(msg);
     }
 
     /**
@@ -436,7 +430,7 @@ public abstract class BaseActivity
      */
     @Override
     public void showToast(@StringRes final int resId) {
-        U1CityToast.showToast(resId);
+        ScToast.showToast(resId);
     }
 
     /**
@@ -444,8 +438,8 @@ public abstract class BaseActivity
      *
      * @param msg
      */
-    protected void showToastLong(@NonNull String msg){
-        U1CityToast.showToastLong(msg);
+    protected void showToastLong(@NonNull String msg) {
+        ScToast.showToastLong(msg);
     }
 
     /**
@@ -483,13 +477,6 @@ public abstract class BaseActivity
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
         super.startActivityForResult(intent, requestCode);
-    }
-
-    /**
-     * 使用默认动作关闭
-     */
-    public void finishAnimation() {
-        finish();
     }
 
     @Override

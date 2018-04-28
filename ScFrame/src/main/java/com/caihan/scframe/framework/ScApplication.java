@@ -1,5 +1,6 @@
 package com.caihan.scframe.framework;
 
+
 import android.app.Application;
 import android.content.Context;
 
@@ -17,7 +18,7 @@ import com.blankj.utilcode.util.Utils;
  * @e-mail 93234929@qq.com
  * 维护者
  */
-public abstract class U1CityApplication extends Application {
+public abstract class ScApplication extends Application {
 
     /**
      * 获取Application的Content

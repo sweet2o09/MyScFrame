@@ -75,9 +75,9 @@ import java.util.ArrayList;
  * 维护者 caihan
  * TODO: 2018/1/6 只是简单封装,后续如果需要的话,根据公司需求进行更改
  */
-public class U1CityPermission extends AbstractPermission {
+public class ScPermission extends AbstractPermission {
 
-    private static final String TAG = "U1CityPermission";
+    private static final String TAG = "ScPermission";
 
     private PermissionDelegate mPermissionDelegate;
 
@@ -85,7 +85,7 @@ public class U1CityPermission extends AbstractPermission {
     /**
      * 实例化权限申请类
      */
-    private U1CityPermission(Builder builder) {
+    private ScPermission(Builder builder) {
         mPermissionDelegate = new PermissionProxy();
         setContext(builder.mContext);
         setListener(builder.mListener);
@@ -154,6 +154,11 @@ public class U1CityPermission extends AbstractPermission {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         mPermissionDelegate.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public boolean isPermissionRequest(int requestCode) {
+        return mPermissionDelegate.isPermissionRequest(requestCode);
     }
 
     @Override
@@ -252,8 +257,8 @@ public class U1CityPermission extends AbstractPermission {
         }
 
 
-        public U1CityPermission build() {
-            return new U1CityPermission(this);
+        public ScPermission build() {
+            return new ScPermission(this);
         }
 
     }

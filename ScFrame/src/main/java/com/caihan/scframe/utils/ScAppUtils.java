@@ -18,7 +18,7 @@ import android.text.TextUtils;
  * 实现功能：App相关工具类
  * 备注：
  */
-public class MyAppUtils {
+public class ScAppUtils {
 
     /**
      * 获取application中指定的meta-data

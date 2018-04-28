@@ -72,6 +72,14 @@ public interface PermissionDelegate {
     void onActivityResult(int requestCode, int resultCode, Intent data);
 
     /**
+     * 判断是否是权限申请返回
+     *
+     * @param requestCode
+     * @return
+     */
+    boolean isPermissionRequest(int requestCode);
+
+    /**
      * 销毁
      */
     void onDestroy();

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="U1cityProgressBar" parent="@android:style/Widget.Material.ProgressBar">
+    <style name="ScFrameProgressBar" parent="@android:style/Widget.Material.ProgressBar">
         <item name="android:indeterminateTint">@color/color_FF5252</item>
         <item name="android:indeterminateTintMode">src_atop</item>
         <item name="android:layout_width">wrap_content</item>

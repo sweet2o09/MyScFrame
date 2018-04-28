@@ -15,11 +15,11 @@
     <color name="colorDivison">#33aaaaaa</color>
 
 
-    <color name="ScFrame_darker_gray">#aaaaaa</color>
-    <color name="ScFrame_white">#ffffff</color>
-    <color name="ScFrame_text_gray">#8a8a8a</color>
+    <color name="scframe_darker_gray">#aaaaaa</color>
+    <color name="scframe_white">#ffffff</color>
+    <color name="scframe_text_gray">#8a8a8a</color>
 
-    <color name="ScFrame_loading_dialog_message">#595959</color>
+    <color name="scframe_loading_dialog_message">#595959</color>
 
     <color name="triangle">#aa72d572</color>
     <color name="circle">#aa738ffe</color>
@@ -48,16 +48,16 @@
     <color name="light_text_color">#999999</color>
 
     <!--确认按钮文字颜色-->
-    <color name="u1city_frame_dialog_positive_color">#FF5252</color>
+    <color name="scframe_dialog_positive_color">#FF5252</color>
     <!--取消按钮文字颜色-->
-    <color name="u1city_frame_dialog_negative_color">#999999</color>
+    <color name="scframe_dialog_negative_color">#999999</color>
 
     <!--toolbar背景色-->
-    <color name="u1city_frame_toolbar_bg_color">#F8F8F8</color>
+    <color name="scframe_toolbar_bg_color">#F8F8F8</color>
     <!--toolbar标题文字颜色-->
-    <color name="u1city_frame_toolbar_text_color">#333333</color>
+    <color name="scframe_toolbar_text_color">#333333</color>
     <!--toolbar Menu文字颜色-->
-    <color name="u1city_frame_toolbar_right_text_color">#333333</color>
+    <color name="scframe_toolbar_right_text_color">#333333</color>
 
     <!--1px分割线颜色-->
     <color name="line_1px_color">#dddddd</color>

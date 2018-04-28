@@ -6,7 +6,7 @@ import com.caihan.myscframe.R;
 import com.caihan.myscframe.base.BaseScActivity;
 import com.caihan.myscframe.utils.StartActivityUtils;
 import com.caihan.scframe.rxjava.RxCountDown;
-import com.caihan.scframe.utils.log.U1CityLog;
+import com.caihan.scframe.utils.log.ScLog;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import butterknife.BindView;
@@ -35,30 +35,30 @@ public class WelcomeActivity extends BaseScActivity {
     @Override
     protected void onCreate() {
         setImmersion();
-        U1CityLog.debug("onCreate");
+        ScLog.debug("onCreate");
         RxCountDown.countdown(3)
                 .compose(this.<Boolean>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new Observer<Boolean>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         mDisposable = d;
-                        U1CityLog.debug("onSubscribe");
+                        ScLog.debug("onSubscribe");
                     }
 
                     @Override
                     public void onNext(Boolean b) {
-                        U1CityLog.debug("onNext");
+                        ScLog.debug("onNext");
                         startHomeActivity(false);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        U1CityLog.debug("onError");
+                        ScLog.debug("onError");
                     }
 
                     @Override
                     public void onComplete() {
-                        U1CityLog.debug("onComplete");
+                        ScLog.debug("onComplete");
                     }
                 });
 
@@ -66,7 +66,7 @@ public class WelcomeActivity extends BaseScActivity {
 
     @OnClick(R.id.content_view)
     public void onViewClicked() {
-        U1CityLog.debug("onViewClicked");
+        ScLog.debug("onViewClicked");
         //切断下游,不再接收,调用dispose()并不会导致上游不再继续发送事件, 上游会继续发送剩余的事件.
         mDisposable.dispose();
         startHomeActivity(false);

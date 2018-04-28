@@ -1,7 +1,7 @@
 package com.caihan.scframe.immersion.base;
 
 
-import com.caihan.scframe.immersion.U1CityImmersionBar;
+import com.caihan.scframe.immersion.ScImmersionBar;
 
 /**
  * 沉浸式效果UI接口
@@ -25,7 +25,7 @@ public interface OnImmersionListener {
      *
      * @return
      */
-    U1CityImmersionBar getImmersion();
+    ScImmersionBar getImmersion();
 
     /**
      * 设置沉浸式效果

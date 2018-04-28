@@ -13,7 +13,7 @@
     <dimen name="lce_content_view_animation_translate_y">40dp</dimen>
 
     <!--新框架,统一-->
-    <dimen name="u1city_frame_toolbar_height">44dp</dimen>
-    <dimen name="u1city_frame_toolbar_text_size">20sp</dimen>
-    <dimen name="u1city_frame_toolbar_right_text_size">16sp</dimen>
+    <dimen name="scframe_toolbar_height">44dp</dimen>
+    <dimen name="scframe_toolbar_text_size">20sp</dimen>
+    <dimen name="scframe_toolbar_right_text_size">16sp</dimen>
 </resources>

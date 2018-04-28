@@ -1,4 +1,4 @@
-package com.caihan.scframe.utils;
+package com.caihan.scframe.utils.toast;
 
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
@@ -8,17 +8,18 @@ import android.support.annotation.StringRes;
 import com.blankj.utilcode.util.ToastUtils;
 
 /**
- * 作者：caihan
- * 创建时间：2017/10/25
- * 邮箱：93234929@qq.com
- * 实现功能：吐司工具类
- * 备注：
+ * Toast工具管理类
+ *
+ * @author caihan
+ * @date 2018/1/13
+ * @e-mail 93234929@qq.com
+ * 维护者
  */
-public class ScToastUtils {
+public final class ScToast {
 
     /**
      * 设置背景颜色
-     * 请在showToast()之前调用
+     * 请在{@link #showToast(CharSequence)}之前调用
      *
      * @param backgroundColor 背景色
      */
@@ -28,7 +29,7 @@ public class ScToastUtils {
 
     /**
      * 设置背景资源
-     * 请在showToast()之前调用
+     * 请在{@link #showToast(CharSequence)}之前调用
      *
      * @param bgResource 背景资源
      */
@@ -38,7 +39,7 @@ public class ScToastUtils {
 
     /**
      * 设置消息颜色
-     * 请在showToast()之前调用
+     * 请在{@link #showToast(CharSequence)}之前调用
      *
      * @param msgColor 颜色
      */
@@ -60,7 +61,16 @@ public class ScToastUtils {
      *
      * @param resId 资源Id
      */
-    public static void showShort(@StringRes final int resId) {
+    public static void showToast(@StringRes final int resId) {
         ToastUtils.showShort(resId);
+    }
+
+    /**
+     * 安全地显示长时吐司
+     *
+     * @param text 文本
+     */
+    public static void showToastLong(@NonNull final CharSequence text){
+        ToastUtils.showLong(text);
     }
 }

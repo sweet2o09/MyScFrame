@@ -34,7 +34,7 @@ public class DefaultRequestLoading implements IRequestLoad {
     public MaterialDialog getRequestLoading() {
         if (mRequestLoading == null) {
             mRequestLoading = new MaterialDialog.Builder(mContext)
-                    .customView(R.layout.u1city_base_request_loading_layout, false)
+                    .customView(R.layout.scframe_base_request_loading_layout, false)
                     .cancelable(cancelable)
                     .build();
 

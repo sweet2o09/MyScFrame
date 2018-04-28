@@ -6,7 +6,8 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="@color/u1city_frame_toolbar_bg_color"
+    android:background="@color/scframe_toolbar_bg_color"
+    app:navigationIcon="?attr/homeAsUpIndicator"
     android:orientation="vertical">
 
     <TextView
@@ -16,8 +17,8 @@
         android:layout_gravity="center"
         android:singleLine="true"
         android:text=""
-        android:textColor="@color/u1city_frame_toolbar_text_color"
-        android:textSize="@dimen/u1city_frame_toolbar_text_size"
+        android:textColor="@color/scframe_toolbar_text_color"
+        android:textSize="@dimen/scframe_toolbar_text_size"
         tools:text="又一城"
         tools:visibility="visible"/>
 
@@ -43,8 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textColor="@color/u1city_frame_toolbar_right_text_color"
-            android:textSize="@dimen/u1city_frame_toolbar_right_text_size"
+            android:textColor="@color/scframe_toolbar_right_text_color"
+            android:textSize="@dimen/scframe_toolbar_right_text_size"
             android:visibility="gone"
             tools:text="右边文字"
             tools:visibility="visible"/>

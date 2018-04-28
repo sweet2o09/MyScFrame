@@ -17,10 +17,10 @@ import com.blankj.utilcode.util.LogUtils;
 import com.caihan.scframe.dialog.request.DefaultRequestLoading;
 import com.caihan.scframe.dialog.request.IRequestLoad;
 import com.caihan.scframe.framework.v1.support.mvp.BaseView;
-import com.caihan.scframe.immersion.U1CityImmersionBar;
+import com.caihan.scframe.immersion.ScImmersionBar;
 import com.caihan.scframe.immersion.base.OnImmersionListener;
 import com.caihan.scframe.refresh.AutoRefreshListener;
-import com.caihan.scframe.utils.toast.U1CityToast;
+import com.caihan.scframe.utils.toast.ScToast;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
@@ -61,7 +61,7 @@ public abstract class BaseFragment
     /**
      * 沉浸式
      */
-    private U1CityImmersionBar mImmersionBar = null;
+    private ScImmersionBar mImmersionBar = null;
 
     /**
      * 数据变更智能刷新,变更后是否需要自动刷新数据,刷新后记得设置成false
@@ -256,9 +256,9 @@ public abstract class BaseFragment
     }
 
     @Override
-    public U1CityImmersionBar getImmersion() {
+    public ScImmersionBar getImmersion() {
         if (mImmersionBar == null) {
-            mImmersionBar = new U1CityImmersionBar(getActivity(), this);
+            mImmersionBar = new ScImmersionBar(getActivity(), this);
         }
         return mImmersionBar;
     }
@@ -362,7 +362,7 @@ public abstract class BaseFragment
      */
     @Override
     public void showToast(@NonNull String msg) {
-        U1CityToast.showToast(msg);
+        ScToast.showToast(msg);
     }
 
     /**
@@ -372,7 +372,7 @@ public abstract class BaseFragment
      */
     @Override
     public void showToast(@StringRes final int resId) {
-        U1CityToast.showToast(resId);
+        ScToast.showToast(resId);
     }
 
     /**
@@ -412,9 +412,7 @@ public abstract class BaseFragment
     }
 
     public void finish(){
-        if (getActivity() instanceof BaseActivity){
-            ((BaseActivity) getActivity()).finishAnimation();
-        }
+        getActivity().finish();
     }
 
     @Override

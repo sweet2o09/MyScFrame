@@ -46,8 +46,8 @@ public final class DefaultDialog {
                 .theme(Theme.LIGHT)
                 .positiveText("确定")
                 .negativeText("取消")
-                .positiveColorRes(R.color.u1city_frame_dialog_positive_color)
-                .negativeColorRes(R.color.u1city_frame_dialog_negative_color);
+                .positiveColorRes(R.color.scframe_dialog_positive_color)
+                .negativeColorRes(R.color.scframe_dialog_negative_color);
     }
 
     /**
@@ -59,7 +59,7 @@ public final class DefaultDialog {
     public MaterialDialog.Builder getDialogNoBtn(Context context) {
         return new MaterialDialog.Builder(context)
                 .theme(Theme.LIGHT)
-                .positiveColorRes(R.color.u1city_frame_dialog_positive_color)
-                .negativeColorRes(R.color.u1city_frame_dialog_negative_color);
+                .positiveColorRes(R.color.scframe_dialog_positive_color)
+                .negativeColorRes(R.color.scframe_dialog_negative_color);
     }
 }

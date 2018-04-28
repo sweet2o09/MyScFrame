@@ -5,7 +5,7 @@
     android:id="@+id/content_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/loading"
+    android:background="@drawable/bg_flight_info_activity_m"
     tools:context="com.caihan.myscframe.ui.welcome.WelcomeActivity">
 
 </android.support.constraint.ConstraintLayout>

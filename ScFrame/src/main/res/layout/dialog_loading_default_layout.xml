@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:padding="@dimen/ScFrame_spacing"
-    android:background="@color/ScFrame_white"
+    android:background="@color/scframe_white"
     android:orientation="vertical">
 
 
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/loading_dialog_message"
-        android:textColor="@color/ScFrame_loading_dialog_message"
+        android:textColor="@color/scframe_loading_dialog_message"
         android:textSize="@dimen/ScFrame_text_size_small" />
 
 </LinearLayout>

@@ -9,7 +9,7 @@
 
 
     <ProgressBar
-        style="@style/U1cityProgressBar"
+        style="@style/ScFrameProgressBar"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_centerInParent="true"

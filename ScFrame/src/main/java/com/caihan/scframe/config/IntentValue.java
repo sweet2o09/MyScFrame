@@ -20,4 +20,9 @@ public interface IntentValue {
      * 裁剪后的图片
      */
     int REQUEST_CODE_CROP = 9997;
+
+    /**
+     * 跳转APP系统设置
+     */
+    int REQUEST_CODE_APP_DETAILS_SETTINGS = 1111;
 }

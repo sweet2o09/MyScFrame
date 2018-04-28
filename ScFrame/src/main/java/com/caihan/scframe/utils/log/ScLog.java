@@ -4,7 +4,7 @@ import android.os.Build;
 import android.util.Log;
 
 import com.blankj.utilcode.util.LogUtils;
-import com.caihan.scframe.framework.U1CityApplication;
+import com.caihan.scframe.framework.ScApplication;
 
 /**
  * Log工具管理类<br/>
@@ -14,11 +14,11 @@ import com.caihan.scframe.framework.U1CityApplication;
  * @e-mail 93234929@qq.com
  * 维护者
  */
-public final class U1CityLog {
+public final class ScLog {
 
     private static final String DEBUG_TAG = "DebugLog";
 
-    private U1CityLog() {
+    private ScLog() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
@@ -94,7 +94,7 @@ public final class U1CityLog {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
                 Log.d(tag, subMsg);
             } else {
-                if (U1CityApplication.sDebug) {
+                if (ScApplication.sDebug) {
                     Log.i(tag, subMsg);
                 } else {
                     Log.d(tag, subMsg);

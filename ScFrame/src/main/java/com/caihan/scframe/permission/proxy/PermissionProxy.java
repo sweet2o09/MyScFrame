@@ -190,6 +190,17 @@ public class PermissionProxy implements PermissionDelegate {
         }
     }
 
+    /**
+     * 判断是否是权限申请回来的
+     *
+     * @param requestCode
+     * @return
+     */
+    @Override
+    public boolean isPermissionRequest(int requestCode){
+        return requestCode == REQUEST_CODE_SETTING;
+    }
+
     @Override
     public void onDestroy() {
         this.mContext = null;

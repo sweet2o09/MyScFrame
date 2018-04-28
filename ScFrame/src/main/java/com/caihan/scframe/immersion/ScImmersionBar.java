@@ -23,7 +23,7 @@ import com.gyf.barlibrary.ImmersionBar;
  * @e-mail 93234929@qq.com
  * 维护者
  */
-public class U1CityImmersionBar extends AbstractImmersion {
+public class ScImmersionBar extends AbstractImmersion {
     private static final String TAG = "U1CityImmersionBar";
 
     ImmersionBar mImmersionBar = null;
@@ -33,7 +33,7 @@ public class U1CityImmersionBar extends AbstractImmersion {
      *
      * @param activity
      */
-    public U1CityImmersionBar(@NonNull Activity activity) {
+    public ScImmersionBar(@NonNull Activity activity) {
         mImmersionBar = ImmersionBar.with(activity);
         init();
     }
@@ -44,7 +44,7 @@ public class U1CityImmersionBar extends AbstractImmersion {
      * @param activity
      * @param fragment
      */
-    public U1CityImmersionBar(@NonNull Activity activity, @NonNull Fragment fragment) {
+    public ScImmersionBar(@NonNull Activity activity, @NonNull Fragment fragment) {
         mImmersionBar = ImmersionBar.with(activity, fragment);
         init();
     }
@@ -56,8 +56,8 @@ public class U1CityImmersionBar extends AbstractImmersion {
      * @param dialog
      * @param dialogTag
      */
-    public U1CityImmersionBar(@NonNull Activity activity, @NonNull Dialog dialog,
-                              @NonNull String dialogTag) {
+    public ScImmersionBar(@NonNull Activity activity, @NonNull Dialog dialog,
+                          @NonNull String dialogTag) {
         mImmersionBar = ImmersionBar.with(activity, dialog, dialogTag);
         init();
     }
