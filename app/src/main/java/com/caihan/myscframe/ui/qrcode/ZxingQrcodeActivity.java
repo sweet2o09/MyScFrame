@@ -65,6 +65,7 @@ public class ZxingQrcodeActivity
     protected void onStart() {
         super.onStart();
         ScLog.debug("onStart");
+        //初始化后才调用,处理首次进入权限申请逻辑
         if (isInitZxingView){
             initZxingView();
         }
@@ -120,6 +121,7 @@ public class ZxingQrcodeActivity
                 finish();
             }
         });
+        mZxingView.setDelegate(this);
         changeLight(false);
         requestPermission(this, PermissionGroup.CAMERA, PermissionGroup.STORAGE);
         RxView.clicks(mOpenFlashLightCtv)
@@ -143,7 +145,7 @@ public class ZxingQrcodeActivity
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) throws Exception {
-                        showToast("打开相册");
+                        chooseQrcdeFromGallery();
                     }
                 });
     }
@@ -152,7 +154,6 @@ public class ZxingQrcodeActivity
     public void onPermissionSuccessful() {
         showToast("动态权限申请成功");
         initZxingView();
-        mZxingView.setDelegate(this);
     }
 
     @Override
@@ -162,10 +163,10 @@ public class ZxingQrcodeActivity
 
     @Override
     public void onScanQRCodeSuccess(String result) {
-        Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        vibrator.vibrate(200);
+        vibrate();
         ScLog.debug("扫码成功 内容 : " + result);
         showToast("扫码成功 内容 : " + result);
+        mZxingView.startSpotDelay(mScanDelay);
     }
 
     @Override
@@ -178,6 +179,7 @@ public class ZxingQrcodeActivity
      */
     private void initZxingView() {
         ScLog.debug("initZxingView");
+        //刚开始ZxingView要处于GONE状态,等权限申请回来后再设置成VISIBLE,避免黑屏
         if (mZxingView.getVisibility() == View.GONE) {
             mZxingView.setVisibility(View.VISIBLE);
         }
@@ -188,6 +190,20 @@ public class ZxingQrcodeActivity
         showToast("初始化成功");
     }
 
+    /**
+     * 震动效果
+     */
+    private void vibrate() {
+        Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        vibrator.vibrate(200);
+    }
+
+    /**
+     * 从相册中选图片
+     */
+    private void chooseQrcdeFromGallery(){
+        showToast("打开相册");
+    }
     /**
      * @param isOpen 需要变更的状态
      */

@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.caihan.myscframe.R;
@@ -32,12 +30,6 @@ public class ZxingQrcodeDemoActivity
 
     @BindView(R.id.toolbar_title)
     TextView mToolbarTitle;
-    @BindView(R.id.toolbar_right_iv)
-    ImageView mToolbarRightIv;
-    @BindView(R.id.toolbar_right_tv)
-    TextView mToolbarRightTv;
-    @BindView(R.id.toolbar_right_layout)
-    LinearLayout mToolbarRightLayout;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.open_permission)
@@ -46,6 +38,8 @@ public class ZxingQrcodeDemoActivity
     Button mClosedPermission;
     @BindView(R.id.go_scan_activity)
     Button mGoScanActivity;
+    @BindView(R.id.go_generate_activity)
+    Button mGoGenerateActivity;
 
 
     @Override
@@ -70,7 +64,7 @@ public class ZxingQrcodeDemoActivity
         });
     }
 
-    @OnClick({R.id.open_permission, R.id.closed_permission, R.id.go_scan_activity})
+    @OnClick({R.id.open_permission, R.id.closed_permission, R.id.go_scan_activity, R.id.go_generate_activity})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.open_permission:
@@ -82,6 +76,12 @@ public class ZxingQrcodeDemoActivity
             case R.id.go_scan_activity:
                 Intent intent = new Intent(mContext, ZxingQrcodeActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.go_generate_activity:
+                Intent intent2 = new Intent(mContext, ZxingGenerateActivity.class);
+                startActivity(intent2);
+                break;
+            default:
                 break;
         }
     }

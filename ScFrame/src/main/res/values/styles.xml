@@ -18,18 +18,17 @@
     </style>
 
 
-    <style name="BaseAppTheme.SplashTheme" parent="AppTheme">
+    <!-- 防止欢迎页白屏或者黑屏，设置图片 -->
+    <style name="AppTheme.SplashTheme" parent="AppTheme">
         <!--<item name="android:windowBackground">@drawable/loading</item>-->
         <!--全屏模式-->
         <item name="android:windowFullscreen">true</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <!-- 防止欢迎页白屏或者黑屏，设置图片 -->
-    <style name="AppTheme.SplashTheme" parent="BaseAppTheme.SplashTheme"/>
     <!--在Android 4.4之前的版本上运行，直接跟随系统主题-->
-    <style name="AppTheme.ImageTranslucentTheme" parent="BaseAppTheme.SplashTheme"/>
+    <style name="AppTheme.ImageTranslucentTheme" parent="AppTheme.SplashTheme"/>
 
-    <style name="AppTheme.ColorTranslucentTheme" parent="BaseAppTheme.SplashTheme"/>
+    <style name="AppTheme.ColorTranslucentTheme" parent="AppTheme.SplashTheme"/>
 
 
 

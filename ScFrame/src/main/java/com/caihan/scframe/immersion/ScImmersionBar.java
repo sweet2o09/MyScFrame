@@ -162,9 +162,11 @@ public class ScImmersionBar extends AbstractImmersion {
      * 状态栏颜色
      *
      * @param statusBarColor 状态栏颜色，资源文件（R.color.xxx）
+     * @param isDarkFont 是否修改状态栏文字颜色 true = 黑色字,false = 白色字
      */
-    public void statusBarColor(@ColorRes int statusBarColor){
+    public void statusBarColor(@ColorRes int statusBarColor,boolean isDarkFont){
         mImmersionBar.statusBarColor(statusBarColor)
+                .statusBarDarkFont(isDarkFont, 0.2f)
                 .init();
     }
 
