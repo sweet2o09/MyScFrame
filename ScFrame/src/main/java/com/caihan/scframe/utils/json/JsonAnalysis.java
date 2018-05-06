@@ -68,9 +68,9 @@ public final class JsonAnalysis implements IJson {
         if (mJsonFactory == null) {
             //说明没有设置JsonType
             if (jsonType == PARSER_TYPE_GSON) {
-                return new GsonFactory().getJson();
+                mJsonFactory = new GsonFactory().getJson();
             } else if (jsonType == PARSER_TYPE_FAST_JSON) {
-                return new FastJsonFactory().getJson();
+                mJsonFactory = new FastJsonFactory().getJson();
             }
         }
         return mJsonFactory;

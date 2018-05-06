@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.caihan.myscframe.ui.multistoreylist.MultiStoreyListActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/scframe_base_toolbar_layout"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:overScrollMode="never"
+        android:scrollbars="none"/>
+
+</RelativeLayout>

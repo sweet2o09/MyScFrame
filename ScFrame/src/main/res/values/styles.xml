@@ -49,4 +49,26 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+
+    <!--水平分割线1px-->
+    <style name="Frame_HorizontalLine_Height_1px">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:background">@color/line_1px_color</item>
+    </style>
+
+    <!--水平分割线10dp-->
+    <style name="Frame_HorizontalLine_Height_10dp">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">10dp</item>
+        <item name="android:background">@color/line_10dp_color</item>
+    </style>
+
+    <!--竖直分割线1px-->
+    <style name="Frame_VerticalLine_Width_1px">
+        <item name="android:layout_width">1px</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/line_10dp_color</item>
+    </style>
+
 </resources>

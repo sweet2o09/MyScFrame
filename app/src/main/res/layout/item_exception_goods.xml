@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/goods_pic_iv"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_below="@+id/top_line2"
+        android:layout_margin="15dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/list_loading_goods"/>
+
+    <TextView
+        android:id="@+id/goods_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/goods_pic_iv"
+        android:layout_marginRight="15dp"
+        android:layout_toRightOf="@+id/goods_pic_iv"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="这是标题这是标题这是标题这是标题这是标题这是标题这是标题"
+        android:textColor="@color/light_text_color"
+        android:textSize="13sp"/>
+
+    <TextView
+        android:id="@+id/invalid_cart_type_tips_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/goods_title_tv"
+        android:layout_below="@+id/goods_title_tv"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="8dp"
+        android:layout_toLeftOf="@+id/goods_num_tv"
+        android:layout_toRightOf="@+id/goods_pic_iv"
+        android:layout_toStartOf="@+id/goods_num_tv"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/color_FF5252"
+        android:textSize="13sp"
+        tools:text="该宝贝支持次日达"/>
+
+    <TextView
+        android:id="@+id/goods_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/goods_pic_iv"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:textColor="@color/light_text_color"
+        android:textSize="13sp"
+        tools:text="X2"/>
+
+    <ImageView
+        android:id="@+id/goods_line"
+        style="@style/Frame_HorizontalLine_Height_1px"
+        android:layout_below="@+id/goods_pic_iv"
+        android:layout_marginLeft="15dp"/>
+</RelativeLayout>

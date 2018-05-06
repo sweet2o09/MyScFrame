@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!--商品-->
+    <RelativeLayout
+        android:id="@+id/goods_cb_layout"
+        android:layout_width="44dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/goods_pic_iv"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/goods_pic_iv"
+        android:gravity="center">
+
+        <CheckBox
+            android:id="@+id/goods_cb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/selector_shop_cart_goods"
+            android:clickable="false"/>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/goods_pic_iv"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_below="@+id/head_activity_iv"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/goods_cb_layout"
+        android:scaleType="centerCrop"
+        android:src="@drawable/list_loading_goods"/>
+
+    <TextView
+        android:id="@+id/store_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_alignBottom="@+id/goods_pic_iv"
+        android:layout_alignEnd="@+id/goods_pic_iv"
+        android:layout_alignStart="@+id/goods_pic_iv"
+        android:background="#55000000"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="11sp"
+        android:visibility="gone"
+        tools:text="已经售罄"
+        tools:visibility="visible"/>
+
+    <TextView
+        android:id="@+id/goods_title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/goods_pic_iv"
+        android:layout_marginEnd="15dp"
+        android:layout_toEndOf="@+id/goods_pic_iv"
+        android:ellipsize="end"
+        android:lineSpacingExtra="1dp"
+        android:maxLines="2"
+        android:textColor="@color/dark_text_color"
+        android:textSize="13sp"
+        tools:text="这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题"/>
+
+
+    <TextView
+        android:id="@+id/goods_sku_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/goods_title_tv"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="3dp"
+        android:layout_toEndOf="@+id/goods_pic_iv"
+        android:ellipsize="end"
+        android:lines="1"
+        android:textColor="@color/light_text_color"
+        android:textSize="11sp"
+        tools:text="黑色170/92a"/>
+
+    <TextView
+        android:id="@+id/goods_price_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/goods_pic_iv"
+        android:layout_toEndOf="@+id/goods_pic_iv"
+        android:textColor="@color/color_FF5252"
+        android:textSize="11sp"
+        tools:text="¥50.00"/>
+
+    <!--编辑状态商品数量-->
+    <TextView
+        android:id="@+id/goods_num_eet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/goods_pic_iv"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="15dp"
+        android:text="加减"
+        android:visibility="visible"/>
+
+    <!--口味-->
+    <TextView
+        android:id="@+id/goods_processing_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/goods_pic_iv"
+        android:layout_below="@+id/goods_pic_iv"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/color_999999"
+        android:textSize="10sp"
+        android:visibility="gone"
+        tools:text="口味:蒜香/¥20.25一份"
+        tools:visibility="visible"/>
+
+    <!--限购-->
+    <TextView
+        android:id="@+id/goods_limit_buy_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/goods_pic_iv"
+        android:layout_below="@+id/goods_processing_tv"
+        android:layout_marginTop="6dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/color_FF5252"
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:text="限购3件，您已购满3件"
+        tools:visibility="visible"/>
+
+    <TextView
+        android:id="@+id/goods_promotion_limit_buy_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/goods_pic_iv"
+        android:layout_below="@+id/goods_limit_buy_tv"
+        android:layout_marginTop="6dp"
+        android:gravity="center_vertical"
+        android:textColor="#FF8034"
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:text="活动限购4件，超出部分以原价购买"
+        tools:visibility="visible"/>
+
+    <ImageView
+        android:id="@+id/bottom_line"
+        style="@style/Frame_HorizontalLine_Height_1px"
+        android:layout_alignStart="@+id/goods_pic_iv"
+        android:layout_below="@+id/goods_promotion_limit_buy_tv"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="10dp"/>
+
+    <!--不同的cartActivityItemList用这个分割线-->
+    <ImageView
+        android:id="@+id/bottom_line2"
+        style="@style/Frame_HorizontalLine_Height_1px"
+        android:layout_below="@+id/goods_promotion_limit_buy_tv"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"/>
+
+</RelativeLayout>

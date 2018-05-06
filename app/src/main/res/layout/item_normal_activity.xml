@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!--满减活动头部-->
+    <ImageView
+        android:id="@+id/head_activity_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/head_activity_tv"
+        android:layout_alignStart="@+id/goods_pic_iv"
+        android:layout_alignTop="@+id/head_activity_tv"
+        android:layout_below="@+id/head_line2"
+        android:layout_marginStart="60dp"
+        android:scaleType="center"
+        android:src="@drawable/ic_manjian_empty"
+        tools:visibility="visible"/>
+
+    <TextView
+        android:id="@+id/head_activity_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/head_line2"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="6dp"
+        android:layout_toEndOf="@+id/head_activity_iv"
+        android:drawableEnd="@drawable/ic_red_right_accrow"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/color_FF5252"
+        android:textSize="12sp"
+        tools:text="满100元减20元，已优惠20元"
+        tools:visibility="visible"/>
+
+
+</RelativeLayout>

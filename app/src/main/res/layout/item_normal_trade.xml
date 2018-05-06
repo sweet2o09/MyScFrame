@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/head_line"
+        style="@style/Frame_HorizontalLine_Height_10dp"/>
+
+    <!--购物车头部-->
+    <RelativeLayout
+        android:id="@+id/head_cb_layout"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/head_line"
+        android:gravity="center"
+        tools:visibility="visible">
+
+        <CheckBox
+            android:id="@+id/head_cb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/selector_shop_cart_goods"
+            android:clickable="false"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/head_tv"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_alignStart="@+id/goods_pic_iv"
+        android:layout_below="@+id/head_line"
+        android:layout_marginStart="15dp"
+        android:layout_toEndOf="@+id/head_cb_layout"
+        android:gravity="center_vertical"
+        android:textColor="@color/dark_text_color"
+        android:textSize="14sp"
+        tools:text="快递发货"
+        tools:visibility="visible"/>
+
+    <ImageView
+        android:id="@+id/head_line2"
+        style="@style/Frame_HorizontalLine_Height_1px"
+        android:layout_below="@+id/head_tv"
+        tools:visibility="visible"/>
+</RelativeLayout>
