@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/top_line"
         style="@style/Frame_HorizontalLine_Height_10dp"
-        android:visibility="gone"
+        android:visibility="visible"
         tools:visibility="visible"/>
 
     <TextView
@@ -20,7 +20,7 @@
         android:paddingLeft="15dp"
         android:textColor="@color/dark_text_color"
         android:textSize="14sp"
-        android:visibility="gone"
+        android:visibility="visible"
         tools:text="以下商品不支持XXX/已失效商品"
         tools:visibility="visible"/>
 
@@ -28,6 +28,7 @@
         android:id="@+id/top_line2"
         style="@style/Frame_HorizontalLine_Height_1px"
         android:layout_below="@+id/cart_item_head_tv"
+        android:visibility="visible"
         tools:visibility="visible"/>
 
 </RelativeLayout>

@@ -9,8 +9,7 @@
         android:id="@+id/bottom_line2"
         style="@style/Frame_HorizontalLine_Height_1px"
         android:layout_below="@+id/goods_promotion_limit_buy_tv"
-        android:layout_marginTop="10dp"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
     <!--底部-->
     <TextView

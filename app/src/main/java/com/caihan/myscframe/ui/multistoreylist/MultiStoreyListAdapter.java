@@ -4,7 +4,11 @@ import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 
 import com.caihan.myscframe.R;
+import com.caihan.myscframe.ui.multistoreylist.bean.LocalActivityBean;
 import com.caihan.myscframe.ui.multistoreylist.bean.LocalBean;
+import com.caihan.myscframe.ui.multistoreylist.bean.LocalShopCartBean;
+import com.caihan.myscframe.ui.multistoreylist.bean.LocalShopCartButtomBean;
+import com.caihan.myscframe.ui.multistoreylist.request.CartItemBean;
 import com.caihan.myscframe.ui.multistoreylist.viewholder.ExceptionBottomHolder;
 import com.caihan.myscframe.ui.multistoreylist.viewholder.ExceptionGoodsHolder;
 import com.caihan.myscframe.ui.multistoreylist.viewholder.ExceptionTradeHolder;
@@ -69,18 +73,25 @@ public class MultiStoreyListAdapter extends BaseMultiItemQuickAdapter<LocalBean,
     protected MyViewHolder createBaseViewHolder(ViewGroup parent, int layoutResId) {
         switch (layoutResId) {
             case R.layout.item_normal_trade:
+                /**{@link LocalShopCartBean}*/
                 return new NormalTradeHolder(getItemView(layoutResId, parent));
             case R.layout.item_normal_activity:
+                /**{@link LocalActivityBean}*/
                 return new NormalActivityHolder(getItemView(layoutResId, parent));
             case R.layout.item_normal_goods:
+                /**{@link CartItemBean}*/
                 return new NormalGoodsHolder(getItemView(layoutResId, parent));
             case R.layout.item_normal_bottom:
+                /**{@link LocalShopCartButtomBean}*/
                 return new NormalBottomHolder(getItemView(layoutResId, parent));
             case R.layout.item_exception_trade:
+                /**{@link LocalShopCartBean}*/
                 return new ExceptionTradeHolder(getItemView(layoutResId, parent));
             case R.layout.item_exception_goods:
+                /**{@link CartItemBean}*/
                 return new ExceptionGoodsHolder(getItemView(layoutResId, parent));
             case R.layout.item_exception_bottom:
+                /**{@link LocalShopCartButtomBean}*/
                 return new ExceptionBottomHolder(getItemView(layoutResId, parent));
             default:
                 return createBaseViewHolder(getItemView(layoutResId, parent));
@@ -91,23 +102,11 @@ public class MultiStoreyListAdapter extends BaseMultiItemQuickAdapter<LocalBean,
     protected void convert(MyViewHolder helper, LocalBean item) {
         switch (helper.getItemViewType()) {
             case MultiItemConstValue.NORMAL_CART_ITEM_TRADE:
-                helper.setData(item);
-                break;
             case MultiItemConstValue.NORMAL_ACTIVITY_ITEM:
-                helper.setData(item);
-                break;
             case MultiItemConstValue.NORMAL_GOODS_ITEM:
-                helper.setData(item);
-                break;
             case MultiItemConstValue.NORMAL_CART_ITEM_BOTTOM:
-                helper.setData(item);
-                break;
             case MultiItemConstValue.EXCEPTION_CART_ITEM_TRADE:
-                helper.setData(item);
-                break;
             case MultiItemConstValue.EXCEPTION_GOODS_ITEM:
-                helper.setData(item);
-                break;
             case MultiItemConstValue.EXCEPTION_CART_ITEM_BOTTOM:
                 helper.setData(item);
                 break;

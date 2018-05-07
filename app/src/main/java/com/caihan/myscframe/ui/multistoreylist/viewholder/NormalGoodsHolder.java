@@ -9,8 +9,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.caihan.myscframe.R;
 import com.caihan.myscframe.ui.multistoreylist.request.CartItemBean;
+import com.caihan.scframe.utils.text.BaseParser;
 
 /**
+ * 有效商品
+ *
  * @author caihan
  * @date 2018/5/6
  * @e-mail 93234929@qq.com
@@ -26,11 +29,11 @@ public class NormalGoodsHolder extends MyViewHolder<CartItemBean> {
 
     @Override
     public void setData(CartItemBean item) {
-        final int limitItemNum = Integer.valueOf(item.getLimitItemNum());//商品限购数
-        final int itemNum = Integer.valueOf(item.getItemNum());//购物车商品数
-        final int storeCount = Integer.valueOf(item.getStoreCount());//库存数
-        final int buyItemNum = Integer.valueOf(item.getBuyItemNum());//已购买件数
-        final int minItemBuyNum = Integer.valueOf(item.getMinItemBuyNum());//最低起售件数
+        final int limitItemNum = BaseParser.parseInt(item.getLimitItemNum());//商品限购数
+        final int itemNum = BaseParser.parseInt(item.getItemNum());//购物车商品数
+        final int storeCount = BaseParser.parseInt(item.getStoreCount());//库存数
+        final int buyItemNum = BaseParser.parseInt(item.getBuyItemNum());//已购买件数
+        final int minItemBuyNum = BaseParser.parseInt(item.getMinItemBuyNum());//最低起售件数
         final int allowBuyNum = limitItemNum - buyItemNum;//剩余可购买数
 
         Glide.with(getConvertView().getContext())

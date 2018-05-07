@@ -1,6 +1,7 @@
 package com.caihan.myscframe.ui.multistoreylist.bean;
 
 import com.caihan.myscframe.ui.multistoreylist.MultiItemConstValue;
+import com.caihan.scframe.utils.text.BaseParser;
 
 /**
  * @author caihan
@@ -40,8 +41,8 @@ public class LocalShopCartButtomBean extends LocalBean {
     private String buyMultiItemTips;//多件购买不能超过1000的提示语
     private String saveAmount;//节省金额
 
-    public String getCartItemTradeType() {
-        return cartItemTradeType;
+    public int getCartItemTradeType() {
+        return BaseParser.parseInt(cartItemTradeType);
     }
 
     public void setCartItemTradeType(String cartItemTradeType) {

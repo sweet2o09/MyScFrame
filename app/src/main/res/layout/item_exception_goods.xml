@@ -23,7 +23,7 @@
         android:layout_toRightOf="@+id/goods_pic_iv"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="这是标题这是标题这是标题这是标题这是标题这是标题这是标题"
+        tools:text="这是标题这是标题这是标题这是标题这是标题这是标题这是标题"
         android:textColor="@color/light_text_color"
         android:textSize="13sp"/>
 

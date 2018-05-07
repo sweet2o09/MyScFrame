@@ -87,8 +87,7 @@ public final class DoubleUtils {
      * @return
      */
     public static String format(String string) {
-        String s = delCharacter(string);
-        return sFORMAT.format(s);
+        return sFORMAT.format(string2Double(string));
     }
 
     public static String forMoney(double d) {
@@ -100,13 +99,11 @@ public final class DoubleUtils {
     }
 
     public static String forMoney(String string) {
-        String s = delCharacter(string);
-        return sMONEY.format(s);
+        return sMONEY.format(string2Double(string));
     }
 
     public static String forMoneyInt(String string) {
-        String s = delCharacter(string);
-        return sMONEY_INT.format(s);
+        return sMONEY_INT.format(string2Double(string));
     }
 
     /**

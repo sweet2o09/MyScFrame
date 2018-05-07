@@ -6,6 +6,8 @@ import com.caihan.myscframe.R;
 import com.caihan.myscframe.ui.multistoreylist.bean.LocalActivityBean;
 
 /**
+ * 有效商品活动Header
+ *
  * @author caihan
  * @date 2018/5/6
  * @e-mail 93234929@qq.com

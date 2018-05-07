@@ -6,6 +6,8 @@ import com.caihan.myscframe.R;
 import com.caihan.myscframe.ui.multistoreylist.bean.LocalShopCartBean;
 
 /**
+ * 有效商品业务类型Header
+ *
  * @author caihan
  * @date 2018/5/6
  * @e-mail 93234929@qq.com
@@ -19,6 +21,6 @@ public class NormalTradeHolder extends MyViewHolder<LocalShopCartBean> {
 
     @Override
     public void setData(LocalShopCartBean item) {
-        setText(R.id.head_tv,item.getCartItemTradeTypeTitle());
+        setText(R.id.head_tv, item.getCartItemTradeTypeTitle());
     }
 }
