@@ -61,6 +61,19 @@ public class CartItemBean extends LocalBean {
     /*  v1.3.1*/
     private String processingItemName;//口味
 
+    /**自定义参数*/
+    /**
+     * 0-普通商品（包括完税商品）
+     * 1-海外直邮（BC）
+     * 2-海外直邮（个人）
+     * 3-保税商品
+     * 4-失效购物车商品（*排在最后、对应原来的storeCount字段与onSale字段，删除，下架，无货，关闭或者开启SKU
+     * 5-不支持快速配送/到店自提/快速送/次日达/扫码购）
+     */
+    private int cartItemTradeType;//业务类型
+
+
+
     public String getIsSelected() {
         return isSelected;
     }
@@ -275,6 +288,15 @@ public class CartItemBean extends LocalBean {
 
     public void setProcessingItemName(String processingItemName) {
         this.processingItemName = processingItemName;
+    }
+
+
+    public int getCartItemTradeType() {
+        return cartItemTradeType;
+    }
+
+    public void setCartItemTradeType(int cartItemTradeType) {
+        this.cartItemTradeType = cartItemTradeType;
     }
 
     @Override

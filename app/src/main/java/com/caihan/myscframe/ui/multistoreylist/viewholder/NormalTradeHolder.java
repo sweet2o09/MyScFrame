@@ -21,6 +21,8 @@ public class NormalTradeHolder extends MyViewHolder<LocalShopCartBean> {
 
     @Override
     public void setData(LocalShopCartBean item) {
-        setText(R.id.head_tv, item.getCartItemTradeTypeTitle());
+        setText(R.id.head_tv, item.getCartItemTradeTypeTitle())
+                .setChecked(R.id.head_cb, item.isAllSelected())
+                .addOnClickListener(R.id.head_cb_layout);
     }
 }

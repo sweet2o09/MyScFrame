@@ -21,6 +21,7 @@ public class NormalActivityHolder extends MyViewHolder<LocalActivityBean> {
 
     @Override
     public void setData(LocalActivityBean item) {
-        setText(R.id.head_activity_tv, item.getCartActivityItemSubTitle());
+        setText(R.id.head_activity_tv, item.getCartActivityItemSubTitle())
+        .addOnClickListener(R.id.head_activity_tv);
     }
 }

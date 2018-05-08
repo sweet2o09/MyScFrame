@@ -30,6 +30,7 @@ public class ExceptionBottomHolder extends MyViewHolder<LocalShopCartButtomBean>
                     .append("空")
                     .create();
         }
-        setText(R.id.clear_goods_tv, clearGoodS);
+        setText(R.id.clear_goods_tv, clearGoodS)
+                .addOnClickListener(R.id.clear_goods_tv);
     }
 }

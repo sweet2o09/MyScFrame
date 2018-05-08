@@ -41,6 +41,12 @@ public class LocalShopCartBean extends LocalBean {
     private String buyMultiItemTips;//多件购买不能超过1000的提示语
     private String saveAmount;//节省金额
 
+
+    /**自定义参数*/
+    private boolean isAllSelected = false;//是否业务类型下的商品全都被选中
+
+
+
     public int getCartItemTradeType() {
         return BaseParser.parseInt(cartItemTradeType);
     }
@@ -111,6 +117,15 @@ public class LocalShopCartBean extends LocalBean {
 
     public void setSaveAmount(String saveAmount) {
         this.saveAmount = saveAmount;
+    }
+
+
+    public boolean isAllSelected() {
+        return isAllSelected;
+    }
+
+    public void setAllSelected(boolean allSelected) {
+        isAllSelected = allSelected;
     }
 
     @Override

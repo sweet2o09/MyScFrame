@@ -36,10 +36,10 @@ public class ExceptionTradeHolder extends MyViewHolder<LocalShopCartBean> {
                     .append(S2).setForegroundColor(ScOutdatedUtils.getColor(R.color.color_FF5252))
                     .create();
 
-            setText(R.id.cart_item_head_tv, sp);
+            setText(R.id.cart_item_ex_head_tv, sp);
         } else if (item.getCartItemTradeType() == 4) {
             //失效
-            setText(R.id.cart_item_head_tv, item.getCartItemTradeTypeTitle());
+            setText(R.id.cart_item_ex_head_tv, item.getCartItemTradeTypeTitle());
         }
 
     }

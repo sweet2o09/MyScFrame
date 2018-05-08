@@ -46,6 +46,8 @@ public class NormalGoodsHolder extends MyViewHolder<CartItemBean> {
         setText(R.id.goods_title_tv, item.getTitle())
                 .setText(R.id.goods_sku_tv, item.getSkuProperty())
                 .setText(R.id.goods_price_tv, mRmbString + item.getMemberPrice())
+                .setChecked(R.id.goods_cb, "1".equals(item.getIsSelected()) ? true : false)
+                .addOnClickListener(R.id.goods_cb_layout)
                 .addOnClickListener(R.id.goods_pic_iv)
                 .addOnClickListener(R.id.goods_title_tv);
 

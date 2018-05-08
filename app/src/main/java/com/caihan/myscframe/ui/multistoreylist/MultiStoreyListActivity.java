@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.caihan.myscframe.R;
 import com.caihan.myscframe.base.BaseScMvpActivity;
 import com.caihan.myscframe.ui.multistoreylist.bean.LocalData;
+import com.caihan.myscframe.ui.multistoreylist.bean.LocalShopCartBean;
+import com.caihan.myscframe.ui.multistoreylist.request.CartItemBean;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -68,11 +71,58 @@ public class MultiStoreyListActivity
     private void initAdapter() {
         mAdapter = new MultiStoreyListAdapter();
         mAdapter.bindToRecyclerView(mRecyclerView);
-//        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//            }
-//        });
+        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()) {
+                    case R.id.head_cb_layout:
+                        //有效商品头部全选按钮
+                        LocalShopCartBean localShopCartBean = (LocalShopCartBean) adapter.getItem(position);
+                        boolean hasUpdate = getPresenter()
+                                .changeAllSelected(mAdapter.getData(), !localShopCartBean.isAllSelected());
+                        if (hasUpdate) {
+                            mAdapter.notifyDataSetChanged();
+                        }
+                        break;
+                    case R.id.head_activity_tv:
+                        //有效商品头部活动点击跳转活动专区
+                        showToast("点击了活动");
+                        break;
+                    case R.id.goods_cb_layout:
+                        //有效商品选中按钮
+                        CartItemBean cartItemBean = (CartItemBean) adapter.getItem(position);
+                        String isSelected = cartItemBean.getIsSelected();
+                        cartItemBean.setIsSelected("1".equals(isSelected) ? "0" : "1");
+                        boolean hasUpdate2 = getPresenter()
+                                .checkHaveAllSelected(mAdapter.getData(), cartItemBean);
+                        if (hasUpdate2) {
+                            mAdapter.notifyDataSetChanged();
+                        }else {
+                            mAdapter.notifyItemChanged(position);
+                        }
+                        break;
+                    case R.id.goods_pic_iv:
+                    case R.id.goods_title_tv:
+                        //有效商品图片与文字点击跳转商品详情
+                        showToast("跳转详情");
+                        break;
+                    case R.id.tax_amount_tv:
+                        //有效商品底部税费Dialog
+                        showToast("税费");
+                        break;
+                    case R.id.settle_btn:
+                        //有效商品底部结算按钮
+                        showToast("结算");
+                        break;
+                    case R.id.clear_goods_tv:
+                        //不支持,失效商品底部清空按钮
+                        showToast("清空");
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     }
 
     @NonNull
