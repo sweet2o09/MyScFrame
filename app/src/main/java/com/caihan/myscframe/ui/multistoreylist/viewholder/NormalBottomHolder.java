@@ -41,6 +41,7 @@ public class NormalBottomHolder extends MyViewHolder<LocalShopCartButtomBean> {
                         .setForegroundColor(ScOutdatedUtils.getColor(R.color.color_FF5252))
                         .create())
                 .setText(R.id.settle_btn, "去结算")
+                .setChecked(R.id.settle_btn, item.isCanClick())
                 .addOnClickListener(R.id.tax_amount_tv)
                 .addOnClickListener(R.id.settle_btn);
     }

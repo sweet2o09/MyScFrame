@@ -15,5 +15,7 @@ public interface MultiStoreyListContract {
 
         void requestDataFinish(LocalData requestData);
 
+        void delGoodsFinish(LocalData requestData);
+
     }
 }

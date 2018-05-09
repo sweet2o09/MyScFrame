@@ -41,6 +41,9 @@ public class LocalShopCartButtomBean extends LocalBean {
     private String buyMultiItemTips;//多件购买不能超过1000的提示语
     private String saveAmount;//节省金额
 
+    /**自定义参数*/
+    private boolean isCanClick = false;//是否业务类型下有商品被选中,结算按钮可以点击
+
     public int getCartItemTradeType() {
         return BaseParser.parseInt(cartItemTradeType);
     }
@@ -111,6 +114,14 @@ public class LocalShopCartButtomBean extends LocalBean {
 
     public void setSaveAmount(String saveAmount) {
         this.saveAmount = saveAmount;
+    }
+
+    public boolean isCanClick() {
+        return isCanClick;
+    }
+
+    public void setCanClick(boolean canClick) {
+        isCanClick = canClick;
     }
 
     @Override

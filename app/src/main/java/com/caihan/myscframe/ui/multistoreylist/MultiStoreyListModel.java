@@ -15,14 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 新购物车数据处理M层
+ *
  * @author caihan
  * @date 2018/5/6
  * @e-mail 93234929@qq.com
  * 维护者
  */
 public class MultiStoreyListModel implements MvpModel {
-
-    private ArrayList<String> selectedGoodsList = new ArrayList<>();
 
 
     /**
@@ -37,7 +37,8 @@ public class MultiStoreyListModel implements MvpModel {
         localData.setBusinessId(requestData.getBusinessId());
         List<LocalBean> localBeanList = new ArrayList<>();
         int cartItemTradeType;
-        boolean isAllSelected = true;
+        boolean isAllSelected = true;//业务是否全选
+        boolean isCanClick = false;//结算是否可点击
 
         for (ShopCartBean shopCartBean : requestData.getShoppingCartList()) {
             LocalShopCartBean localShopCartBean = new LocalShopCartBean();
@@ -70,6 +71,8 @@ public class MultiStoreyListModel implements MvpModel {
                     if ("0".equals(cartItemBean.getIsSelected())) {
                         //只要有一个未选中,就不是全选状态
                         isAllSelected = false;
+                    } else if ("1".equals(cartItemBean.getIsSelected())) {
+                        isCanClick = true;
                     }
                     localBeanList.add(cartItemBean);
                 }
@@ -87,45 +90,53 @@ public class MultiStoreyListModel implements MvpModel {
             localShopCartButtomBean.setTotalAmount(shopCartBean.getTotalAmount());
             localShopCartButtomBean.setBuyMultiItemTips(shopCartBean.getBuyMultiItemTips());
             localShopCartButtomBean.setSaveAmount(shopCartBean.getSaveAmount());
+            localShopCartButtomBean.setCanClick(isCanClick);
             localBeanList.add(localShopCartButtomBean);
         }
         localData.setShoppingCartList(localBeanList);
         return localData;
     }
 
-    @Override
-    public void onDestroy() {
-
-    }
 
     /**
      * 全选与非全选状态切换
      *
      * @param data
-     * @param isSelected
+     * @param isSelected        是否全选
+     * @param cartItemTradeType 业务类型
      * @return true = 需要刷新数据,false = 无需刷新数据
      */
-    public boolean changeAllSelected(List<LocalBean> data, boolean isSelected) {
+    public boolean changeAllSelected(List<LocalBean> data, boolean isSelected, int cartItemTradeType) {
+        /**
+         * 0-普通商品（包括完税商品）
+         * 1-海外直邮（BC）
+         * 2-海外直邮（个人）
+         * 3-保税商品
+         * 4-失效购物车商品（*排在最后、对应原来的storeCount字段与onSale字段，删除，下架，无货，关闭或者开启SKU
+         * 5-不支持快速配送/到店自提/快速送/次日达/扫码购）
+         */
+        if (cartItemTradeType > 3) {
+            //不支持与失效商品无需判断,这里判断是否存在有效商品即可
+            return false;
+        }
+        boolean isAllItemTradeSelected = cartItemTradeType == -1;//是否所有业务类型全选
         LocalShopCartBean localShopCartBean = null;
-        int cartItemTradeType = -1;
         String isAllSelected = isSelected ? "1" : "0";
         for (LocalBean bean : data) {
             //如果数据返回无误的话,列表顺序是:1.有效商品,2.不支持商品,3.失效商品
             if (bean instanceof LocalShopCartBean) {
-                cartItemTradeType = ((LocalShopCartBean) bean).getCartItemTradeType();
-                /**
-                 * 0-普通商品（包括完税商品）
-                 * 1-海外直邮（BC）
-                 * 2-海外直邮（个人）
-                 * 3-保税商品
-                 * 4-失效购物车商品（*排在最后、对应原来的storeCount字段与onSale字段，删除，下架，无货，关闭或者开启SKU
-                 * 5-不支持快速配送/到店自提/快速送/次日达/扫码购）
-                 */
-                if (cartItemTradeType > 3) {
-                    //不支持与失效商品无需判断,这里判断是否存在有效商品即可
-                    return localShopCartBean != null;
+                if (isAllItemTradeSelected){
+                    cartItemTradeType = ((LocalShopCartBean) bean).getCartItemTradeType();
+                    if (cartItemTradeType > 3) {
+                        //不支持与失效商品无需判断,这里判断是否存在有效商品即可
+                        return localShopCartBean != null;
+                    }
+                    localShopCartBean = (LocalShopCartBean) bean;
+                }else {
+                    if (cartItemTradeType == ((LocalShopCartBean) bean).getCartItemTradeType()){
+                        localShopCartBean = (LocalShopCartBean) bean;
+                    }
                 }
-                localShopCartBean = (LocalShopCartBean) bean;
             } else if (bean instanceof CartItemBean) {
                 //找到同业务类型的商品,设置选中状态,并且更新业务全选/反选状态
                 if (((CartItemBean) bean).getCartItemTradeType() == cartItemTradeType) {
@@ -133,6 +144,10 @@ public class MultiStoreyListModel implements MvpModel {
                     if (localShopCartBean != null) {
                         localShopCartBean.setAllSelected(isSelected);
                     }
+                }
+            } else if (bean instanceof LocalShopCartButtomBean) {
+                if (((LocalShopCartButtomBean) bean).getCartItemTradeType() == cartItemTradeType) {
+                    ((LocalShopCartButtomBean) bean).setCanClick(isSelected);
                 }
             }
         }
@@ -160,31 +175,38 @@ public class MultiStoreyListModel implements MvpModel {
         }
         LocalShopCartBean localShopCartBean = null;
         CartItemBean cartItem = null;
-        boolean isAllSelected = true;
+        boolean isAllSelected = true;//业务是否全选
+        boolean isCanClick = false;//结算是否可点击
+
         for (LocalBean bean : data) {
             if (bean instanceof LocalShopCartBean) {
                 if (cartItemTradeType > 3) {
                     //不支持与失效商品无需判断,这里判断是否存在有效商品即可
-                    return false;
+                    return localShopCartBean != null;
                 }
                 localShopCartBean = (LocalShopCartBean) bean;
                 if (localShopCartBean.getCartItemTradeType() == cartItemTradeType) {
                     //先假设被全选
                     localShopCartBean.setAllSelected(isAllSelected);
-                }else {
+                } else {
                     return localShopCartBean != null;
                 }
-            }else if (bean instanceof CartItemBean){
+            } else if (bean instanceof CartItemBean) {
                 cartItem = (CartItemBean) bean;
-                if (cartItem.getCartItemTradeType() != cartItemTradeType){
-                    return false;
+                if (cartItem.getCartItemTradeType() != cartItemTradeType) {
+                    return localShopCartBean != null;
                 }
                 //确保是同业务类型的商品
-                if ("0".equals(cartItem.getIsSelected())){
+                if ("0".equals(cartItem.getIsSelected())) {
                     //有一个未被选中,就取消全选
                     isAllSelected = false;
                     localShopCartBean.setAllSelected(isAllSelected);
-                    return true;
+                } else if ("1".equals(cartItem.getIsSelected())) {
+                    isCanClick = true;
+                }
+            } else if (bean instanceof LocalShopCartButtomBean) {
+                if (((LocalShopCartButtomBean) bean).getCartItemTradeType() == cartItemTradeType) {
+                    ((LocalShopCartButtomBean) bean).setCanClick(isCanClick);
                 }
             }
         }
@@ -197,7 +219,7 @@ public class MultiStoreyListModel implements MvpModel {
      * @param data
      */
     public ArrayList<String> setSelectedGoodsList(List<LocalBean> data) {
-        selectedGoodsList.clear();
+        ArrayList<String> selectedGoodsList = new ArrayList<>();
         CartItemBean cartItemBean;
         for (LocalBean bean : data) {
             if (bean instanceof CartItemBean) {
@@ -213,18 +235,40 @@ public class MultiStoreyListModel implements MvpModel {
         return selectedGoodsList;
     }
 
+
     /**
-     * 添加选中的商品
+     * 删除商品
      *
-     * @param localItemId
+     * @param requestData
+     * @param cartItemBean
+     * @return
      */
-    public void addSelectedGoods(String localItemId) {
-        if (!selectedGoodsList.contains(localItemId)) {
-            selectedGoodsList.add(localItemId);
+    public LocalData delGoods(RequestData requestData, CartItemBean cartItemBean) {
+        String itemCartId = cartItemBean.getItemCartId();
+        int goodsSize;
+        List<CartItemBean> cartItemBeanList;
+        CartItemBean itemBean;
+        for (ShopCartBean shopCartBean : requestData.getShoppingCartList()) {
+            for (CartActivityItemBean activityItemBean : shopCartBean.getCartActivityItemList()) {
+                cartItemBeanList = activityItemBean.getCartItemList();
+                if (cartItemBeanList != null && cartItemBeanList.size() > 0) {
+                    goodsSize = cartItemBeanList.size();
+                    for (int i = 0; i < goodsSize; i++) {
+                        itemBean = cartItemBeanList.get(i);
+                        if (itemCartId.equals(itemBean.getItemCartId())) {
+                            cartItemBeanList.remove(i);
+                            return changeDataStructure(requestData);
+                        }
+                    }
+                }
+            }
         }
+        return changeDataStructure(requestData);
     }
 
-    public ArrayList<String> getSelectedGoodsList() {
-        return selectedGoodsList;
+
+    @Override
+    public void onDestroy() {
+
     }
 }
