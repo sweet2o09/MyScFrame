@@ -101,12 +101,9 @@ public class MultiStoreyListActivity
                     case R.id.head_cb_layout:
                         //有效商品头部全选按钮
                         LocalShopCartBean localShopCartBean = (LocalShopCartBean) adapter.getItem(position);
-                        boolean hasUpdate = getPresenter()
-                                .changeAllSelected(mAdapter.getData(), !localShopCartBean.isAllSelected(),
-                                        localShopCartBean.getCartItemTradeType());
-                        if (hasUpdate) {
-                            mAdapter.notifyDataSetChanged();
-                        }
+                        getPresenter().changeAllSelected(mAdapter.getData(),
+                                !localShopCartBean.isAllSelected(),
+                                localShopCartBean.getCartItemTradeType());
                         break;
                     case R.id.head_activity_tv:
                         //有效商品头部活动点击跳转活动专区
@@ -115,15 +112,16 @@ public class MultiStoreyListActivity
                     case R.id.goods_cb_layout:
                         //有效商品选中按钮
                         CartItemBean cartItemBean = (CartItemBean) adapter.getItem(position);
-                        String isSelected = cartItemBean.getIsSelected();
-                        cartItemBean.setIsSelected("1".equals(isSelected) ? "0" : "1");
-                        boolean hasUpdate2 = getPresenter()
-                                .checkHaveAllSelected(mAdapter.getData(), cartItemBean);
-                        if (hasUpdate2) {
-                            mAdapter.notifyDataSetChanged();
-                        } else {
-                            mAdapter.notifyItemChanged(position);
-                        }
+//                        String isSelected = cartItemBean.getIsSelected();
+//                        cartItemBean.setIsSelected("1".equals(isSelected) ? "0" : "1");
+//                        boolean hasUpdate2 = getPresenter()
+//                                .checkHaveAllSelected(mAdapter.getData(), cartItemBean);
+//                        if (hasUpdate2) {
+//                            mAdapter.notifyDataSetChanged();
+//                        } else {
+//                            mAdapter.notifyItemChanged(position);
+//                        }
+                        getPresenter().goodsSelectedChange(mAdapter.getData(),cartItemBean);
                         break;
                     case R.id.goods_pic_iv:
                     case R.id.goods_title_tv:
@@ -184,6 +182,12 @@ public class MultiStoreyListActivity
         mAdapter.setNewData(requestData.getShoppingCartList());
     }
 
+    @Override
+    public void UiButtomAllSelectedBtnStatus(boolean isAllSelected) {
+        mFullCheckCb.setChecked(isAllSelected);
+        mAdapter.notifyDataSetChanged();
+    }
+
     @OnClick({R.id.toolbar_right_tv, R.id.full_check_layout, R.id.settle_btn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -194,13 +198,7 @@ public class MultiStoreyListActivity
                 break;
             case R.id.full_check_layout:
                 boolean isChecked = mFullCheckCb.isChecked();
-                boolean hasUpdate = getPresenter()
-                        .changeAllSelected(mAdapter.getData(), !isChecked, -1);
-                if (hasUpdate) {
-                    mAdapter.notifyDataSetChanged();
-                    mFullCheckCb.setChecked(!mFullCheckCb.isChecked());
-                    showToast("底部全选按钮");
-                }
+                getPresenter().changeAllSelected(mAdapter.getData(), !isChecked, -1);
                 break;
             case R.id.settle_btn:
                 showToast("底部结算按钮");

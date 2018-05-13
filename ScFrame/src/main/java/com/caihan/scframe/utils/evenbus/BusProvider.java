@@ -5,7 +5,6 @@ import android.util.Log;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.greenrobot.eventbusperf.MyEventBusIndex;
 
 /**
  * Created by caihan on 2016/10/31.

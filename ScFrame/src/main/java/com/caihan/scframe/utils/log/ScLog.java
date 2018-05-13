@@ -9,6 +9,7 @@ import com.caihan.scframe.framework.ScApplication;
 /**
  * Log工具管理类<br/>
  * xTag(String,Object...)方法是带自定义TAG的log,Object里面可以是各种类型,会自动判断
+ *
  * @author caihan
  * @date 2018/1/13
  * @e-mail 93234929@qq.com
@@ -17,6 +18,7 @@ import com.caihan.scframe.framework.ScApplication;
 public final class ScLog {
 
     private static final String DEBUG_TAG = "DebugLog";
+    private static final int MAX_LEN = 3984;
 
     private ScLog() {
         throw new UnsupportedOperationException("u can't instantiate me...");
@@ -73,6 +75,7 @@ public final class ScLog {
 
     /**
      * 简单log,默认TAG = DebugLog
+     *
      * @param msg
      */
     public static void debug(Object msg) {
@@ -86,19 +89,31 @@ public final class ScLog {
      * @param tag
      * @param msg
      */
-    public static void debug(String tag, Object msg) {
-        String str = msg.toString().trim();
-        final int maxLen = 4000;
-        for (int i = 0, len = str.length(); i * maxLen < len; ++i) {
-            String subMsg = str.substring(i * maxLen, (i + 1) * maxLen < len ? (i + 1) * maxLen : len);
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                Log.d(tag, subMsg);
+    public static void debug(String tag, String msg) {
+        int len = msg.length();
+        int countOfSub = len / MAX_LEN;
+        if (countOfSub > 0) {
+            int index = 0;
+            for (int i = 0; i < countOfSub; i++) {
+                showDebugLog(tag, msg.substring(index, index + MAX_LEN));
+                index += MAX_LEN;
+            }
+            if (index != len) {
+                showDebugLog(tag, msg.substring(index, len));
+            }
+        } else {
+            showDebugLog(tag, msg);
+        }
+    }
+
+    private static void showDebugLog(String tag, String subMsg){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            Log.d(tag, subMsg);
+        } else {
+            if (ScApplication.sDebug) {
+                Log.i(tag, subMsg);
             } else {
-                if (ScApplication.sDebug) {
-                    Log.i(tag, subMsg);
-                } else {
-                    Log.d(tag, subMsg);
-                }
+                Log.d(tag, subMsg);
             }
         }
     }

@@ -28,7 +28,8 @@ import io.reactivex.ObservableOnSubscribe;
  * @e-mail 93234929@qq.com
  * 维护者
  */
-public class MultiStoreyListPresenter extends MvpBasePresenter<MultiStoreyListContract.View> {
+public class MultiStoreyListPresenter
+        extends MvpBasePresenter<MultiStoreyListContract.View> {
 
 
     private MultiStoreyListModel mModel;
@@ -37,7 +38,21 @@ public class MultiStoreyListPresenter extends MvpBasePresenter<MultiStoreyListCo
 
     public MultiStoreyListPresenter(Context context) {
         super(context);
-        mModel = new MultiStoreyListModel();
+        mModel = new MultiStoreyListModel(new MultiStoreyListModel.IShopCartSelectedListener() {
+
+            @Override
+            public void normalAllSelectedBtnStatus(boolean isAllSelected) {
+            }
+
+            @Override
+            public void normalAllSelectedBtnStatus(int cartItemTradeType, boolean isAllSelected) {
+            }
+
+            @Override
+            public void UiButtomAllSelectedBtnStatus(boolean isAllSelected) {
+                getView().UiButtomAllSelectedBtnStatus(isAllSelected);
+            }
+        });
     }
 
     public void requestData() {
@@ -77,7 +92,7 @@ public class MultiStoreyListPresenter extends MvpBasePresenter<MultiStoreyListCo
                 LocalData localData = mModel.delGoods(mRequestData, cartItemBean);
                 emitter.onNext(localData);
             }
-        }).compose(RxSchedulers.<LocalData>request((RxAppCompatActivity) mContext,getView()))
+        }).compose(RxSchedulers.<LocalData>request((RxAppCompatActivity) mContext, getView()))
                 .subscribe(new RxSubscriber<LocalData>(getView()) {
                     @Override
                     public void _onNext(LocalData localData) {
@@ -95,21 +110,22 @@ public class MultiStoreyListPresenter extends MvpBasePresenter<MultiStoreyListCo
      * 全选与非全选状态切换
      *
      * @param data
-     * @param isSelected 是否全选
+     * @param isSelected        是否全选
      * @param cartItemTradeType 业务类型
      * @return true = 需要刷新数据,false = 无需刷新数据
      */
-    public boolean changeAllSelected(List<LocalBean> data, boolean isSelected, int cartItemTradeType) {
-        return mModel.changeAllSelected(data, isSelected, cartItemTradeType);
+    public void changeAllSelected(List<LocalBean> data, boolean isSelected, int cartItemTradeType) {
+        mModel.changeAllSelected(data, isSelected, cartItemTradeType);
     }
 
     /**
-     * 当选中一个商品的时候,判断是否需要联动头部全选按钮
+     * 当选中一个商品的时候,联动刷新底部全选按钮
      *
-     * @return true = 全部刷新, false = 只刷新item
+     * @param data
+     * @param cartItemBean
      */
-    public boolean checkHaveAllSelected(List<LocalBean> data, CartItemBean cartItemBean) {
-        return mModel.checkHaveAllSelected(data, cartItemBean);
+    public void goodsSelectedChange(List<LocalBean> data, CartItemBean cartItemBean) {
+        mModel.goodsSelectedChange(data, cartItemBean);
     }
 
     /**

@@ -487,7 +487,7 @@ public abstract class BaseFragment
             throw new IllegalArgumentException("adapter can no be null");
         }
         if (isRefresh) {
-            if (total < onePageSize) {
+            if (total <= onePageSize) {
                 adapter.loadMoreEnd(true);
             }
         } else {

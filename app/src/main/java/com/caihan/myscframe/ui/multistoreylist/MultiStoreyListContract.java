@@ -17,5 +17,13 @@ public interface MultiStoreyListContract {
 
         void delGoodsFinish(LocalData requestData);
 
+
+        /**
+         * 刷新底部全选按钮状态
+         *
+         * @param isAllSelected
+         */
+        void UiButtomAllSelectedBtnStatus(boolean isAllSelected);
+
     }
 }
