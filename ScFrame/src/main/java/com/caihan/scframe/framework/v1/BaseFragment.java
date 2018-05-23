@@ -9,6 +9,8 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,10 @@ import com.trello.rxlifecycle2.components.support.RxFragment;
  * 7.网络请求Loading<br/>
  * 8.吐司<br/>
  * 9.BaseQuickAdapter分页判断<br/>
+ * <p>
+ * 注意事项:
+ * {@link FragmentPagerAdapter#destroyItem(ViewGroup, int, Object)}重写并且去掉super调用
+ * {@link ViewPager#setOffscreenPageLimit(int)}不要调用
  *
  * @author caihan
  * @date 2018/1/5
@@ -96,7 +102,6 @@ public abstract class BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         return inflater.inflate(setLayoutResId(), container, false);
     }
 
@@ -141,10 +146,6 @@ public abstract class BaseFragment
             mContext = getActivity();
             mSavedInstanceState = savedInstanceState;
             butterKnifeBind(mRootView);
-            //是否开启沉浸式
-            if (openImmersion()) {
-                initImmersion();
-            }
             onViewCreated();
         }
         super.onViewCreated(mRootView, savedInstanceState);
@@ -166,10 +167,10 @@ public abstract class BaseFragment
         }
         if (getUserVisibleHint()) {
             mIsVisible = true;
+            onVisible();
             if (mIsFirstVisite) {
                 onFragmentFirstVisible();
             }
-            onVisible();
         } else {
             mIsVisible = false;
             onInvisible();
@@ -179,10 +180,10 @@ public abstract class BaseFragment
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (hidden){
+        if (hidden) {
             mIsVisible = false;
             onInvisible();
-        }else {
+        } else {
             mIsVisible = true;
             onVisible();
         }
@@ -250,22 +251,17 @@ public abstract class BaseFragment
         mRootView = null;
     }
 
-    @Override
-    public boolean openImmersion() {
-        return false;
-    }
-
+    /**
+     * 该方法会初始化沉浸式
+     *
+     * @return
+     */
     @Override
     public ScImmersionBar getImmersion() {
         if (mImmersionBar == null) {
             mImmersionBar = new ScImmersionBar(getActivity(), this);
         }
         return mImmersionBar;
-    }
-
-    @Override
-    public void initImmersion() {
-        getImmersion();
     }
 
     @Override
@@ -327,7 +323,7 @@ public abstract class BaseFragment
 
     @Override
     public void showRequestLoading() {
-        if (mIsVisible){
+        if (mIsVisible) {
             getRequestLoading().show();
         }
     }

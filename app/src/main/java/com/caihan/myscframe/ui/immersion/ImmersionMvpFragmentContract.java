@@ -12,5 +12,7 @@ public interface ImmersionMvpFragmentContract {
 
     interface View extends MvpView {
 
+        void showWord();
+
     }
 }

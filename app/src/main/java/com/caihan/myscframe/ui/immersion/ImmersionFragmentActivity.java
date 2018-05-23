@@ -24,7 +24,6 @@ public class ImmersionFragmentActivity extends BaseScActivity {
     TabLayout mTabLayout;
 
 
-
     @Override
     protected int setLayoutResId() {
         return R.layout.activity_immersion_fragment;
@@ -32,6 +31,7 @@ public class ImmersionFragmentActivity extends BaseScActivity {
 
     @Override
     protected void onCreate() {
+        getImmersion();
         ImmersionViewPagerAdapter pagerAdapter = new ImmersionViewPagerAdapter(mContext, getSupportFragmentManager());
         mViewPager.setAdapter(pagerAdapter);
         //多缓存几个界面,这样Fragment就不会被销毁

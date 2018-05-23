@@ -38,7 +38,7 @@ public class ImmersionMvpViewPagerAdapter extends FragmentPagerAdapter {
             R.drawable.selector_tab_imag_4
     };
 
-    private static final int PAGE_COUNT = 5;
+    public static final int PAGE_COUNT = 5;
     private final static int PAGER_0 = 0;
     private final static int PAGER_1 = 1;
     private final static int PAGER_2 = 2;

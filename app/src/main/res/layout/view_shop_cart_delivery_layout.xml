@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/delivery_type_container_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFEF7"
+    android:orientation="vertical"
+    android:visibility="gone"
+    tools:visibility="visible">
+
+    <!--只有一个配送方式的时候展示-->
+    <TextView
+        android:id="@+id/single_delivery_type_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/dark_text_color"
+        android:textSize="14sp"
+        android:visibility="gone"
+        tools:text="单个配送"
+        tools:visibility="visible"/>
+
+    <!--多个配送方式的时候展示-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/delivery_type_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/single_delivery_type_name_tv"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
+    <!--配送提示语,快递配送没有提示语-->
+    <TextView
+        android:id="@+id/delivery_type_tips_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/delivery_type_rv"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:textColor="@color/light_text_color"
+        android:textSize="11sp"
+        android:visibility="gone"
+        tools:text="配送提示语"
+        tools:visibility="visible"/>
+
+    <ImageView
+        android:id="@+id/xu_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/delivery_type_tips_tv"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/ic_xuxian"/>
+
+    <!--送货地址,根据不同配送方式显示不同的地址提示语,-->
+    <TextView
+        android:id="@+id/delivery_address_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/xu_line"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:drawableLeft="@drawable/ic_location_empty"
+        android:drawablePadding="5dp"
+        android:drawableRight="@drawable/right_arrow"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:lines="1"
+        android:maxLines="1"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:textColor="@color/dark_text_color"
+        tools:text="送货地址"/>
+
+    <ImageView
+        android:id="@+id/color_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/delivery_address_tv"
+        android:src="@drawable/ic_x"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
+    <!--购物车内无商品提示语-->
+    <TextView
+        android:id="@+id/cart_no_goods_tips_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/color_line"
+        android:background="@color/white"
+        android:drawablePadding="15dp"
+        android:drawableTop="@drawable/ic_shopping_cart_empty"
+        android:gravity="center"
+        android:lineSpacingExtra="3dp"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        android:textColor="@color/light_text_color"
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:text="购物车内无可XXX商品\n请选择其他配送业务"
+        tools:visibility="visible"/>
+
+    <!--次日达专属空界面-->
+    <LinearLayout
+        android:id="@+id/next_day_no_goods_ll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/color_line"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:drawablePadding="15dp"
+            android:drawableTop="@drawable/empty_image_address"
+            android:gravity="center"
+            android:text="各地区商品和配送服务不同，\n请确认配送区域"
+            android:textColor="@color/light_text_color"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/choose_delivery_address_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_frame_main_color"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:text="选择配送区域"
+            android:textColor="@color/color_FF5252"
+            android:textSize="12sp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

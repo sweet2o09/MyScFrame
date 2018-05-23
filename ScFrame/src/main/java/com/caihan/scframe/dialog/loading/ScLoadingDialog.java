@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.EmptyUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.caihan.scframe.R;
 import com.caihan.scframe.utils.ScOutdatedUtils;
 
@@ -77,7 +77,7 @@ public class ScLoadingDialog extends Dialog {
     }
 
     public ScLoadingDialog setMessage(String message) {
-        if (EmptyUtils.isNotEmpty(message)) {
+        if (!StringUtils.isEmpty(message)) {
             loadingMessage.setText(message);
         }
         return this;

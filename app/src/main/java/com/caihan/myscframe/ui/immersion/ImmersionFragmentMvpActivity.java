@@ -26,9 +26,10 @@ public class ImmersionFragmentMvpActivity
 
     @Override
     protected void onCreateMvp() {
+        getImmersion();
         ImmersionMvpViewPagerAdapter pagerAdapter = new ImmersionMvpViewPagerAdapter(mContext, getSupportFragmentManager());
         mViewPager.setAdapter(pagerAdapter);
-        //多缓存几个界面,这样Fragment就不会被销毁
+        //多缓存几个界面,这样Fragment就不会被销毁,会调用onViewCreatedMvp
 //        mViewPager.setOffscreenPageLimit((pagerAdapter.PAGE_COUNT - 1));
         mTabLayout.setupWithViewPager(mViewPager);
         for (int i = 0; i < mTabLayout.getTabCount(); i++) {

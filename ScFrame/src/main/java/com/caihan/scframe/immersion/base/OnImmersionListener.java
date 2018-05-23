@@ -13,13 +13,6 @@ import com.caihan.scframe.immersion.ScImmersionBar;
  */
 public interface OnImmersionListener {
 
-    boolean openImmersion();
-
-    /**
-     * 初始化沉浸式效果
-     */
-    void initImmersion();
-
     /**
      * 获取沉浸式效果实例
      *

@@ -110,9 +110,6 @@ public abstract class BaseActivity
             setContentView(layoutRes);
         }
         butterKnifebind();
-        if (openImmersion()) {
-            initImmersion();
-        }
         onCreate();
     }
 
@@ -321,22 +318,18 @@ public abstract class BaseActivity
     }
 
     //**********沉浸式效果 start****************************************//
-    @Override
-    public boolean openImmersion() {
-        return false;
-    }
 
+    /**
+     * 该方法会初始化沉浸式
+     *
+     * @return
+     */
     @Override
     public ScImmersionBar getImmersion() {
         if (mImmersionBar == null) {
             mImmersionBar = new ScImmersionBar(this);
         }
         return mImmersionBar;
-    }
-
-    @Override
-    public void initImmersion() {
-        getImmersion();
     }
 
     @Override

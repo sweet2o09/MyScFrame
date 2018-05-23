@@ -2,6 +2,7 @@ package com.caihan.myscframe.ui.immersion;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.caihan.myscframe.R;
@@ -23,6 +24,8 @@ public class ImmersionMvpFragment
     @BindView(R.id.text_view)
     TextView mTextView;
 
+    Button mBtn;
+
 
     private int mType;
 
@@ -32,12 +35,6 @@ public class ImmersionMvpFragment
         args.putInt("key", type);
         fragment.setArguments(args);
         return fragment;
-    }
-
-
-    @Override
-    public boolean openImmersion() {
-        return true;
     }
 
     @Override
@@ -56,18 +53,24 @@ public class ImmersionMvpFragment
     @Override
     protected void onViewCreatedMvp() {
         mType = getArguments().getInt("key");
+        mBtn = findViewById(R.id.btn);
         ScLog.debug("ImmersionMvpFragment mType = " + mType + " onViewCreatedMvp");
         mTextView.setText("我是MvpFragment mType = " + mType);
     }
 
     @Override
     protected int setLayoutResId() {
-        ScLog.debug("ImmersionMvpFragment mType = " + mType + " setLayoutResId");
         return R.layout.fragment_immersion_mvp;
     }
 
     @Override
     protected void lazyLoadData() {
+        getPresenter().showWord();
+    }
+
+    @Override
+    public void showWord() {
+        mBtn.setText("" + mType);
         showToast("ImmersionMvpFragment mType = " + mType + " lazyLoadData");
     }
 }

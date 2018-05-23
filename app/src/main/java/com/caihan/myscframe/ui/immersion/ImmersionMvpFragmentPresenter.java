@@ -17,6 +17,11 @@ public class ImmersionMvpFragmentPresenter extends MvpBasePresenter<ImmersionMvp
         super(context);
     }
 
+    public void showWord(){
+
+        getView().showWord();
+    }
+
     @Override
     public void destroy() {
 

@@ -32,11 +32,6 @@ public class ImmersionFragment extends BaseScFragment {
     }
 
     @Override
-    public boolean openImmersion() {
-        return true;
-    }
-
-    @Override
     public void setImmersion() {
         ScLog.debug("ImmersionFragment mType = " + mType + " setImmersion");
         getImmersion().setImmersionTransparentDarkFont(mType % 2 == 1);

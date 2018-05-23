@@ -65,7 +65,7 @@ dependencies {
     api 'com.android.support:recyclerview-v7:26.1.0'
 
     /** 安卓工具类库 */
-    api 'com.blankj:utilcode:1.10.0'
+    api 'com.blankj:utilcode:1.15.1'
 
     /** Android智能下拉刷新框架 */
     api 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'

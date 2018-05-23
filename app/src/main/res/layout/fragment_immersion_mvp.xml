@@ -17,4 +17,16 @@
         android:textStyle="bold"
         tools:text="我是MvpFragment"/>
 
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="未设置"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"/>
+
 </RelativeLayout>
