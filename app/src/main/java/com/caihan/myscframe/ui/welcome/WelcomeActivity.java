@@ -13,6 +13,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 
 public class WelcomeActivity extends BaseScActivity {
 
@@ -35,10 +36,15 @@ public class WelcomeActivity extends BaseScActivity {
     @Override
     protected void onCreate() {
         setImmersion();
-        ScLog.debug("onCreate");
         RxCountDown.countdown(3)
-                .compose(this.<Boolean>bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribe(new Observer<Boolean>() {
+                .compose(this.<Long>bindUntilEvent(ActivityEvent.DESTROY))
+                .doOnDispose(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        ScLog.debug("doOnDispose");
+                    }
+                })
+                .subscribe(new Observer<Long>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         mDisposable = d;
@@ -46,9 +52,11 @@ public class WelcomeActivity extends BaseScActivity {
                     }
 
                     @Override
-                    public void onNext(Boolean b) {
-                        ScLog.debug("onNext");
-                        startHomeActivity(false);
+                    public void onNext(Long longer) {
+                        ScLog.debug("onNext longer = " + longer);
+                        if (longer == 0) {
+                            startHomeActivity(false);
+                        }
                     }
 
                     @Override
@@ -68,7 +76,9 @@ public class WelcomeActivity extends BaseScActivity {
     public void onViewClicked() {
         ScLog.debug("onViewClicked");
         //切断下游,不再接收,调用dispose()并不会导致上游不再继续发送事件, 上游会继续发送剩余的事件.
-        mDisposable.dispose();
+        if (mDisposable != null){
+            mDisposable.dispose();
+        }
         startHomeActivity(false);
     }
 

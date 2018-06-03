@@ -24,7 +24,7 @@ import com.gyf.barlibrary.ImmersionBar;
  * 维护者
  */
 public class ScImmersionBar extends AbstractImmersion {
-    private static final String TAG = "U1CityImmersionBar";
+    private static final String TAG = "ScImmersionBar";
 
     ImmersionBar mImmersionBar = null;
 

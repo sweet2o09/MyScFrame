@@ -115,9 +115,10 @@ import io.reactivex.schedulers.Schedulers;
  * <p>
  * 组合/合并操作符:
  * 这里不多做说明,常用的有{@link #zipUse()}
- *
+ * <p>
  * 线程切换用法:{@link #threadUse()}
- *
+ * <p>
+ * 防抖动用法:{@link #throttleFirst()}
  *
  * @author caihan
  * @date 2018/1/16
@@ -1192,10 +1193,10 @@ public class RxJava2Document {
                     public ObservableSource<? extends Integer> apply(@NonNull Throwable throwable) throws Exception {
 
                         // 1. 捕捉错误异常
-                        Log.e(TAG, "在onErrorReturn处理了错误: "+throwable.toString() );
+                        Log.e(TAG, "在onErrorReturn处理了错误: " + throwable.toString());
 
                         // 2. 发生错误事件后，发送一个新的被观察者 & 发送事件序列
-                        return Observable.just(11,22);
+                        return Observable.just(11, 22);
 
                     }
                 })
@@ -1204,9 +1205,10 @@ public class RxJava2Document {
                     public void onSubscribe(Disposable d) {
 
                     }
+
                     @Override
                     public void onNext(Integer value) {
-                        Log.d(TAG, "接收到了事件"+ value  );
+                        Log.d(TAG, "接收到了事件" + value);
                         //onErrorResumeNext后依然会调用该方法,这边会收到value = 11和22的事件
                     }
 
@@ -1243,9 +1245,10 @@ public class RxJava2Document {
                     public void onSubscribe(Disposable d) {
 
                     }
+
                     @Override
                     public void onNext(Integer value) {
-                        Log.d(TAG, "接收到了事件"+ value  );
+                        Log.d(TAG, "接收到了事件" + value);
                         //onExceptionResumeNext后依然会调用该方法,这边会收到value = 11和22的事件
                     }
 
@@ -1259,5 +1262,50 @@ public class RxJava2Document {
                         Log.d(TAG, "对Complete事件作出响应");
                     }
                 });
+    }
+
+
+    /**
+     * throttleFirst 操作符
+     *
+     * 使用场景：
+     * 1、button按钮防抖操作，防连续点击
+     * 2、百度关键词联想，在一段时间内只联想一次，防止频繁请求服务器
+     *
+     */
+    private void throttleFirst() {
+        Observable.interval(1, TimeUnit.SECONDS)
+                .throttleFirst(3, TimeUnit.SECONDS)
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+
+                    }
+                });
+    }
+
+    /**
+     * distinct 去除重复操作符
+     *
+     */
+    private void distinct(){
+        List<String> list = new ArrayList<>() ;
+        list.add( "1" ) ;
+        list.add( "2" ) ;
+        list.add( "1" ) ;
+        list.add( "3" ) ;
+        list.add( "4" ) ;
+        list.add( "2" ) ;
+        list.add( "1" ) ;
+        list.add( "1" ) ;
+
+        Observable.fromIterable(list)
+                .distinct()
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        //这边会把重复的删除掉,出来的数据只会有4个
+                    }
+                }) ;
     }
 }

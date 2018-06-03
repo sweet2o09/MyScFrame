@@ -9,6 +9,7 @@ import com.caihan.scframe.framework.v1.support.impl.MvpBasePresenter;
 import com.caihan.scframe.framework.v1.support.mvp.activity.delegate.ActivityMvpDelegate;
 import com.caihan.scframe.framework.v1.support.mvp.activity.delegate.ActivityMvpDelegateCallback;
 import com.caihan.scframe.framework.v1.support.mvp.activity.delegate.ActivityMvpDelegateImpl;
+import com.caihan.scframe.framework.v1.support.mvp.lce.activity.ScMvpLceActivity;
 
 /**
  * MVP设计模式
@@ -20,7 +21,7 @@ import com.caihan.scframe.framework.v1.support.mvp.activity.delegate.ActivityMvp
  * @e-mail 93234929@qq.com
  * 维护者
  */
-public abstract class U1CityMvpActivity
+public abstract class ScMvpActivity
         <V extends MvpView, P extends MvpBasePresenter<V>>
         extends BaseActivity
         implements MvpView, ActivityMvpDelegateCallback<V, P> {
@@ -96,8 +97,8 @@ public abstract class U1CityMvpActivity
 
     /**
      * 如果不是直接继承的话,请勿使用该方法
-     * {@link U1CityMvpLceActivity#onContentChanged()}会在{@link BaseActivity#onCreate(Bundle)}后调用
-     * 因此在U1CityMvpLceActivity中可以继续使用onCreateMvp()进行初始化
+     * {@link ScMvpLceActivity#onContentChanged()}会在{@link BaseActivity#onCreate(Bundle)}后调用
+     * 因此在ScMvpLceActivity中可以继续使用onCreateMvp()进行初始化
      */
     protected abstract void onCreateMvp();
 

@@ -40,8 +40,7 @@ public class RxSchedulers {
         return new ObservableTransformer<T, T>() {
             @Override
             public ObservableSource<T> apply(Observable<T> upstream) {
-                return new BuildFlowable(activity)
-                        .bindLifeCycle(upstream);
+                return bindLifeCycle(upstream, activity);
             }
         };
     }
@@ -57,8 +56,7 @@ public class RxSchedulers {
         return new ObservableTransformer<T, T>() {
             @Override
             public ObservableSource<T> apply(Observable<T> upstream) {
-                return new BuildFlowable(rxFragment)
-                        .bindLifeCycle(upstream);
+                return bindLifeCycle(upstream, rxFragment);
             }
         };
     }
@@ -75,8 +73,7 @@ public class RxSchedulers {
         return new ObservableTransformer<T, T>() {
             @Override
             public ObservableSource<T> apply(Observable<T> upstream) {
-                return new BuildFlowable(v4Fragment)
-                        .bindLifeCycle(upstream);
+                return bindLifeCycle(upstream, v4Fragment);
             }
         };
     }
@@ -97,8 +94,7 @@ public class RxSchedulers {
         return new ObservableTransformer<T, T>() {
             @Override
             public ObservableSource<T> apply(Observable<T> upstream) {
-                return new BuildFlowable(activity)
-                        .bindLifeCycle(upstream)
+                return bindLifeCycle(upstream, activity)
                         .doOnSubscribe(new Consumer<Disposable>() {
                             @Override
                             public void accept(Disposable disposable) throws Exception {
@@ -128,8 +124,7 @@ public class RxSchedulers {
         return new ObservableTransformer<T, T>() {
             @Override
             public ObservableSource<T> apply(Observable<T> upstream) {
-                return new BuildFlowable(activity)
-                        .bindLifeCycle(upstream)
+                return bindLifeCycle(upstream, activity)
                         .doOnSubscribe(new Consumer<Disposable>() {
                             @Override
                             public void accept(Disposable disposable) throws Exception {
@@ -156,8 +151,7 @@ public class RxSchedulers {
         return new ObservableTransformer<T, T>() {
             @Override
             public ObservableSource<T> apply(Observable<T> upstream) {
-                return new BuildFlowable(rxFragment)
-                        .bindLifeCycle(upstream)
+                return bindLifeCycle(upstream, rxFragment)
                         .doOnSubscribe(new Consumer<Disposable>() {
                             @Override
                             public void accept(Disposable disposable) throws Exception {
@@ -188,8 +182,7 @@ public class RxSchedulers {
         return new ObservableTransformer<T, T>() {
             @Override
             public ObservableSource<T> apply(Observable<T> upstream) {
-                return new BuildFlowable(v4Fragment)
-                        .bindLifeCycle(upstream)
+                return bindLifeCycle(upstream, v4Fragment)
                         .doOnSubscribe(new Consumer<Disposable>() {
                             @Override
                             public void accept(Disposable disposable) throws Exception {
@@ -220,37 +213,46 @@ public class RxSchedulers {
         };
     }
 
+    /**
+     * 使用Rxlifecycle2管理RxJava,防止内存泄漏
+     *
+     * @param observable
+     * @param rxAppCompatActivity
+     * @param <T>
+     * @return
+     */
+    private static <T> Observable<T> bindLifeCycle(Observable<T> observable, RxAppCompatActivity rxAppCompatActivity) {
+        return observable.compose(rxAppCompatActivity.<T>bindUntilEvent(ActivityEvent.DESTROY))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 
     /**
      * 使用Rxlifecycle2管理RxJava,防止内存泄漏
+     *
+     * @param observable
+     * @param rxFragment
+     * @param <T>
+     * @return
      */
-    private static class BuildFlowable {
-        private RxAppCompatActivity mRxAppCompatActivity;
-        private RxFragment mRxFragment;
-        private com.trello.rxlifecycle2.components.support.RxFragment mV4Fragment;
+    private static <T> Observable<T> bindLifeCycle(Observable<T> observable, RxFragment rxFragment) {
+        return observable.compose(rxFragment.<T>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 
-        public BuildFlowable(RxAppCompatActivity rxAppCompatActivity) {
-            mRxAppCompatActivity = rxAppCompatActivity;
-        }
-
-        public BuildFlowable(RxFragment rxFragment) {
-            mRxFragment = rxFragment;
-        }
-
-        public BuildFlowable(com.trello.rxlifecycle2.components.support.RxFragment v4Fragment) {
-            mV4Fragment = v4Fragment;
-        }
-
-        private <T> Observable<T> bindLifeCycle(Observable<T> observable) {
-            if (mRxAppCompatActivity != null) {
-                observable.compose(mRxAppCompatActivity.<T>bindUntilEvent(ActivityEvent.DESTROY));
-            } else if (mRxFragment != null) {
-                observable.compose(mRxFragment.<T>bindUntilEvent(FragmentEvent.DESTROY_VIEW));
-            } else if (mV4Fragment != null) {
-                observable.compose(mV4Fragment.<T>bindUntilEvent(FragmentEvent.DESTROY_VIEW));
-            }
-            return observable.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
-        }
+    /**
+     * 使用Rxlifecycle2管理RxJava,防止内存泄漏
+     *
+     * @param observable
+     * @param v4Fragment
+     * @param <T>
+     * @return
+     */
+    private static <T> Observable<T> bindLifeCycle(
+            Observable<T> observable, com.trello.rxlifecycle2.components.support.RxFragment v4Fragment) {
+        return observable.compose(v4Fragment.<T>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

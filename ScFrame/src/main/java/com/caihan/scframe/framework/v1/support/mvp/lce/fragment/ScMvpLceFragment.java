@@ -1,15 +1,17 @@
-package com.caihan.scframe.framework.v1.support.mvp.lce.activity;
+package com.caihan.scframe.framework.v1.support.mvp.lce.fragment;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.caihan.scframe.framework.v1.support.impl.MvpBasePresenter;
-import com.caihan.scframe.framework.v1.support.mvp.activity.U1CityMvpActivity;
+import com.caihan.scframe.framework.v1.support.MvpPresenter;
+import com.caihan.scframe.framework.v1.support.mvp.fragment.ScMvpFragment;
 import com.caihan.scframe.framework.v1.support.mvp.lce.MvpLceView;
 import com.caihan.scframe.framework.v1.support.mvp.lce.MvpLceViewImpl;
 import com.caihan.scframe.framework.v1.support.mvp.lce.animator.ILceAnimator;
 
 /**
- * MVP->LCE设计模式,Activity基类
+ * MVP->LCE设计模式,Fragment基类
  * <p>
  * LCE设计思路:<br/>
  * 先展示L_View也就是LoadingView<br/>
@@ -21,14 +23,49 @@ import com.caihan.scframe.framework.v1.support.mvp.lce.animator.ILceAnimator;
  * @e-mail 93234929@qq.com
  * 维护者
  */
-public abstract class U1CityMvpLceActivity
-        <D, V extends MvpLceView<D>, P extends MvpBasePresenter<V>>
-        extends U1CityMvpActivity<V, P>
+public abstract class ScMvpLceFragment
+        <D, V extends MvpLceView<D>, P extends MvpPresenter<V>>
+        extends ScMvpFragment<V, P>
         implements MvpLceView<D> {
 
+    //初始化Lce UI布局(规定你的Lce布局文件的id)
     private MvpLceViewImpl<D> lceViewImpl;
     //是否是第一次网络请求
     private boolean isFirstRequest = true;
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (lceViewImpl == null) {
+            lceViewImpl = new MvpLceViewImpl<D>();
+        }
+        initLceView(view);
+        onViewCreatedMvpLce();
+    }
+
+    private void initLceView(View v) {
+        lceViewImpl.initLceView(v);
+        lceViewImpl.setOnErrorViewClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                onErrorClick();
+            }
+        });
+        //初始化的时候先展示LoadingView
+        showLoadingLayout(false);
+    }
+
+    /**
+     * 初始化,如果不是直接继承的话请不要使用该方法
+     */
+    protected abstract void onViewCreatedMvpLce();
+
+    @Override
+    @Deprecated
+    protected void onViewCreatedMvp() {
+
+    }
 
     /**
      * 提供给子类配置自己想要的动画策略
@@ -52,28 +89,6 @@ public abstract class U1CityMvpLceActivity
         autoRefreshSuccess();
     }
 
-    //onContentChanged:当我们的布局发生变化的时候里面回调
-    //特点：在Activity第一次启动的时候，也会回调该方法
-    @Override
-    public void onContentChanged() {
-        super.onContentChanged();
-        lceViewImpl = new MvpLceViewImpl<D>();
-        initLceView(getWindow().getDecorView());
-    }
-
-    private void initLceView(View v) {
-        lceViewImpl.initLceView(v);
-        lceViewImpl.setOnErrorViewClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                onErrorClick();
-            }
-        });
-        //初始化的时候先展示LoadingView
-        showLoadingLayout(false);
-    }
-
     @Override
     public void showLoadingLayout(boolean isPullRefresh) {
         if (isFirstRequest()) {
@@ -94,11 +109,6 @@ public abstract class U1CityMvpLceActivity
         }
     }
 
-    /**
-     * 数据绑定就算是首次请求完成
-     *
-     * @param data
-     */
     @Override
     public void bindData(D data) {
         isFirstRequest = false;

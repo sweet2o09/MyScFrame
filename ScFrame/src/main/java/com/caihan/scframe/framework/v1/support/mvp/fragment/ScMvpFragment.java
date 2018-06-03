@@ -22,7 +22,7 @@ import com.caihan.scframe.framework.v1.support.mvp.fragment.delegate.FragmentMvp
  * @e-mail 93234929@qq.com
  * 维护者
  */
-public abstract class U1CityMvpFragment
+public abstract class ScMvpFragment
         <V extends MvpView, P extends MvpPresenter<V>>
         extends BaseFragment
         implements MvpView, FragmentMvpDelegateCallback<V, P> {

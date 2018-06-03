@@ -16,7 +16,8 @@ import com.caihan.scframe.framework.v1.support.mvp.ProxyMvpCallback;
  * @e-mail 93234929@qq.com
  * 维护者
  */
-public class ActivityMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V>> implements ActivityMvpDelegate<V, P> {
+public class ActivityMvpDelegateImpl<V extends MvpView, P extends MvpPresenter<V>>
+        implements ActivityMvpDelegate<V, P> {
 
     private MvpCallback<V, P> mvpCallback;
     private ProxyMvpCallback<V, P> proxyMvpCallback;
