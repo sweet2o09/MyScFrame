@@ -4,12 +4,12 @@ version = "2.0.0"
 group = "com.caihan.scframe" //一般填你唯一的包名
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.3'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 26
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 20
         versionName version
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -58,11 +58,11 @@ configurations.all {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-    api 'com.android.support:support-v4:26.1.0'
-    api 'com.android.support:appcompat-v7:26.1.0'
-    api 'com.android.support:design:26.1.0'
-    api 'com.android.support:cardview-v7:26.1.0'
-    api 'com.android.support:recyclerview-v7:26.1.0'
+    api "com.android.support:support-v4:${rootProject.ext.supportLibVersion}"
+    api "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    api "com.android.support:design:${rootProject.ext.supportLibVersion}"
+    api "com.android.support:cardview-v7:${rootProject.ext.supportLibVersion}"
+    api "com.android.support:recyclerview-v7:${rootProject.ext.supportLibVersion}"
 
     /** 安卓工具类库 */
     api 'com.blankj:utilcode:1.15.1'
@@ -103,10 +103,10 @@ dependencies {
     /** 扫码 */
     api 'cn.bingoogolapple:bga-qrcode-zxing:1.2.1'
 
-    /** OkGo网络请求库 */
-    api 'com.lzy.net:okgo:3.0.4'
-//    api 'com.lzy.net:okrx:1.0.2'
-    api 'com.lzy.net:okrx2:2.0.2'
+//    /** OkGo网络请求库 */
+//    api 'com.lzy.net:okgo:3.0.4'
+////    api 'com.lzy.net:okrx:1.0.2'
+//    api 'com.lzy.net:okrx2:2.0.2'
 
     /** RxJava */
     api 'io.reactivex.rxjava2:rxandroid:2.0.2'

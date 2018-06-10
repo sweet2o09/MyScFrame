@@ -1,18 +1,31 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
+/**
+ * buildscript代码块用来配置Gradle自己的repositories和dependencies，所以不能包含modules使用的dependencies
+ */
 buildscript {
+    /**
+     * repositories 代码块用来配置 Gradle 用来搜索和下载依赖的仓库
+     * Gradle 默认是支持像 JCenter，Maven Central，和 Ivy 远程仓库的，你也可以使用本地仓库或定义你自己的远程仓库
+     * 下面的代码定义了 Gradle 用于搜索下载依赖的 JCenter 仓库和 Google 的 Maven 仓库
+     */
     repositories {
         jcenter()
         mavenCentral()
         google()
     }
+    /**
+     * dependencies 代码块用来配置 Gradle 用来构建工程的依赖，下面的代码表示添加一个
+     * Gradle 的 Android 插件作为 classpath 依赖
+     */
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
+/**
+ * allprojects 代码块用来配置工程中所有 modules 都要使用的仓库和依赖
+ * 但是你应该在每个 module 级的 build 文件中配置 module 独有的依赖。
+ * 对于一个新工程，Android Studio 默认会让所有 modules 使用 JCenter 仓库和 Google 的 Maven 仓库
+ */
 allprojects {
     repositories {
         jcenter()
@@ -21,6 +34,38 @@ allprojects {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         google()
     }
+    //全局设定编码与java版本
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
+/**
+ * ext 代码块在这个顶层 build 文件中定义工程级（工程中所有 modules 共享）的属性:
+ * 如让所有 modules 都使用相同的版本以避免冲突
+ */
+ext {
+    /**
+     * compileSdkVersion 用来指定 Gradle 用来编译应用的 Android API level，也就是说
+     * 你的应用可以使用这个 API level 及更低 API level 的 API 特性
+     */
+    compileSdkVersion = 26
+    /**
+     * buildToolsVersion 用来指定 SDK 所有构建工具、命令行工具、以及 Gradle 用来构建应用的编译器版本
+     * 你需要使用 SDK Manager 下载好该版本的构建工具
+     * 在 3.0.0 或更高版本的插件中。该属性是可选的，插件会使用推荐的版本
+     */
+    buildToolsVersion = "26.0.3"
+    //定义可以运行该应用的最小 API level
+    minSdkVersion = 19
+    //指定测试该应用的 API level
+    targetSdkVersion = 26
+    //com.android.support相同版本号
+    supportLibVersion = "26.1.0"
+    //retrofit2相同版本号
+    retrofit2 = "2.3.0"
 }
 
 task clean(type: Delete) {
