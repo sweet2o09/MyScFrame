@@ -4,7 +4,6 @@ import android.os.Build;
 import android.util.Log;
 
 import com.blankj.utilcode.util.LogUtils;
-import com.caihan.scframe.framework.ScApplication;
 
 /**
  * Log工具管理类<br/>
@@ -18,8 +17,12 @@ import com.caihan.scframe.framework.ScApplication;
 public final class ScLog {
 
     private static final String DEBUG_TAG = "DebugLog";
-    private static final int MAX_LEN = 3984;
+    private static final int MAX_LEN = 4000;
 
+    /**
+     * log开关
+     */
+    public static boolean sDebug = false;
     private ScLog() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
@@ -107,13 +110,15 @@ public final class ScLog {
     }
 
     private static void showDebugLog(String tag, String subMsg){
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            Log.d(tag, subMsg);
-        } else {
-            if (ScApplication.sDebug) {
-                Log.i(tag, subMsg);
-            } else {
+        if (sDebug){
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
                 Log.d(tag, subMsg);
+            } else {
+                if (sDebug) {
+                    Log.i(tag, subMsg);
+                } else {
+                    Log.d(tag, subMsg);
+                }
             }
         }
     }

@@ -1,13 +1,14 @@
 package com.caihan.scframe.framework;
 
 
+import android.annotation.SuppressLint;
 import android.app.Application;
-import android.content.Context;
 
 import com.blankj.utilcode.util.CrashUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.Utils;
+import com.caihan.scframe.utils.log.ScLog;
 
 /**
  * Application基类<p>
@@ -21,19 +22,9 @@ import com.blankj.utilcode.util.Utils;
 public abstract class ScApplication extends Application {
 
     /**
-     * 获取Application的Content
-     */
-    private static Context sContext;
-
-    /**
      * 初始化AndroidUtilCode开关
      */
     boolean isInitUtilCode = false;
-
-    /**
-     * log开关
-     */
-    public static boolean sDebug = false;
 
     /**
      * 默认初始化ScFrame框架工具类
@@ -41,7 +32,6 @@ public abstract class ScApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        sContext = this;
         initUtilCode(this);
         ScFrame.init(this);
     }
@@ -49,19 +39,6 @@ public abstract class ScApplication extends Application {
     @Override
     public void onTerminate() {
         super.onTerminate();
-    }
-
-    /**
-     * 获取ApplicationContext
-     *
-     * @return ApplicationContext
-     */
-    public static Context getContext() {
-        if (sContext != null) {
-            return sContext;
-        } else {
-            throw new NullPointerException("u should init first");
-        }
     }
 
     /**
@@ -91,6 +68,7 @@ public abstract class ScApplication extends Application {
     /**
      * 初始化Crash日志,保存到SD卡
      */
+    @SuppressLint("MissingPermission")
     protected void initUtilCodeCrashUtils() {
         if (!isInitUtilCode) {
             initUtilCode(this);
@@ -126,6 +104,6 @@ public abstract class ScApplication extends Application {
     }
 
     protected void deBug(boolean isDebug) {
-        this.sDebug = isDebug;
+        ScLog.sDebug = isDebug;
     }
 }

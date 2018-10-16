@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 
-version = "2.0.0"
+version = "2.1.0"
 group = "com.caihan.scframe" //一般填你唯一的包名
 
 android {
@@ -10,7 +10,7 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 20
+        versionCode 21
         versionName version
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -25,12 +25,10 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            buildConfigField "boolean", "LOG_DEBUG", "false"    //关闭调试log
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             minifyEnabled false
-            buildConfigField "boolean", "LOG_DEBUG", "true" //显示Log
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -38,7 +36,7 @@ android {
         main {
             jniLibs.srcDirs = ['libs']
         }
-        instrumentTest.setRoot('tests')
+        androidTest.setRoot('tests')
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
     }
@@ -50,7 +48,7 @@ configurations.all {
         def requested = details.requested
         if (requested.group == 'com.android.support') {
             if (!requested.name.startsWith("multidex")) {
-                details.useVersion '26.1.0'
+                details.useVersion rootProject.ext.supportLibVersion
             }
         }
     }
@@ -65,14 +63,14 @@ dependencies {
     api "com.android.support:recyclerview-v7:${rootProject.ext.supportLibVersion}"
 
     /** 安卓工具类库 */
-    api 'com.blankj:utilcode:1.15.1'
+    api 'com.blankj:utilcode:1.20.3'
 
     /** Android智能下拉刷新框架 */
     api 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
     api 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.3'
 
     /** RecyclerAdapter框架 */
-    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.40'
 
     /** ImmersionBar沉浸式状态栏和沉浸式导航栏管理 */
     api 'com.gyf.barlibrary:barlibrary:2.3.0'
@@ -98,7 +96,7 @@ dependencies {
     api 'com.afollestad.material-dialogs:core:0.9.6.0'
 
     /** Luban(鲁班)图片压缩 */
-    api 'top.zibin:Luban:1.1.3'
+    api 'top.zibin:Luban:1.1.7'
 
     /** 扫码 */
     api 'cn.bingoogolapple:bga-qrcode-zxing:1.2.1'
@@ -124,7 +122,10 @@ dependencies {
 //    api 'com.trello:rxlifecycle-components:1.0'
 
     /** Json解析 */
-    api 'com.alibaba:fastjson:1.1.67.android'
-    api 'com.google.code.gson:gson:2.8.2'
+    api 'com.alibaba:fastjson:1.1.70.android'
+    api 'com.google.code.gson:gson:2.8.5'
+
+    /** 混淆配置 */
+    api 'com.blankj:free-proguard:0.0.8'
 
 }

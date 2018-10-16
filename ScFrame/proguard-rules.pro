@@ -127,4 +127,7 @@
 ##fastjson1.1.67android
 #-dontwarn com.alibaba.fastjson.**
 #-keep class com.alibaba.fastjson.**{*; }
+#
+#实现该接口的类都不加入混淆
+-keep class * implements com.caihan.scframe.utils.IUnProguard
 

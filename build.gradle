@@ -10,6 +10,8 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
+        maven { url "https://jitpack.io" }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         google()
     }
     /**
@@ -17,7 +19,7 @@ buildscript {
      * Gradle 的 Android 插件作为 classpath 依赖
      */
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.1.4'
     }
 }
 
@@ -57,7 +59,7 @@ ext {
      * 你需要使用 SDK Manager 下载好该版本的构建工具
      * 在 3.0.0 或更高版本的插件中。该属性是可选的，插件会使用推荐的版本
      */
-    buildToolsVersion = "26.0.3"
+    buildToolsVersion = "27.0.3"
     //定义可以运行该应用的最小 API level
     minSdkVersion = 19
     //指定测试该应用的 API level

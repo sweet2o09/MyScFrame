@@ -22,13 +22,9 @@ import com.caihan.scframe.utils.motionevent.ScGestureUtils;
 
 
 /**
- * 作者：caihan
- * 创建时间：2017/11/20
- * 邮箱：93234929@qq.com
- * 说明：
  * 仿微信SwitchBtn/仿iOS的UiSwitch控件
  * <p>
- * * Paint类介绍
+ * Paint类介绍
  * <p>
  * Paint即画笔，在绘图过程中起到了极其重要的作用，画笔主要保存了颜色，
  * 样式等绘制信息，指定了如何绘制文本和图形，画笔对象有很多设置方法，
@@ -93,6 +89,11 @@ import com.caihan.scframe.utils.motionevent.ScGestureUtils;
  * <p>
  * setTextAlign(Paint.Align align);
  * 设置绘制文字的对齐方向
+ *
+ * @author caihan
+ * @date 2018/3/6
+ * @e-mail 93234929@qq.com
+ * 维护者
  */
 public class WeChatSwitchBtn extends View implements View.OnClickListener {
     private static final String TAG = "WeChatSwitchBtn";
@@ -517,7 +518,7 @@ public class WeChatSwitchBtn extends View implements View.OnClickListener {
     /**
      * 打开开关
      */
-    public void toggleOn() {
+    private void toggleOn() {
         //底板颜色渐变和圆球滑动通过属性动画来实现
         if (mOpenAnimator == null) {
             mOpenAnimator = ObjectAnimator.ofFloat(this, "ballStartX", mAllSideWidth, mOffBallX);
@@ -538,7 +539,7 @@ public class WeChatSwitchBtn extends View implements View.OnClickListener {
     /**
      * 关闭开关
      */
-    public void toggleOff() {
+    private void toggleOff() {
         //底板颜色渐变和圆球滑动通过属性动画来实现
         if (mCloseAnimator == null) {
             mCloseAnimator = ObjectAnimator.ofFloat(this, "ballStartX", mOffBallX, mAllSideWidth);
@@ -563,7 +564,7 @@ public class WeChatSwitchBtn extends View implements View.OnClickListener {
      * @param startColor 起始颜色
      * @param endColor   终止颜色
      */
-    public void calculateColor(float fraction, int startColor, int endColor) {
+    private void calculateColor(float fraction, int startColor, int endColor) {
         final int fb = Color.blue(startColor);
         final int fr = Color.red(startColor);
         final int fg = Color.green(startColor);

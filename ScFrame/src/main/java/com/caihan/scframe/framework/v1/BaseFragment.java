@@ -290,6 +290,12 @@ public abstract class BaseFragment
     protected abstract void lazyLoadData();
 
     //**********数据变更智能刷新 start****************************************//
+
+
+    public boolean isGoAutoRefresh() {
+        return mGoAutoRefresh;
+    }
+
     @Override
     public void autoRefreshSuccess() {
         mGoAutoRefresh = false;
