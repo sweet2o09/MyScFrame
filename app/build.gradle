@@ -101,18 +101,12 @@ android {
      */
     buildTypes {
         release {
-            minifyEnabled true
-            zipAlignEnabled true//zipAlign优化
-            shrinkResources false// 移除无用的resource文件,AS2.2已经包含
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.releaseConfig
-//            multiDexKeepProguard file('multidex-config.pro')
-//            multiDexKeepFile file('multidex-config.txt')
         }
         debug {
             minifyEnabled false
-            zipAlignEnabled true//zipAlign优化
-            shrinkResources false// 移除无用的resource文件,AS2.2已经包含
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debugConfig
         }
@@ -177,4 +171,5 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation project(':ScFrame')
+//    implementation 'com.github.sweet2o09:MyScFrame:v2.0.1'
 }

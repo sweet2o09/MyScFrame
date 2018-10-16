@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
-
-
-group = "com.caihan.scframe" //一般填你唯一的包名
+apply plugin: 'com.github.dcendents.android-maven'
+group = 'com.github.sweet2o09'
 
 /**
  * android 代码块用来配置 Android 特定的构建配置
@@ -20,8 +19,6 @@ android {
      * 在 3.0.0 或更高版本的插件中。该属性是可选的，插件会使用推荐的版本
      */
 //    buildToolsVersion rootProject.ext.buildToolsVersion
-
-
 
     /**
      * defaultConfig 代码块包含所有构建变体（build variants）默认使用的配置，
@@ -46,7 +43,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -145,7 +142,8 @@ dependencies {
     /** RxLifecycle */
 //    api 'com.trello.rxlifecycle2:rxlifecycle:2.2.1'// RxLifecycle基础库
 //    api 'com.trello.rxlifecycle2:rxlifecycle-android:2.2.1'//Android使用的库，里面使用了Android的生命周期方法,内部引用了基础库，如果使用此库则无需再引用基础库
-    api 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.1'//Android组件库，里面定义了例如RxAppCompatActivity、RxFragment之类的Android组件,内部引用了基础库和Android库，如果使用此库则无需再重复引用
+    api 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.1'
+//Android组件库，里面定义了例如RxAppCompatActivity、RxFragment之类的Android组件,内部引用了基础库和Android库，如果使用此库则无需再重复引用
 //    api 'com.trello:rxlifecycle:1.0'
 //    api 'com.trello:rxlifecycle-android:1.0'
 //    api 'com.trello:rxlifecycle-components:1.0'
