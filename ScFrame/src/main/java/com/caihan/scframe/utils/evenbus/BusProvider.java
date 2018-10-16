@@ -2,6 +2,8 @@ package com.caihan.scframe.utils.evenbus;
 
 import android.util.Log;
 
+import com.caihan.scframe.utils.evenbus.MyEventBusIndex;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

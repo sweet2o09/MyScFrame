@@ -10,8 +10,6 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
-        maven { url "https://jitpack.io" }
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         google()
     }
     /**
@@ -68,6 +66,9 @@ ext {
     supportLibVersion = "26.1.0"
     //retrofit2相同版本号
     retrofit2 = "2.3.0"
+
+    versionCode = 200
+    versionName = "2.0.0"
 }
 
 task clean(type: Delete) {

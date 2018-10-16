@@ -1,1 +1,180 @@
-/** * 为这个构建应用 Gradle 的 Android 插件，以便 android 代码块中 Android 特定的构建配置可用 */apply plugin: 'com.android.application'//加载资源.在本地的 product.properties 文件设置了一些参数，从这里获取Properties properties = new Properties()InputStream inputStream = project.rootProject.file('/app/product.properties').newDataInputStream()properties.load(inputStream)//获取时间戳def getDate() {    return new Date().format('YYYYMMddHHmm')}/** * android 代码块用来配置 Android 特定的构建配置 */android {    /**     * compileSdkVersion 用来指定 Gradle 用来编译应用的 Android API level，也就是说     * 你的应用可以使用这个 API level 及更低 API level 的 API 特性     */    compileSdkVersion rootProject.ext.compileSdkVersion    /**     * buildToolsVersion 用来指定 SDK 所有构建工具、命令行工具、以及 Gradle 用来构建应用的编译器版本     * 你需要使用 SDK Manager 下载好该版本的构建工具     * 在 3.0.0 或更高版本的插件中。该属性是可选的，插件会使用推荐的版本     */    buildToolsVersion rootProject.ext.buildToolsVersion    /**     * defaultConfig 代码块包含所有构建变体（build variants）默认使用的配置，     * 也可以重写 main/AndroidManifest.xml 中的属性     * 当然，你也可以在 product flavors（产品风味）中重写其中一些属性     */    defaultConfig {        /**         * applicationId 是发布时的唯一指定包名，尽管如此，你还是需要在 main/AndroidManifest.xml 文件中         * 定义值是该包名的 package 属性         */        applicationId "com.caihan.myscframe"        // 定义可以运行该应用的最小 API level        minSdkVersion rootProject.ext.minSdkVersion        // 指定测试该应用的 API level        targetSdkVersion rootProject.ext.targetSdkVersion        // 定义应用的版本号        versionCode 10000        // 定义用户友好型的版本号描述        versionName "1.0.00"        multiDexEnabled true//开启multi-dexing支持//        v2SigningEnabled false        // gradle 3.0.0 以上需要有这个        flavorDimensions "applicationId"    }    /**     * 签名配置     * storeFile签名文件     * storePassword签名证书文件的密码     * storeType签名证书类型     * keyAlias签名证书中秘钥别名     * keyPassword签名证书中改密钥的密码     */    signingConfigs {        releaseConfig {            storeFile file(properties.getProperty('RELEASE_STORE_FILE'))            storePassword properties.getProperty('RELEASE_STORE_PASSWORD')            keyAlias properties.getProperty('RELEASE_KEY_ALIAS')            keyPassword properties.getProperty('RELEASE_KEY_PASSWORD')            v2SigningEnabled false        }        debugConfig {            storeFile file(properties.getProperty('RELEASE_STORE_FILE'))            storePassword properties.getProperty('RELEASE_STORE_PASSWORD')            keyAlias properties.getProperty('RELEASE_KEY_ALIAS')            keyPassword properties.getProperty('RELEASE_KEY_PASSWORD')            v2SigningEnabled false        }    }    /**     * buildTypes 代码块用来配置多个构建类型，构建系统默认定义了两个构建类型: debug 和 release     * debug 构建类型默认不显式声明，但它包含调试工具并使用 debug key 签名     * release 构建类型默认应用了混淆配置     *     * name：build type的名字     * applicationIdSuffix：应用id后缀     * versionNameSuffix：版本名称后缀     * debuggable：是否生成一个debug的apk     * minifyEnabled：是否混淆     * proguardFiles：混淆文件     * signingConfig：签名配置     * manifestPlaceholders：清单占位符     * shrinkResources：是否去除未利用的资源，默认false，表示不去除。     * zipAlignEnable：是否使用zipalign工具压缩。     * multiDexEnabled：是否拆成多个Dex     * multiDexKeepFile：指定文本文件编译进主Dex文件中     * multiDexKeepProguard：指定混淆文件编译进主Dex文件中     */    buildTypes {        release {            minifyEnabled true            zipAlignEnabled true//zipAlign优化            shrinkResources false// 移除无用的resource文件,AS2.2已经包含            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'            signingConfig signingConfigs.releaseConfig//            multiDexKeepProguard file('multidex-config.pro')//            multiDexKeepFile file('multidex-config.txt')        }        debug {            minifyEnabled false            zipAlignEnabled true//zipAlign优化            shrinkResources false// 移除无用的resource文件,AS2.2已经包含            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'            signingConfig signingConfigs.debugConfig        }    }    /**     * 多渠道/多环境 的不同配置     * 编译的时候productFlavors会运行在buildTypes前面     * 不同环境，不同包名    applicationId     * 不同环境，添加string.xml资源文件    resValue     * 不同环境，动态修改指定的常量(BuildConfig的变量)   buildConfigField,注意String类型要先''单引号,里面再""双引号     */    productFlavors {        android {//            String ldy_app_name = properties.getProperty('LDY_APP_NAME')//            String property = new String(properties.getProperty('LDY_APP_NAME').getBytes("ISO8859-1"),"utf-8")//            println "ldy_app_name = "+ldy_app_name//            println "property = "+property            // 每个环境包名不同            applicationId properties.getProperty('APPLICATION_ID')            versionCode Integer.parseInt(properties.getProperty('APP_VERSION_CODE'))            versionName properties.getProperty('APP_VERSION')            // 动态添加 string.xml 字段；            // 注意，这里是添加，在 string.xml 不能有这个字段，会重名！！！            resValue "string", "app_name", new String(properties.getProperty('LDY_APP_NAME').getBytes("utf-8"), "utf-8")            resValue "string", "business_id", properties.getProperty('BUSINESS_ID')//            resValue "bool", "isrRank", 'false'            // 动态修改 常量 字段            buildConfigField "String", "APP_URL_SC", '"http://easysupport-test.laidy.cn/easySupport"'            buildConfigField "String", "LDY_APP_VERSION", properties.getProperty('LDY_APP_VERSION')            buildConfigField "boolean", "DEBUG_RELEASE", properties.getProperty('DEBUG_RELEASE')            buildConfigField "int", "API_SETTING", properties.getProperty('API_SETTING')            buildConfigField "int", "H5_SETTING", properties.getProperty('H5_SETTING')            buildConfigField "boolean", "UPDATE_RELEASE", properties.getProperty('UPDATE_RELEASE')            // 修改 AndroidManifest.xml,APP_NAME:name,前面加一个反斜杠和空格可以避免纯数字被当成int            manifestPlaceholders =                    [app_icon             : "@mipmap/ic_launcher",                     app_roundIcon        : "@mipmap/ic_launcher_round",                     UMENG_CHANNEL_VALUE  : name,                     WEICHAT_APPKEY       : "\\ " + properties.getProperty('WEICHAT_APPKEY'),                     WEICHAT_SECRET       : "\\ " + properties.getProperty('WEICHAT_SECRET'),                     QQ_APPKEY            : "\\ " + properties.getProperty('QQ_APPKEY'),                     QZ_APPID             : "\\ " + properties.getProperty('QZ_APPID'),                     XL_APPKEY            : "\\ " + properties.getProperty('XL_APPKEY'),                     XL_SECRET            : "\\ " + properties.getProperty('XL_SECRET'),                     OPEN_IM_APPKEY       : "\\ " + properties.getProperty('OPEN_IM_APPKEY'),                     OPEN_IM_TARGET_APPKEY: "\\ " + properties.getProperty('OPEN_IM_TARGET_APPKEY'),                     OPEN_SECRET          : "\\ " + properties.getProperty('OPEN_SECRET'),                     OPEN_GUIDE_IMAGE_NUM : "\\ " + properties.getProperty('OPEN_GUIDE_IMAGE_NUM'),                     UMENG_APPKEY         : "\\ " + properties.getProperty('UMENG_APPKEY'),                     UMENG_MESSAGE_SECRET : "\\ " + properties.getProperty('UMENG_MESSAGE_SECRET'),                     ALIAS_TYPE           : "\\ " + properties.getProperty('ALIAS_TYPE'),                     GAODE_KEY            : "\\ " + properties.getProperty('GAODE_KEY'),                     BAIDU_MOB_AD_KEY     : "\\ " + properties.getProperty('BAIDU_MOB_AD_KEY'),                    ]        }    }//    /**//     * 你可以使用 splits 代码块配置为不同屏幕分辨率或 ABI 的设备生成仅包含其支持的代码和资源的 APK//     * 同时你需要配置 build 文件以便每个 APK 使用不同的 versionCode//     *///    splits {//        density {//            // 启用或禁用构建多个 APK//            enable false//            // 构建多个 APK 时排除这些分辨率//            exclude "ldpi", "tvdpi", "xxxhdpi", "400dpi", "560dpi"//        }//    }    //更改生成的APK文件名    android.applicationVariants.all { variant ->        variant.outputs.all {            if (variant.productFlavors[0] != null) {                outputFileName = "Scframe_${variant.productFlavors[0].name}_v${defaultConfig.versionName}_${getDate()}.apk"            } else {                outputFileName = "Scframe-${variant.name}-${variant.versionName}.apk"            }        }    }    dexOptions {//        incremental true //'incremental' is obsolete and will be removed at the end of 2018.        javaMaxHeapSize "4g"    }    //移除lint检测的error    lintOptions {        abortOnError false    }    /**     * 源代码集合，     * 是Java插件用来描述和管理源代码及资源的一个抽象概念，     * 是一个Java源代码文件和资源文件的集合，     * 我们可以通过sourceSets更改源集的Java目录或者资源目录等     */    sourceSets {        main {            //告诉Gradle我的关于jni so包的存放路径就在app/libs上了，叫他编译的时候自己去找            jniLibs.srcDirs = ['libs']        }        androidTest.setRoot('tests')        debug.setRoot('build-types/debug')        release.setRoot('build-types/release')    }}//强制所有的 android support libraries 使用相同的版本configurations.all {    resolutionStrategy.eachDependency { DependencyResolveDetails details ->        def requested = details.requested        if (requested.group == 'com.android.support' &&                requested.name != 'multidex' &&                requested.name != 'multidex-instrumentation') {            details.useVersion rootProject.ext.supportLibVersion        } else if (requested.group == 'com.squareup.retrofit2') {            details.useVersion rootProject.ext.retrofit2        }    }}/** * 该 module 级 build 文件的 dependencies 代码块仅用来指定该 module 自己的依赖 */dependencies {    implementation fileTree(include: ['*.jar'], dir: 'libs')    implementation project(':ScFrame')    implementation 'com.android.support.constraint:constraint-layout:1.1.3'    implementation 'com.jakewharton:butterknife:8.8.1'    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'    // Optional, if you use support library fragments:    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.1'}
+/**
+ * 为这个构建应用 Gradle 的 Android 插件，以便 android 代码块中 Android 特定的构建配置可用
+ */
+apply plugin: 'com.android.application'
+
+//加载资源.在本地的 product.properties 文件设置了一些参数，从这里获取
+Properties properties = new Properties()
+InputStream inputStream = project.rootProject.file('./app/product.properties').newDataInputStream()
+properties.load(inputStream)
+
+//获取时间戳
+def getDate() {
+    return new Date().format('YYYYMMddHHmm')
+}
+
+/**
+ * android 代码块用来配置 Android 特定的构建配置
+ */
+android {
+
+    /**
+     * compileSdkVersion 用来指定 Gradle 用来编译应用的 Android API level，也就是说
+     * 你的应用可以使用这个 API level 及更低 API level 的 API 特性
+     */
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    /**
+     * buildToolsVersion 用来指定 SDK 所有构建工具、命令行工具、以及 Gradle 用来构建应用的编译器版本
+     * 你需要使用 SDK Manager 下载好该版本的构建工具
+     * 在 3.0.0 或更高版本的插件中。该属性是可选的，插件会使用推荐的版本
+     */
+//    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    /**
+     * defaultConfig 代码块包含所有构建变体（build variants）默认使用的配置，
+     * 也可以重写 main/AndroidManifest.xml 中的属性
+     * 当然，你也可以在 product flavors（产品风味）中重写其中一些属性
+     */
+    defaultConfig {
+        /**
+         * applicationId 是发布时的唯一指定包名，尽管如此，你还是需要在 main/AndroidManifest.xml 文件中
+         * 定义值是该包名的 package 属性
+         */
+        applicationId "app.caihan.myscframe"
+        // 定义可以运行该应用的最小 API level
+        minSdkVersion rootProject.ext.minSdkVersion
+        // 指定测试该应用的 API level
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        // 定义应用的版本号
+        versionCode rootProject.ext.versionCode
+        // 定义用户友好型的版本号描述
+        versionName rootProject.ext.versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //开启multi-dexing支持
+        multiDexEnabled true
+    }
+
+    /**
+     * 签名配置
+     * storeFile签名文件
+     * storePassword签名证书文件的密码
+     * storeType签名证书类型
+     * keyAlias签名证书中秘钥别名
+     * keyPassword签名证书中改密钥的密码
+     */
+    signingConfigs {
+        releaseConfig {
+            storeFile file(properties.getProperty('RELEASE_STORE_FILE'))
+            storePassword properties.getProperty('RELEASE_STORE_PASSWORD')
+            keyAlias properties.getProperty('RELEASE_KEY_ALIAS')
+            keyPassword properties.getProperty('RELEASE_KEY_PASSWORD')
+            v2SigningEnabled false
+        }
+        debugConfig {
+            storeFile file(properties.getProperty('RELEASE_STORE_FILE'))
+            storePassword properties.getProperty('RELEASE_STORE_PASSWORD')
+            keyAlias properties.getProperty('RELEASE_KEY_ALIAS')
+            keyPassword properties.getProperty('RELEASE_KEY_PASSWORD')
+            v2SigningEnabled false
+        }
+    }
+
+    /**
+     * buildTypes 代码块用来配置多个构建类型，构建系统默认定义了两个构建类型: debug 和 release
+     * debug 构建类型默认不显式声明，但它包含调试工具并使用 debug key 签名
+     * release 构建类型默认应用了混淆配置
+     *
+     * name：build type的名字
+     * applicationIdSuffix：应用id后缀
+     * versionNameSuffix：版本名称后缀
+     * debuggable：是否生成一个debug的apk
+     * minifyEnabled：是否混淆
+     * proguardFiles：混淆文件
+     * signingConfig：签名配置
+     * manifestPlaceholders：清单占位符
+     * shrinkResources：是否去除未利用的资源，默认false，表示不去除。
+     * zipAlignEnable：是否使用zipalign工具压缩。
+     * multiDexEnabled：是否拆成多个Dex
+     * multiDexKeepFile：指定文本文件编译进主Dex文件中
+     * multiDexKeepProguard：指定混淆文件编译进主Dex文件中
+     */
+    buildTypes {
+        release {
+            minifyEnabled true
+            zipAlignEnabled true//zipAlign优化
+            shrinkResources false// 移除无用的resource文件,AS2.2已经包含
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseConfig
+//            multiDexKeepProguard file('multidex-config.pro')
+//            multiDexKeepFile file('multidex-config.txt')
+        }
+        debug {
+            minifyEnabled false
+            zipAlignEnabled true//zipAlign优化
+            shrinkResources false// 移除无用的resource文件,AS2.2已经包含
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debugConfig
+        }
+    }
+
+    //移除lint检测的error
+    lintOptions {
+        abortOnError false
+    }
+
+    /**
+     * 源代码集合，
+     * 是Java插件用来描述和管理源代码及资源的一个抽象概念，
+     * 是一个Java源代码文件和资源文件的集合，
+     * 我们可以通过sourceSets更改源集的Java目录或者资源目录等
+     */
+    sourceSets {
+        main {
+            //告诉Gradle我的关于jni so包的存放路径就在app/libs上了，叫他编译的时候自己去找
+            jniLibs.srcDirs = ['libs']
+        }
+        androidTest.setRoot('tests')
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
+    }
+
+    //更改生成的APK文件名
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "ScFrame_v${variant.versionName}_${variant.buildType.getName()}_${getDate()}.apk"
+        }
+    }
+}
+
+//统一版本号
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support' &&
+                requested.name != 'multidex' &&
+                requested.name != 'multidex-instrumentation') {
+            details.useVersion rootProject.ext.supportLibVersion
+        } else if (requested.group == 'com.squareup.retrofit2') {
+            details.useVersion rootProject.ext.retrofit2
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "com.android.support:support-v4:${rootProject.ext.supportLibVersion}"
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    implementation "com.android.support:design:${rootProject.ext.supportLibVersion}"
+    implementation "com.android.support:cardview-v7:${rootProject.ext.supportLibVersion}"
+    implementation "com.android.support:recyclerview-v7:${rootProject.ext.supportLibVersion}"
+    implementation "com.android.support:gridlayout-v7:${rootProject.ext.supportLibVersion}"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation project(':ScFrame')
+}

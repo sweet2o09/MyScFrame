@@ -1,17 +1,39 @@
 apply plugin: 'com.android.library'
 
-version = "2.1.0"
+
 group = "com.caihan.scframe" //一般填你唯一的包名
 
+/**
+ * android 代码块用来配置 Android 特定的构建配置
+ */
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
+    /**
+     * compileSdkVersion 用来指定 Gradle 用来编译应用的 Android API level，也就是说
+     * 你的应用可以使用这个 API level 及更低 API level 的 API 特性
+     */
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    /**
+     * buildToolsVersion 用来指定 SDK 所有构建工具、命令行工具、以及 Gradle 用来构建应用的编译器版本
+     * 你需要使用 SDK Manager 下载好该版本的构建工具
+     * 在 3.0.0 或更高版本的插件中。该属性是可选的，插件会使用推荐的版本
+     */
+//    buildToolsVersion rootProject.ext.buildToolsVersion
+
+
+
+    /**
+     * defaultConfig 代码块包含所有构建变体（build variants）默认使用的配置，
+     * 也可以重写 main/AndroidManifest.xml 中的属性
+     * 当然，你也可以在 product flavors（产品风味）中重写其中一些属性
+     */
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 21
-        versionName version
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
@@ -20,8 +42,8 @@ android {
                 arguments = [eventBusIndex: 'com.caihan.scframe.utils.evenbus.MyEventBusIndex']
             }
         }
-
     }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -54,8 +76,15 @@ configurations.all {
     }
 }
 
+
+
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
+    api fileTree(dir: 'libs', include: ['*.jar'])
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
     api "com.android.support:support-v4:${rootProject.ext.supportLibVersion}"
     api "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     api "com.android.support:design:${rootProject.ext.supportLibVersion}"
@@ -127,5 +156,4 @@ dependencies {
 
     /** 混淆配置 */
     api 'com.blankj:free-proguard:0.0.8'
-
 }
