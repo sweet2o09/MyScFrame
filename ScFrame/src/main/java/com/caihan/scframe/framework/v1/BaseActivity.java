@@ -31,6 +31,9 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.util.ArrayList;
 
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+
 /**
  * Activity基类<br/>
  * 继承于RxAppCompatActivity,并使用RxLifecycle防止RxJava导致的内存泄漏
@@ -90,6 +93,11 @@ public abstract class BaseActivity
      */
     private IntentFilter mIntentFilter;
 
+    /**
+     * RxJava订阅工具
+     */
+    private CompositeDisposable mCompositeDisposable = null;
+
     //********抽象接口,这边不做过多的接口 start*********//
 
     @Override
@@ -136,6 +144,7 @@ public abstract class BaseActivity
         onDestroyPermission();
         unRegisterBroadCast();
         onDestroyRequestLoading();
+        clearDisposable();
     }
 
     @LayoutRes
@@ -360,6 +369,27 @@ public abstract class BaseActivity
     public void autoRequest() {
     }
     //**********数据变更智能刷新 end****************************************//
+
+
+    /**
+     * 添加RxJava订阅
+     * 一般用于RxView等
+     */
+    public void addDisposable(Disposable mDisposable) {
+        if (mCompositeDisposable == null) {
+            mCompositeDisposable = new CompositeDisposable();
+        }
+        mCompositeDisposable.add(mDisposable);
+    }
+
+    /**
+     * 取消所有订阅
+     */
+    public void clearDisposable() {
+        if (mCompositeDisposable != null) {
+            mCompositeDisposable.clear();
+        }
+    }
 
 
     /**

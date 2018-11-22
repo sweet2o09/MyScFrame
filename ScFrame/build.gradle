@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.sweet2o09'
 
 /**
@@ -43,11 +42,13 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            zipAlignEnabled true//zipAlign优化
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             minifyEnabled false
+            zipAlignEnabled true//zipAlign优化
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -121,28 +122,28 @@ dependencies {
     api 'top.zibin:Luban:1.1.7'
 
     /** 扫码 */
-    api 'cn.bingoogolapple:bga-qrcode-zxing:1.2.1'
-
-//    /** OkGo网络请求库 */
-//    api 'com.lzy.net:okgo:3.0.4'
-////    api 'com.lzy.net:okrx:1.0.2'
-//    api 'com.lzy.net:okrx2:2.0.2'
+    api 'cn.bingoogolapple:bga-qrcode-zxing:1.3.4'
 
     /** RxJava */
-    api 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    api "io.reactivex.rxjava2:rxjava:2.1.12"
-    api 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
-//    api 'io.reactivex:rxandroid:1.2.1'
-//    api 'io.reactivex:rxjava:1.3.8'
+    api 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    api "io.reactivex.rxjava2:rxjava:2.2.3"
+    api 'com.jakewharton.rxbinding2:rxbinding:2.2.0'
+    /** Retrofit2 */
+    api 'com.squareup.retrofit2:retrofit:2.4.0'
+    api 'com.squareup.retrofit2:converter-gson:2.4.0'
+    api 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    api 'org.ligboy.retrofit2:converter-fastjson-android:2.2.0'
+    //日志拦截器
+    api 'com.squareup.okhttp3:logging-interceptor:3.8.1'
 
-    /** RxLifecycle */
-//    api 'com.trello.rxlifecycle2:rxlifecycle:2.2.1'// RxLifecycle基础库
-//    api 'com.trello.rxlifecycle2:rxlifecycle-android:2.2.1'//Android使用的库，里面使用了Android的生命周期方法,内部引用了基础库，如果使用此库则无需再引用基础库
-    api 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.1'
-//Android组件库，里面定义了例如RxAppCompatActivity、RxFragment之类的Android组件,内部引用了基础库和Android库，如果使用此库则无需再重复引用
-//    api 'com.trello:rxlifecycle:1.0'
-//    api 'com.trello:rxlifecycle-android:1.0'
-//    api 'com.trello:rxlifecycle-components:1.0'
+    /** RxLifecycle
+     * 基础库:
+     * Android库:里面使用了Android的生命周期方法,内部引用了基础库，如果使用此库则无需再引用基础库
+     * Android组件库:里面定义了例如RxAppCompatActivity、RxFragment之类的Android组件,内部引用了基础库和Android库，如果使用此库则无需再重复引用
+     * */
+//    api 'com.trello.rxlifecycle2:rxlifecycle:2.2.1'
+//    api 'com.trello.rxlifecycle2:rxlifecycle-android:2.2.1'
+    api 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.2'
 
     /** Json解析 */
     api 'com.alibaba:fastjson:1.1.70.android'
@@ -150,4 +151,7 @@ dependencies {
 
     /** 混淆配置 */
     api 'com.blankj:free-proguard:0.0.8'
+
+//    /** RxEasyHttp */
+//    api 'com.zhouyou:rxeasyhttp:2.1.3'
 }

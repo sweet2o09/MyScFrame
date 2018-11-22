@@ -12,7 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
 
-import com.caihan.scframe.framework.ScFrame;
+import com.caihan.scframe.ScFrame;
 
 /**
  * 作者：caihan

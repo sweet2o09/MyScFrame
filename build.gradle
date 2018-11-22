@@ -8,9 +8,8 @@ buildscript {
      * 下面的代码定义了 Gradle 用于搜索下载依赖的 JCenter 仓库和 Google 的 Maven 仓库
      */
     repositories {
-        jcenter()
-        mavenCentral()
         google()
+        jcenter()
     }
     /**
      * dependencies 代码块用来配置 Gradle 用来构建工程的依赖，下面的代码表示添加一个
@@ -18,10 +17,8 @@ buildscript {
      */
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
     }
 }
-
 /**
  * allprojects 代码块用来配置工程中所有 modules 都要使用的仓库和依赖
  * 但是你应该在每个 module 级的 build 文件中配置 module 独有的依赖。
@@ -29,18 +26,21 @@ buildscript {
  */
 allprojects {
     repositories {
-        jcenter()
-        mavenCentral()
-        maven { url "https://jitpack.io" }
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         google()
+        jcenter()
+        //BaseRecyclerViewAdapterHelper 需要用到
+        maven { url "https://jitpack.io" }
     }
-    //全局设定编码与java版本
-    tasks.withType(JavaCompile) {
-        options.encoding = "UTF-8"
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
+//    //全局设定编码与java版本
+//    tasks.withType(JavaCompile) {
+//        options.encoding = "UTF-8"
+//        sourceCompatibility = JavaVersion.VERSION_1_8
+//        targetCompatibility = JavaVersion.VERSION_1_8
+//    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
 
 /**
@@ -58,20 +58,15 @@ ext {
      * 你需要使用 SDK Manager 下载好该版本的构建工具
      * 在 3.0.0 或更高版本的插件中。该属性是可选的，插件会使用推荐的版本
      */
-    buildToolsVersion = "27.0.3"
+    buildToolsVersion = "26.0.3"
     //定义可以运行该应用的最小 API level
     minSdkVersion = 19
     //指定测试该应用的 API level
     targetSdkVersion = 26
     //com.android.support相同版本号
-    supportLibVersion = "26.1.0"
+    supportLibVersion = "27.1.1"
     //retrofit2相同版本号
     retrofit2 = "2.3.0"
-
-    versionCode = 201
-    versionName = "2.0.1"
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
+    versionCode = 100
+    versionName = "1.0.0"
 }

@@ -46,3 +46,6 @@
 -keepclassmembers class ** {
     @com.yanzhenjie.permission.PermissionNo <methods>;
 }
+
+#实现该接口的类都不加入混淆
+-keep class * implements com.caihan.scframe.utils.IUnProguard

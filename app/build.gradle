@@ -5,7 +5,7 @@ apply plugin: 'com.android.application'
 
 //加载资源.在本地的 product.properties 文件设置了一些参数，从这里获取
 Properties properties = new Properties()
-InputStream inputStream = project.rootProject.file('./app/product.properties').newDataInputStream()
+InputStream inputStream = project.rootProject.file('/app/product.properties').newDataInputStream()
 properties.load(inputStream)
 
 //获取时间戳
@@ -17,20 +17,17 @@ def getDate() {
  * android 代码块用来配置 Android 特定的构建配置
  */
 android {
-
     /**
      * compileSdkVersion 用来指定 Gradle 用来编译应用的 Android API level，也就是说
      * 你的应用可以使用这个 API level 及更低 API level 的 API 特性
      */
     compileSdkVersion rootProject.ext.compileSdkVersion
-
     /**
      * buildToolsVersion 用来指定 SDK 所有构建工具、命令行工具、以及 Gradle 用来构建应用的编译器版本
      * 你需要使用 SDK Manager 下载好该版本的构建工具
      * 在 3.0.0 或更高版本的插件中。该属性是可选的，插件会使用推荐的版本
      */
 //    buildToolsVersion rootProject.ext.buildToolsVersion
-
     /**
      * defaultConfig 代码块包含所有构建变体（build variants）默认使用的配置，
      * 也可以重写 main/AndroidManifest.xml 中的属性
@@ -50,9 +47,13 @@ android {
         versionCode rootProject.ext.versionCode
         // 定义用户友好型的版本号描述
         versionName rootProject.ext.versionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //开启multi-dexing支持
         multiDexEnabled true
+//        v2SigningEnabled false
+        // gradle 3.0.0 以上需要有这个
+        flavorDimensions "applicationId"
+//        flavorDimensions "versionCode"
+//        flavorDimensions "versionName"
     }
 
     /**
@@ -69,14 +70,16 @@ android {
             storePassword properties.getProperty('RELEASE_STORE_PASSWORD')
             keyAlias properties.getProperty('RELEASE_KEY_ALIAS')
             keyPassword properties.getProperty('RELEASE_KEY_PASSWORD')
-            v2SigningEnabled false
+//            v1SigningEnabled true
+//            v2SigningEnabled true
         }
         debugConfig {
             storeFile file(properties.getProperty('RELEASE_STORE_FILE'))
             storePassword properties.getProperty('RELEASE_STORE_PASSWORD')
             keyAlias properties.getProperty('RELEASE_KEY_ALIAS')
             keyPassword properties.getProperty('RELEASE_KEY_PASSWORD')
-            v2SigningEnabled false
+//            v1SigningEnabled true
+//            v2SigningEnabled true
         }
     }
 
@@ -102,19 +105,93 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            zipAlignEnabled true//zipAlign优化
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.releaseConfig
+//            signingConfig signingConfigs.releaseConfig
+//            multiDexKeepProguard file('multidex-config.pro')
+//            multiDexKeepFile file('multidex-config.txt')
         }
         debug {
             minifyEnabled false
+            zipAlignEnabled true//zipAlign优化
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.debugConfig
+//            signingConfig signingConfigs.debugConfig
         }
+    }
+
+    /**
+     * 多渠道/多环境 的不同配置
+     * 编译的时候productFlavors会运行在buildTypes前面
+     * 不同环境，不同包名    applicationId
+     * 不同环境，添加string.xml资源文件    resValue
+     * 不同环境，动态修改指定的常量(BuildConfig的变量)   buildConfigField,注意String类型要先''单引号,里面再""双引号
+     */
+    productFlavors {
+        android {
+//            String ldy_app_name = properties.getProperty('LDY_APP_NAME')
+//            String property = new String(properties.getProperty('LDY_APP_NAME').getBytes("ISO8859-1"),"utf-8")
+//            println "ldy_app_name = "+ldy_app_name
+//            println "property = "+property
+            // 每个环境包名不同
+            applicationId properties.getProperty('APPLICATION_ID')
+            versionCode Integer.parseInt(properties.getProperty('APP_VERSION_CODE'))
+            versionName properties.getProperty('APP_VERSION')
+            // 动态添加 string.xml 字段；
+            // 注意，这里是添加，在 string.xml 不能有这个字段，会重名！！！
+            resValue "string", "app_name", new String(properties.getProperty('APP_NAME').getBytes("utf-8"), "utf-8")
+//            resValue "bool", "isrRank", 'false'
+            // 动态修改 常量 字段
+            buildConfigField "String", "APP_URL_SC", '"http://easysupport-test.laidy.cn/easySupport"'
+            buildConfigField "String", "LDY_APP_VERSION", properties.getProperty('INTERNAL_APP_VERSION')
+            buildConfigField "boolean", "DEBUG_RELEASE", properties.getProperty('DEBUG_RELEASE')
+            buildConfigField "int", "API_SETTING", properties.getProperty('API_SETTING')
+            buildConfigField "int", "H5_SETTING", properties.getProperty('H5_SETTING')
+            buildConfigField "boolean", "UPDATE_RELEASE", properties.getProperty('UPDATE_RELEASE')
+            // 修改 AndroidManifest.xml,APP_NAME:name,前面加一个反斜杠和空格可以避免纯数字被当成int
+            manifestPlaceholders =
+                    [app_icon             : "@mipmap/ic_launcher",
+                     app_roundIcon        : "@mipmap/ic_launcher_round",
+                     UMENG_CHANNEL_VALUE  : name,
+                     WEICHAT_APPKEY       : "\\ " + properties.getProperty('WEICHAT_APPKEY'),
+                     WEICHAT_SECRET       : "\\ " + properties.getProperty('WEICHAT_SECRET'),
+                    ]
+        }
+    }
+
+//    /**
+//     * 你可以使用 splits 代码块配置为不同屏幕分辨率或 ABI 的设备生成仅包含其支持的代码和资源的 APK
+//     * 同时你需要配置 build 文件以便每个 APK 使用不同的 versionCode
+//     */
+//    splits {
+//        density {
+//            // 启用或禁用构建多个 APK
+//            enable false
+//            // 构建多个 APK 时排除这些分辨率
+//            exclude "ldpi", "tvdpi", "xxxhdpi", "400dpi", "560dpi"
+//        }
+//    }
+
+    //更改生成的APK文件名
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            if (variant.productFlavors[0] != null) {
+                outputFileName = "Scframe_${variant.productFlavors[0].name}_v${defaultConfig.versionName}_${getDate()}.apk"
+            } else {
+                outputFileName = "Scframe-${variant.name}-${variant.versionName}.apk"
+            }
+        }
+    }
+
+    dexOptions {
+//        incremental true //'incremental' is obsolete and will be removed at the end of 2018.
+        javaMaxHeapSize "4g"
     }
 
     //移除lint检测的error
     lintOptions {
-        abortOnError false
+        abortOnError false //执行lint检查，有任何的错误或者警告提示，都会终止构建，我们可以将其关掉。
+        disable 'MissingTranslation', 'WifiManagerLeak', 'DuplicateIds'
+        // 防止在发布的时候出现因MissingTranslation导致Build Failed!
     }
 
     /**
@@ -133,15 +210,13 @@ android {
         release.setRoot('build-types/release')
     }
 
-    //更改生成的APK文件名
-    android.applicationVariants.all { variant ->
-        variant.outputs.all {
-            outputFileName = "ScFrame_v${variant.versionName}_${variant.buildType.getName()}_${getDate()}.apk"
-        }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
-//统一版本号
+//强制所有的 android support libraries 使用相同的版本
 configurations.all {
     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
         def requested = details.requested
@@ -149,27 +224,24 @@ configurations.all {
                 requested.name != 'multidex' &&
                 requested.name != 'multidex-instrumentation') {
             details.useVersion rootProject.ext.supportLibVersion
-        } else if (requested.group == 'com.squareup.retrofit2') {
-            details.useVersion rootProject.ext.retrofit2
         }
+//        else if (requested.group == 'com.squareup.retrofit2') {
+//            details.useVersion rootProject.ext.retrofit2
+//        }
     }
 }
 
+/**
+ * 该 module 级 build 文件的 dependencies 代码块仅用来指定该 module 自己的依赖
+ */
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "com.android.support:support-v4:${rootProject.ext.supportLibVersion}"
-    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
-    implementation "com.android.support:design:${rootProject.ext.supportLibVersion}"
-    implementation "com.android.support:cardview-v7:${rootProject.ext.supportLibVersion}"
-    implementation "com.android.support:recyclerview-v7:${rootProject.ext.supportLibVersion}"
-    implementation "com.android.support:gridlayout-v7:${rootProject.ext.supportLibVersion}"
+    implementation project(':ScFrame')
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    implementation project(':ScFrame')
-//    implementation 'com.github.sweet2o09:MyScFrame:v2.0.1'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+    // Optional, if you use support library fragments:
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.1'
 }

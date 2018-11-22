@@ -8,6 +8,7 @@ import com.blankj.utilcode.util.CrashUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.Utils;
+import com.caihan.scframe.ScFrame;
 import com.caihan.scframe.utils.log.ScLog;
 
 /**

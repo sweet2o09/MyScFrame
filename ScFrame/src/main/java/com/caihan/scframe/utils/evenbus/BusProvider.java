@@ -2,15 +2,18 @@ package com.caihan.scframe.utils.evenbus;
 
 import android.util.Log;
 
-import com.caihan.scframe.utils.evenbus.MyEventBusIndex;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 /**
- * Created by caihan on 2016/10/31.
  * EventBus是一个针对Android为了松耦合的基于事件发布/订阅模式（观察者模式）的开源库。
+ *
+ * @author caihan
+ * @date 2018/11/21
+ * @e-mail 93234929@qq.com
+ * 维护者
  */
 public class BusProvider {
 

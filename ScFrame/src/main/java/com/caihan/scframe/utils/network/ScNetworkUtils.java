@@ -7,7 +7,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 
-import com.caihan.scframe.framework.ScFrame;
+import com.caihan.scframe.ScFrame;
 
 import java.lang.reflect.Method;
 import java.net.InetAddress;
