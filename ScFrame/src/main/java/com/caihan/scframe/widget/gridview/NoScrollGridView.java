@@ -14,16 +14,21 @@ import android.widget.GridView;
  * 这个类通过设置不滚动来避免
  */
 public class NoScrollGridView extends GridView {
+
     public NoScrollGridView(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public NoScrollGridView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, android.R.attr.gridViewStyle);
     }
 
     public NoScrollGridView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        setSelector(android.R.color.transparent);
+        setOverScrollMode(OVER_SCROLL_NEVER);
+        setVerticalScrollBarEnabled(false);
+        setHorizontalScrollBarEnabled(false);
     }
 
     /**
@@ -31,9 +36,7 @@ public class NoScrollGridView extends GridView {
      */
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,
-                MeasureSpec.AT_MOST);
-        super.onMeasure(widthMeasureSpec, expandSpec);
-
+        heightMeasureSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,MeasureSpec.AT_MOST);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <com.caihan.scframe.widget.imageview.SquareImageView
+        android:id="@+id/nine_photo_image_iv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/image_nine_photo_add"/>
+
+    <ImageView
+        android:id="@+id/nine_photo_del_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/image_nine_photo_delete"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
+</RelativeLayout>

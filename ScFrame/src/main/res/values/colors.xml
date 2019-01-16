@@ -64,4 +64,6 @@
     <color name="line_1px_color">#dddddd</color>
     <!--10px分割线颜色-->
     <color name="line_10dp_color">#ececec</color>
+
+    <color name="color_black_70">#B2000000</color>
 </resources>

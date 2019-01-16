@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:NinePhotoAddLayout="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.ninephoto.NinePhotoAddActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/scframe_base_toolbar_layout"/>
+
+    <com.caihan.scframe.widget.photo.NinePhotoAddLayout
+        android:id="@+id/nine_photo_add_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="32dp"
+        NinePhotoAddLayout:ninePhoto_itemDecorationColor="@android:color/transparent"
+        NinePhotoAddLayout:ninePhoto_itemSpanCount="3"
+        NinePhotoAddLayout:ninePhoto_itemWhiteSpacing="10dp"
+        NinePhotoAddLayout:ninePhoto_maxSize="9"
+        NinePhotoAddLayout:ninePhoto_useDefaultAdapter="true"/>
+</RelativeLayout>

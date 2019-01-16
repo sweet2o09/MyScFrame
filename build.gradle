@@ -64,7 +64,7 @@ ext {
     //指定测试该应用的 API level
     targetSdkVersion = 26
     //com.android.support相同版本号
-    supportLibVersion = "27.1.1"
+    supportLibVersion = "26.1.0"
     //retrofit2相同版本号
     retrofit2 = "2.3.0"
     versionCode = 100
