@@ -112,6 +112,12 @@
         <activity android:name=".ui.qrcode.ZxingGenerateActivity"/>
         <activity android:name=".ui.switchbtn.WeChatSwitchBtnActivity">
         </activity>
+        <activity android:name=".ui.ninephoto.NinePhotoAddActivity">
+        </activity>
+        <activity android:name=".ui.ninephoto.NinePhotoShowActivity">
+        </activity>
+        <activity android:name=".ui.gallery.SystemGalleryActivity">
+        </activity>
     </application>
 
 </manifest>

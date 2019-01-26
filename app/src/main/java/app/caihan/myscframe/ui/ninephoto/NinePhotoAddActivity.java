@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.caihan.scframe.widget.photo.NinePhotoAddLayout;
+import com.caihan.scframe.widget.photo.NinePhotoItem;
 
 import app.caihan.myscframe.R;
 import app.caihan.myscframe.base.BaseScMvpActivity;
@@ -54,6 +55,17 @@ public class NinePhotoAddActivity
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        mNinePhotoAddLayout.setListener(new NinePhotoAddLayout.onItemClickListener() {
+            @Override
+            public void onClickImage(View view, NinePhotoItem ninePhotoItem, int position) {
+                showToast("点击了已添加的图片布局");
+            }
+
+            @Override
+            public void onClickAddImage(View view, NinePhotoItem ninePhotoItem, int position) {
+                showToast("点击了添加图片的布局");
             }
         });
     }

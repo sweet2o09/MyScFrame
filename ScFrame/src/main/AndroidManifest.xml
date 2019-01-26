@@ -3,17 +3,20 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application>
-        <!--<provider-->
-            <!--android:name="com.caihan.scframe.update.UpdateFileProvider"-->
-            <!--android:authorities="${applicationId}.updatefileprovider"-->
-            <!--android:exported="false"-->
-            <!--android:grantUriPermissions="true">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
-                <!--android:resource="@xml/update_cache_path"/>-->
-        <!--</provider>-->
+        <provider
+            android:name="com.caihan.scframe.utils.ScFileProvider"
+            android:authorities="${applicationId}.scframe.file_provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/sc_file_paths"/>
+        </provider>
     </application>
 
 </manifest>

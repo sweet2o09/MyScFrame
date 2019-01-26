@@ -149,11 +149,11 @@ android {
             buildConfigField "boolean", "UPDATE_RELEASE", properties.getProperty('UPDATE_RELEASE')
             // 修改 AndroidManifest.xml,APP_NAME:name,前面加一个反斜杠和空格可以避免纯数字被当成int
             manifestPlaceholders =
-                    [app_icon             : "@mipmap/ic_launcher",
-                     app_roundIcon        : "@mipmap/ic_launcher_round",
-                     UMENG_CHANNEL_VALUE  : name,
-                     WEICHAT_APPKEY       : "\\ " + properties.getProperty('WEICHAT_APPKEY'),
-                     WEICHAT_SECRET       : "\\ " + properties.getProperty('WEICHAT_SECRET'),
+                    [app_icon           : "@mipmap/ic_launcher",
+                     app_roundIcon      : "@mipmap/ic_launcher_round",
+                     UMENG_CHANNEL_VALUE: name,
+                     WEICHAT_APPKEY     : "\\ " + properties.getProperty('WEICHAT_APPKEY'),
+                     WEICHAT_SECRET     : "\\ " + properties.getProperty('WEICHAT_SECRET'),
                     ]
         }
     }

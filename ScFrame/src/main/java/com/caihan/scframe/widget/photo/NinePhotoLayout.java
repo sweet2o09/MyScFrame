@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.SizeUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.bumptech.glide.Glide;
 import com.caihan.scframe.R;
 import com.caihan.scframe.utils.text.ListUtils;
@@ -108,8 +108,8 @@ public class NinePhotoLayout extends FrameLayout {
         mMaxSize = 9;
         mItemSpanCount = 3;
         mDefDrawableResId = R.drawable.image_nine_photo_def;
-        mItemWhiteSpacing = SizeUtils.dp2px(10);
-        mOtherWhiteSpacing = SizeUtils.dp2px(100);
+        mItemWhiteSpacing = 0;
+        mOtherWhiteSpacing = 0;
         mShowAsLargeWhenOnlyOne = true;
         mShowTwoItemSpanCount = true;
         mItemWidth = 0;
@@ -179,9 +179,22 @@ public class NinePhotoLayout extends FrameLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.rightMargin = mOtherWhiteSpacing;
         addView(mNinePhotoRv, layoutParams);
+        if (isInEditMode()) {
+            //用于Preview中展示
+            mNinePhotoRv.setVisibility(GONE);
+            mLargeWhenOnlyOneIv.setVisibility(VISIBLE);
+            mLargeWhenOnlyOneIv.setImageResource(mDefDrawableResId);
+        }
     }
 
-    public void setNewData(List<NinePhotoItem> photos) {
+    public void setNewData(List<NormalNinePhotoItem> photos,
+                           boolean showAsLargeWhenOnlyOne, boolean showTwoItemSpanCount) {
+        mShowAsLargeWhenOnlyOne = showAsLargeWhenOnlyOne;
+        mShowTwoItemSpanCount = showTwoItemSpanCount;
+        setNewData(photos);
+    }
+
+    public void setNewData(List<NormalNinePhotoItem> photos) {
         if (ListUtils.isEmpty(photos)) {
             setVisibility(GONE);
         } else {
@@ -195,7 +208,7 @@ public class NinePhotoLayout extends FrameLayout {
         }
     }
 
-    private void showLargeImage(List<NinePhotoItem> photos) {
+    private void showLargeImage(List<NormalNinePhotoItem> photos) {
         mNinePhotoRv.setVisibility(GONE);
         mNinePhotoAdapter.setNewData(photos);
         mLargeWhenOnlyOneIv.setVisibility(VISIBLE);
@@ -207,47 +220,52 @@ public class NinePhotoLayout extends FrameLayout {
                 .load(mNinePhotoAdapter.getItem(0).getNinePhotoImageUrl())
                 .placeholder(mDefDrawableResId)
                 .fallback(mDefDrawableResId)
+                .override(size, size)
                 .dontAnimate()
                 .into(mLargeWhenOnlyOneIv);
     }
 
-    private void showNinePhoto(List<NinePhotoItem> photos) {
+    private void showNinePhoto(List<NormalNinePhotoItem> photos) {
         int size = photos.size();
         if (mShowTwoItemSpanCount && (size == 2 || size == 4)) {
             //展示2格图
-            mGridLayoutManager.setSpanCount(2);
+            mItemSpanCount = 2;
         } else {
-            mGridLayoutManager.setSpanCount(mItemSpanCount);
+            mItemSpanCount = 3;
         }
+        //宽度用于网络请求拿缩略图
+        mItemWidth = (ScreenUtils.getScreenWidth() - mOtherWhiteSpacing - (mItemSpanCount - 1) * mItemWhiteSpacing) / mItemSpanCount;
+        mGridLayoutManager.setSpanCount(mItemSpanCount);
         mNinePhotoRv.setVisibility(VISIBLE);
         mNinePhotoAdapter.setNewData(photos);
         mLargeWhenOnlyOneIv.setVisibility(GONE);
     }
 
-    private class NinePhotoAdapter extends BaseQuickAdapter<NinePhotoItem, BaseViewHolder> {
+    private class NinePhotoAdapter extends BaseQuickAdapter<NormalNinePhotoItem, BaseViewHolder> {
 
         public NinePhotoAdapter() {
             super(R.layout.item_nine_photo_layout);
         }
 
         @Override
-        public void setNewData(List<NinePhotoItem> data) {
+        public void setNewData(List<NormalNinePhotoItem> data) {
             super.setNewData(data);
         }
 
         @Override
-        public void addData(NinePhotoItem data) {
+        public void addData(NormalNinePhotoItem data) {
 //            super.addData(data);
         }
 
         @Override
-        protected void convert(BaseViewHolder helper, NinePhotoItem item) {
+        protected void convert(BaseViewHolder helper, NormalNinePhotoItem item) {
             helper.addOnClickListener(R.id.nine_photo_image_iv);
             SquareImageView squareImageView = helper.getView(R.id.nine_photo_image_iv);
             Glide.with(mContext)
                     .load(item.getNinePhotoImageUrl())
                     .placeholder(mDefDrawableResId)
                     .fallback(mDefDrawableResId)
+                    .override(mItemWidth, mItemWidth)
                     .dontAnimate()
                     .into(squareImageView);
         }

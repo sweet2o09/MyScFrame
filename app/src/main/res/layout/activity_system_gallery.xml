@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.gallery.SystemGalleryActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/scframe_base_toolbar_layout"/>
+
+    <ImageView
+        android:id="@+id/system_gallery_show_iv"
+        android:layout_width="200dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_height="200dp"
+        android:layout_margin="30dp"
+        android:src="@drawable/image_nine_photo_def"/>
+
+    <Button
+        android:id="@+id/system_gallery_choose_btn"
+        style="@style/BtnStyle.BgGreen_TextWhite_Radius10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/system_gallery_show_iv"
+        android:text="系统相册"/>
+
+    <Button
+        android:id="@+id/system_gallery_take_photo_btn"
+        style="@style/BtnStyle.BgGreen_TextWhite_Radius10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/system_gallery_choose_btn"
+        android:text="系统拍照"/>
+
+</RelativeLayout>

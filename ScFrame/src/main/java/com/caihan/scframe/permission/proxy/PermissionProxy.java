@@ -150,6 +150,9 @@ public class PermissionProxy implements PermissionDelegate {
     @PermissionYes(REQUEST_CODE_ASK_PERMISSIONS)
     public void onSuccess(List<String> permissions) {
         mListener.onPermissionSuccessful();
+        if (mPermissionList != null){
+            mPermissionList.clear();
+        }
     }
 
     @PermissionNo(REQUEST_CODE_ASK_PERMISSIONS)

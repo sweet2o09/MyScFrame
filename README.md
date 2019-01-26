@@ -5,25 +5,14 @@
 全新ScFrame框架
 
 
-#### 软件架构
-软件架构说明
 
+#### 功能介绍
+1.ScFrame-Library是底层框架,里面封装了部分常用的第三方开源库以及我自己写的MVP框架
+2.Demo展示->二维码扫描
+3.Demo展示->仿iOS的SwitchBtn
+4.Demo展示->仿朋友圈九宫格
+5.Demo展示->九宫格添加图片
+6.Demo展示->系统相机与相册调用封装
 
-#### 安装教程
-
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### 使用说明
-
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### 参与贡献
-
-1. Fork 本项目
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
+#### 感谢
+感谢大家点开我的github,希望能留下你的start与issues

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!--物理路径相当于Context.getFilesDir() + /path/-->
+    <files-path
+        name="files_path"
+        path="."/>
+
+    <!--物理路径相当于Context.getCacheDir() + /path/-->
+    <cache-path
+        name="cache_path"
+        path="."/>
+
+    <!--物理路径相当于Environment.getExternalStorageDirectory() + /path/-->
+    <external-path
+        name="external_path"
+        path="."/>
+
+    <!--物理路径相当于**Context.getExternalFilesDir(String) **+ /path/-->
+    <external-files-path
+        name="external_files_path"
+        path="."/>
+
+    <!--物理路径相当于Context.getExternalCacheDir() + /path/-->
+    <external-cache-path
+        name="external_cache_path"
+        path="."/>
+
+    <!--物理路径相当于/path/。-->
+    <root-path
+        name="root_path"
+        path=""/>
+</paths>

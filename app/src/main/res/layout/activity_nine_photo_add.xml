@@ -11,15 +11,25 @@
         android:id="@+id/toolbar"
         layout="@layout/scframe_base_toolbar_layout"/>
 
+    <!--设置布局方式 三种模式可以选择
+        GridLayoutManager
+        LinearLayoutManager
+        StaggeredGridLayoutManager-->
+
     <com.caihan.scframe.widget.photo.NinePhotoAddLayout
         android:id="@+id/nine_photo_add_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
         android:layout_marginTop="32dp"
-        NinePhotoAddLayout:ninePhoto_itemDecorationColor="@android:color/transparent"
-        NinePhotoAddLayout:ninePhoto_itemSpanCount="3"
-        NinePhotoAddLayout:ninePhoto_itemWhiteSpacing="10dp"
-        NinePhotoAddLayout:ninePhoto_maxSize="9"
-        NinePhotoAddLayout:ninePhoto_useDefaultAdapter="true"/>
+        tools:layoutManager="GridLayoutManager"
+        tools:spanCount="3"
+        tools:itemCount="9"
+        tools:listitem="@layout/item_nine_photo_add_layout"
+        NinePhotoAddLayout:ninePhotoAdd_itemDecorationColor="@android:color/transparent"
+        NinePhotoAddLayout:ninePhotoAdd_itemSpanCount="3"
+        NinePhotoAddLayout:ninePhotoAdd_itemWhiteSpacing="10dp"
+        NinePhotoAddLayout:ninePhotoAdd_maxSize="9"
+        NinePhotoAddLayout:ninePhotoAdd_useDefaultAdapter="true"/>
+
 </RelativeLayout>

@@ -2,35 +2,35 @@
 <resources>
     <declare-styleable name="NinePhotoAddLayout">
         <!-- 是否显示加号，默认值为 true -->
-        <attr name="ninePhoto_plusEnable" format="boolean"/>
+        <attr name="ninePhotoAdd_plusEnable" format="boolean"/>
         <!-- 是否可拖拽排序，默认值为 true -->
-        <attr name="ninePhoto_sortable" format="boolean"/>
+        <attr name="ninePhotoAdd_sortable" format="boolean"/>
         <!-- 删除按钮图片，默认值为 R.drawable.image_nine_photo_delete -->
-        <attr name="ninePhoto_deleteDrawable" format="reference"/>
+        <attr name="ninePhotoAdd_deleteDrawable" format="reference"/>
         <!-- 可选择图片的总张数,默认值为 9 -->
-        <attr name="ninePhoto_maxSize" format="integer"/>
+        <attr name="ninePhotoAdd_maxSize" format="integer"/>
         <!-- 列数,默认值为 3 -->
-        <attr name="ninePhoto_itemSpanCount" format="integer"/>
+        <attr name="ninePhotoAdd_itemSpanCount" format="integer"/>
         <!-- 添加按钮图片，默认值为 R.drawable.image_nine_photo_add -->
-        <attr name="ninePhoto_plusDrawable" format="reference"/>
-        <!-- Item 间的水平和垂直间距，默认值为 10dp -->
-        <attr name="ninePhoto_itemWhiteSpacing" format="dimension|reference"/>
+        <attr name="ninePhotoAdd_plusDrawable" format="reference"/>
+        <!-- Item 间的水平和垂直间距，默认值为 0dp -->
+        <attr name="ninePhotoAdd_itemWhiteSpacing" format="dimension|reference"/>
         <!-- 占位图资源，默认值为 R.drawable.image_nine_photo_def -->
-        <attr name="ninePhoto_defDrawable" format="reference"/>
+        <attr name="ninePhotoAdd_defDrawable" format="reference"/>
         <!-- 是否可编辑，默认值为 true -->
-        <attr name="ninePhoto_editable" format="boolean"/>
+        <attr name="ninePhotoAdd_editable" format="boolean"/>
         <!-- item 间隙颜色,默认 R.color.white -->
-        <attr name="ninePhoto_itemDecorationColor" format="reference|color"/>
+        <attr name="ninePhotoAdd_itemDecorationColor" format="reference|color"/>
         <!-- 是否使用默认Adapter,默认 true -->
-        <attr name="ninePhoto_useDefaultAdapter" format="boolean"/>
+        <attr name="ninePhotoAdd_useDefaultAdapter" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="NinePhotoLayout">
         <!-- 可选择图片的总张数,默认值为 9 -->
         <attr name="ninePhoto_maxSize" format="integer"/>
-        <!-- Item 间的水平和垂直间距，默认值为 10dp -->
+        <!-- Item 间的水平和垂直间距，默认值为 0dp -->
         <attr name="ninePhoto_itemWhiteSpacing" format="dimension|reference"/>
-        <!-- 除去九宫格部分的空白区域的尺寸，默认值为 100dp -->
+        <!-- 除去九宫格部分的空白区域的尺寸，默认值为 0dp -->
         <attr name="ninePhoto_otherWhiteSpacing" format="dimension|reference"/>
         <!-- 占位图资源，默认值为 R.drawable.image_nine_photo_def -->
         <attr name="ninePhoto_defDrawable" format="reference"/>

@@ -12,7 +12,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.SizeUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.bumptech.glide.Glide;
 import com.caihan.scframe.R;
 import com.caihan.scframe.widget.imageview.SquareImageView;
@@ -54,7 +54,7 @@ public class NinePhotoAddLayout extends RecyclerView {
     private int mDefDrawableResId = R.drawable.image_nine_photo_def;//默认占位图
     @ColorInt
     private int mItemDecorationColor = Color.WHITE;//默认间隙颜色
-    private int mItemWhiteSpacing = 10;//Item间隔默认10dp
+    private int mItemWhiteSpacing = 0;//Item间隔默认0dp
 
     public interface onItemClickListener {
 
@@ -107,7 +107,7 @@ public class NinePhotoAddLayout extends RecyclerView {
         mDelDrawableResId = R.drawable.image_nine_photo_delete;
         mDefDrawableResId = R.drawable.image_nine_photo_def;
         mItemDecorationColor = Color.WHITE;
-        mItemWhiteSpacing = SizeUtils.dp2px(10);
+        mItemWhiteSpacing = 0;
     }
 
     /**
@@ -125,27 +125,27 @@ public class NinePhotoAddLayout extends RecyclerView {
     }
 
     private void initCustomAttr(int attr, TypedArray typedArray) {
-        if (attr == R.styleable.NinePhotoAddLayout_ninePhoto_maxSize) {
+        if (attr == R.styleable.NinePhotoAddLayout_ninePhotoAdd_maxSize) {
             mMaxSize = typedArray.getInteger(attr, mMaxSize);
-        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhoto_itemSpanCount) {
+        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhotoAdd_itemSpanCount) {
             mItemSpanCount = typedArray.getInteger(attr, mItemSpanCount);
-        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhoto_sortable) {
+        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhotoAdd_sortable) {
             mSortable = typedArray.getBoolean(attr, mSortable);
-        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhoto_plusEnable) {
+        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhotoAdd_plusEnable) {
             mPlusEnable = typedArray.getBoolean(attr, mPlusEnable);
-        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhoto_editable) {
+        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhotoAdd_editable) {
             mEditable = typedArray.getBoolean(attr, mEditable);
-        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhoto_useDefaultAdapter) {
+        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhotoAdd_useDefaultAdapter) {
             mDefAdapter = typedArray.getBoolean(attr, mDefAdapter);
-        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhoto_plusDrawable) {
+        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhotoAdd_plusDrawable) {
             mPlusDrawableResId = typedArray.getResourceId(attr, mPlusDrawableResId);
-        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhoto_deleteDrawable) {
+        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhotoAdd_deleteDrawable) {
             mDelDrawableResId = typedArray.getResourceId(attr, mDelDrawableResId);
-        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhoto_defDrawable) {
+        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhotoAdd_defDrawable) {
             mDefDrawableResId = typedArray.getResourceId(attr, mDefDrawableResId);
-        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhoto_itemDecorationColor) {
+        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhotoAdd_itemDecorationColor) {
             mItemDecorationColor = typedArray.getColor(attr, mItemDecorationColor);
-        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhoto_itemWhiteSpacing) {
+        } else if (attr == R.styleable.NinePhotoAddLayout_ninePhotoAdd_itemWhiteSpacing) {
             mItemWhiteSpacing = typedArray.getDimensionPixelSize(attr, mItemWhiteSpacing);
         }
     }
@@ -161,7 +161,8 @@ public class NinePhotoAddLayout extends RecyclerView {
         addItemDecoration(new GridDividerItemDecoration(mContext,
                 mItemWhiteSpacing, mItemDecorationColor));
         setNestedScrollingEnabled(false);
-        if (mDefAdapter){
+        //isInEditMode() = true表示可视化展示
+        if (mDefAdapter && !isInEditMode()) {
             setDefAddAdapter();
         }
     }
@@ -268,6 +269,7 @@ public class NinePhotoAddLayout extends RecyclerView {
 
     /**
      * 保存数据,默认Adapter中使用
+     *
      * @param ninePhotoItems
      */
     public void setNewData(ArrayList<NinePhotoItem> ninePhotoItems) {
@@ -297,8 +299,11 @@ public class NinePhotoAddLayout extends RecyclerView {
 
     private class NinePhotoAddAdapter extends ItemDragAdapter<NinePhotoItem, BaseViewHolder> {
 
+        private int itemSize;
+
         public NinePhotoAddAdapter() {
             super(R.layout.item_nine_photo_add_layout);
+            itemSize = (ScreenUtils.getScreenWidth() - (mItemSpanCount - 1) * mItemWhiteSpacing) / mItemSpanCount;
         }
 
         @Override
@@ -327,6 +332,7 @@ public class NinePhotoAddLayout extends RecyclerView {
                         .load(item.getNinePhotoImageUrl())
                         .placeholder(mDefDrawableResId)
                         .fallback(mDefDrawableResId)
+                        .override(itemSize, itemSize)
                         .dontAnimate()
                         .into(squareImageView);
                 squareImageView.setTag(R.id.nine_photo_image_iv, "Normal");
