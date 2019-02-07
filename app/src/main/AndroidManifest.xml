@@ -120,6 +120,8 @@
         </activity>
         <activity android:name=".ui.imageloader.ImageLoaderActivity">
         </activity>
+        <activity android:name=".ui.dialog.DialogQueueActivity">
+        </activity>
     </application>
 
 </manifest>
