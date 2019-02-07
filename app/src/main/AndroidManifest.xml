@@ -118,6 +118,8 @@
         </activity>
         <activity android:name=".ui.gallery.SystemGalleryActivity">
         </activity>
+        <activity android:name=".ui.imageloader.ImageLoaderActivity">
+        </activity>
     </application>
 
 </manifest>
