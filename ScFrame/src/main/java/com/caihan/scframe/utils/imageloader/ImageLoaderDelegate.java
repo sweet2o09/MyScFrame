@@ -190,7 +190,9 @@ public interface ImageLoaderDelegate {
     void displayVideo(File file, ImageView imageView);
 
 
-    void pause(Activity activity);
+    void pause(Context context);
 
-    void resume(Activity activity);
+    void resume(Context context);
+
+    void clearImageView(ImageView imageView);
 }

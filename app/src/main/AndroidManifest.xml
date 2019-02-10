@@ -122,6 +122,8 @@
         </activity>
         <activity android:name=".ui.dialog.DialogQueueActivity">
         </activity>
+        <activity android:name=".ui.imageloader.ImageLoaderListActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -13,8 +13,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.blankj.utilcode.util.ScreenUtils;
-import com.bumptech.glide.Glide;
 import com.caihan.scframe.R;
+import com.caihan.scframe.utils.imageloader.ScImageLoader;
+import com.caihan.scframe.utils.log.ScLog;
 import com.caihan.scframe.utils.text.ListUtils;
 import com.caihan.scframe.widget.imageview.SquareImageView;
 import com.caihan.scframe.widget.recyclerview.GridDividerItemDecoration;
@@ -214,15 +215,17 @@ public class NinePhotoLayout extends FrameLayout {
         mLargeWhenOnlyOneIv.setVisibility(VISIBLE);
         //设置大图的最大尺寸
         int size = getWidth() - mOtherWhiteSpacing;
+        ScLog.debug("NinePhotoLayout showLargeImage size = " + size);
         mLargeWhenOnlyOneIv.setMaxWidth(size);
         mLargeWhenOnlyOneIv.setMaxHeight(size);
-        Glide.with(mContext)
-                .load(mNinePhotoAdapter.getItem(0).getNinePhotoImageUrl())
-                .placeholder(mDefDrawableResId)
-                .fallback(mDefDrawableResId)
-                .override(size, size)
-                .dontAnimate()
-                .into(mLargeWhenOnlyOneIv);
+
+        ScImageLoader.getInstance()
+                .display(mNinePhotoAdapter.getItem(0).getNinePhotoImageUrl(),
+                        mDefDrawableResId,
+                        mDefDrawableResId,
+                        size,
+                        size,
+                        mLargeWhenOnlyOneIv);
     }
 
     private void showNinePhoto(List<NormalNinePhotoItem> photos) {
@@ -235,10 +238,15 @@ public class NinePhotoLayout extends FrameLayout {
         }
         //宽度用于网络请求拿缩略图
         mItemWidth = (ScreenUtils.getScreenWidth() - mOtherWhiteSpacing - (mItemSpanCount - 1) * mItemWhiteSpacing) / mItemSpanCount;
+        ScLog.debug("NinePhotoLayout showNinePhoto mItemWidth = " + mItemWidth);
         mGridLayoutManager.setSpanCount(mItemSpanCount);
         mNinePhotoRv.setVisibility(VISIBLE);
         mNinePhotoAdapter.setNewData(photos);
         mLargeWhenOnlyOneIv.setVisibility(GONE);
+    }
+
+    public void clearImageView() {
+        ScImageLoader.getInstance().clearImageView(mLargeWhenOnlyOneIv);
     }
 
     private class NinePhotoAdapter extends BaseQuickAdapter<NormalNinePhotoItem, BaseViewHolder> {
@@ -261,13 +269,13 @@ public class NinePhotoLayout extends FrameLayout {
         protected void convert(BaseViewHolder helper, NormalNinePhotoItem item) {
             helper.addOnClickListener(R.id.nine_photo_image_iv);
             SquareImageView squareImageView = helper.getView(R.id.nine_photo_image_iv);
-            Glide.with(mContext)
-                    .load(item.getNinePhotoImageUrl())
-                    .placeholder(mDefDrawableResId)
-                    .fallback(mDefDrawableResId)
-                    .override(mItemWidth, mItemWidth)
-                    .dontAnimate()
-                    .into(squareImageView);
+            ScImageLoader.getInstance()
+                    .display(item.getNinePhotoImageUrl(),
+                            mDefDrawableResId,
+                            mDefDrawableResId,
+                            mItemWidth,
+                            mItemWidth,
+                            squareImageView);
         }
     }
 }

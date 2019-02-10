@@ -1,5 +1,6 @@
 package app.caihan.myscframe.ui.imageloader;
 
+import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,19 +36,21 @@ public class ImageLoaderActivity extends BaseScActivity {
     ImageView mImage3;
     @BindView(R.id.image4)
     ImageView mImage4;
+    @BindView(R.id.toolbar_right_tv)
+    TextView mToolbarRightTv;
 
     private int mOutPutSize = 0;
 
-    private static final String[] IMAGE_URL = {
-            "http://qnimg.xingqiuxiuchang.cn/2379d373-20d1-4cd9-8589-89667af08ebb.jpg",
-            "http://qnimg.xingqiuxiuchang.cn/02645d2e-aaf2-485a-9bda-40c3ce5cfba2.jpg",
-            "http://qnimg.xingqiuxiuchang.cn/927dc809-797a-4d23-95d2-1b774d38f71f.jpg",
-            "http://qnimg.xingqiuxiuchang.cn/7c2b179a-2e1b-41ce-adc1-4aaaaba83693.jpg",
-            "http://qnimg.xingqiuxiuchang.cn/2c62706b-ac84-4cb8-baa3-ffd69e0961e9.jpg",
-            "http://qnimg.xingqiuxiuchang.cn/0dc5a76b-3238-4c25-9b9b-30d94ed19dae.jpg",
-            "http://qnimg.xingqiuxiuchang.cn/2379d373-20d1-4cd9-8589-89667af08ebb.jpg",
-            "http://qnimg.xingqiuxiuchang.cn/02645d2e-aaf2-485a-9bda-40c3ce5cfba2.jpg",
-            "http://qnimg.xingqiuxiuchang.cn/927dc809-797a-4d23-95d2-1b774d38f71f.jpg",
+    public static final String[] IMAGE_URL = {
+            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1549724835470&di=ab204e0ef0220ea64dbcfa3ec217a465&imgtype=0&src=http%3A%2F%2Fandroid-screenimgs.25pp.com%2F87%2F312407_137894815202.jpg",
+            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1549725040245&di=c0423f633ae178cc56642b59c9528c90&imgtype=0&src=http%3A%2F%2Ff.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2F35a85edf8db1cb13b43c9eabd654564e92584b35.jpg",
+            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1549724819404&di=5439eb3a2f1d91e1c55261b875e6bb33&imgtype=0&src=http%3A%2F%2Fclubimg.dbankcdn.com%2Fdata%2Fattachment%2Fforum%2F201411%2F18%2F163244ds6zl26zxqxax04x.jpg",
+            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1549724795769&di=4d7c0d847b3d248581a57ad7c027e554&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201407%2F06%2F20140706211323_2SBXv.jpeg",
+            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1549724889240&di=28c23c01aceda3a1f9d0d0e9b9a0c5e6&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farchive%2F3725cde1a652ccbe5b6c0964aaae069154aa9759.jpg",
+            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1549724889236&di=beb334ce1770080b152fe5d6983a2ed6&imgtype=0&src=http%3A%2F%2Fi1.hdslb.com%2Fbfs%2Farchive%2Fdd0bf5cac4d5e55951b5264d06bbcb1893b2fa6b.jpg",
+            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1549724835470&di=ab204e0ef0220ea64dbcfa3ec217a465&imgtype=0&src=http%3A%2F%2Fandroid-screenimgs.25pp.com%2F87%2F312407_137894815202.jpg",
+            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1549725040245&di=c0423f633ae178cc56642b59c9528c90&imgtype=0&src=http%3A%2F%2Ff.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2F35a85edf8db1cb13b43c9eabd654564e92584b35.jpg",
+            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1549724819404&di=5439eb3a2f1d91e1c55261b875e6bb33&imgtype=0&src=http%3A%2F%2Fclubimg.dbankcdn.com%2Fdata%2Fattachment%2Fforum%2F201411%2F18%2F163244ds6zl26zxqxax04x.jpg",
     };
 
     @Override
@@ -71,6 +74,14 @@ public class ImageLoaderActivity extends BaseScActivity {
             }
         });
         mOutPutSize = SizeUtils.dp2px(120);
+        mToolbarRightTv.setText("列表");
+        mToolbarRightTv.setVisibility(View.VISIBLE);
+        mToolbarRightTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mContext,ImageLoaderListActivity.class));
+            }
+        });
     }
 
     @OnClick({R.id.image1, R.id.image2, R.id.image3, R.id.image4})

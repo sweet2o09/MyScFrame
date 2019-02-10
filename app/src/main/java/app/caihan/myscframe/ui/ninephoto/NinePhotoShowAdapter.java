@@ -2,11 +2,10 @@ package app.caihan.myscframe.ui.ninephoto;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.widget.ImageView;
 
 import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.StringUtils;
-import com.bumptech.glide.Glide;
+import com.caihan.scframe.utils.imageloader.ScImageLoader;
 import com.caihan.scframe.widget.photo.NinePhotoLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -42,15 +41,29 @@ public class NinePhotoShowAdapter extends BaseQuickAdapter<NinePhotoShowItem, Ba
         super.addData(data);
     }
 
+//    @Override
+//    public void onViewRecycled(BaseViewHolder holder) {
+//        super.onViewRecycled(holder);
+//        //当item被隐藏的时候,清掉图片缓存
+//        ImageView holderView = holder.getView(R.id.head_iv);
+//        NinePhotoLayout ninePhotoLayout = holder.getView(R.id.nine_photo_layout);
+//        if (holderView != null) {
+//            ScImageLoader.getInstance().clearImageView(holderView);
+//        }
+//        if (ninePhotoLayout != null){
+//            ninePhotoLayout.clearImageView();
+//        }
+//    }
+
     @Override
     protected void convert(BaseViewHolder helper, NinePhotoShowItem item) {
-        Glide.with(mContext)
-                .load(item.getHeadImageUrl())
-                .placeholder(R.mipmap.ic_launcher_round)
-                .fallback(R.mipmap.ic_launcher_round)
-                .override(mHeadSize, mHeadSize)
-                .dontAnimate()
-                .into((ImageView) helper.getView(R.id.head_iv));
+        ScImageLoader.getInstance()
+                .display(item.getHeadImageUrl(),
+                        R.mipmap.ic_launcher_round,
+                        R.mipmap.ic_launcher_round,
+                        mHeadSize,
+                        mHeadSize,
+                        helper.getView(R.id.head_iv));
 
         helper.setText(R.id.title_tv, item.getTitle());
         if (StringUtils.isEmpty(item.getContent())) {

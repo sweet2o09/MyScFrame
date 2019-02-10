@@ -8,10 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SizeUtils;
-import com.bumptech.glide.Glide;
 import com.caihan.scframe.permission.PermissionGroup;
 import com.caihan.scframe.permission.base.OnPermissionListener;
 import com.caihan.scframe.utils.PhotoUtils;
+import com.caihan.scframe.utils.imageloader.ScImageLoader;
 import com.caihan.scframe.utils.log.ScLog;
 
 import app.caihan.myscframe.R;
@@ -164,38 +164,30 @@ public class SystemGalleryActivity extends BaseScActivity implements PhotoUtils.
     public void resultTakeCamera(String imagePath, boolean isDelCameraFile) {
         showToast("相机返回");
         ScLog.debug("相机返回 imagePath = " + imagePath);
-        Glide.with(mContext)
-                .load(imagePath)
-                .placeholder(R.drawable.image_nine_photo_def)
-                .fallback(R.drawable.image_nine_photo_def)
-                .override(SizeUtils.dp2px(200), SizeUtils.dp2px(200))
-                .dontAnimate()
-                .into(mSystemGalleryShowIv);
+        addImage(imagePath);
     }
 
     @Override
     public void resultTakeGallery(String imagePath) {
         showToast("相册返回");
         ScLog.debug("相册返回 imagePath = " + imagePath);
-        Glide.with(mContext)
-                .load(imagePath)
-                .placeholder(R.drawable.image_nine_photo_def)
-                .fallback(R.drawable.image_nine_photo_def)
-                .override(SizeUtils.dp2px(200), SizeUtils.dp2px(200))
-                .dontAnimate()
-                .into(mSystemGalleryShowIv);
+        addImage(imagePath);
     }
 
     @Override
     public void resultTakeCrop(String imagePath, boolean isDelCameraFile, boolean isDelCropFile) {
         showToast("裁剪返回");
         ScLog.debug("裁剪返回 imagePath = " + imagePath);
-        Glide.with(mContext)
-                .load(imagePath)
-                .placeholder(R.drawable.image_nine_photo_def)
-                .fallback(R.drawable.image_nine_photo_def)
-                .override(mOutPutSize, mOutPutSize)
-                .dontAnimate()
-                .into(mSystemGalleryShowIv);
+        addImage(imagePath);
+    }
+
+    private void addImage(String imagePath){
+        ScImageLoader.getInstance()
+                .display(imagePath,
+                        R.drawable.image_nine_photo_def,
+                        R.drawable.image_nine_photo_def,
+                        mOutPutSize,
+                        mOutPutSize,
+                        mSystemGalleryShowIv);
     }
 }

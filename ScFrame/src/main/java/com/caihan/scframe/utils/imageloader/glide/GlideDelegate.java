@@ -15,6 +15,7 @@ import com.blankj.utilcode.util.SizeUtils;
 import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.GifRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -29,6 +30,11 @@ import com.caihan.scframe.utils.imageloader.glide.transformations.RoundedCorners
 import java.io.File;
 
 /**
+ * DiskCacheStrategy.NONE 什么都不缓存
+ * DiskCacheStrategy.SOURCE 只缓存全尺寸图
+ * DiskCacheStrategy.RESULT 只缓存最终的加载图
+ * DiskCacheStrategy.ALL 缓存所有版本图（默认行为）
+ *
  * @author caihan
  * @date 2019/2/6
  * @e-mail 93234929@qq.com
@@ -71,6 +77,8 @@ public class GlideDelegate implements ImageLoaderDelegate {
                                                        @DrawableRes int failResId) {
         return Glide.with(activity)
                 .load(path)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)//只缓存最终的加载图
+                .skipMemoryCache(true)//跳过内存缓存
                 .dontAnimate()//关闭动画
                 .placeholder(loadingResId)//图片加载出来前，显示的图片
                 .error(failResId);//图片加载失败后，显示的图片
@@ -80,6 +88,8 @@ public class GlideDelegate implements ImageLoaderDelegate {
                                                        @DrawableRes int failResId) {
         return Glide.with(fragment)
                 .load(path)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)//只缓存最终的加载图
+                .skipMemoryCache(true)//跳过内存缓存
                 .dontAnimate()//关闭动画
                 .placeholder(loadingResId)//图片加载出来前，显示的图片
                 .error(failResId);//图片加载失败后，显示的图片
@@ -89,6 +99,8 @@ public class GlideDelegate implements ImageLoaderDelegate {
                                                        @DrawableRes int failResId) {
         return Glide.with(context)
                 .load(path)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)//只缓存最终的加载图
+                .skipMemoryCache(true)//跳过内存缓存
                 .dontAnimate()//关闭动画
                 .placeholder(loadingResId)//图片加载出来前，显示的图片
                 .error(failResId);//图片加载失败后，显示的图片
@@ -395,13 +407,18 @@ public class GlideDelegate implements ImageLoaderDelegate {
     }
 
     @Override
-    public void pause(Activity activity) {
-        Glide.with(activity).pauseRequests();
+    public void pause(Context context) {
+        Glide.with(context).pauseRequests();
     }
 
     @Override
-    public void resume(Activity activity) {
-        Glide.with(activity).resumeRequestsRecursive();
+    public void resume(Context context) {
+        Glide.with(context).resumeRequests();
+    }
+
+    @Override
+    public void clearImageView(ImageView imageView) {
+        Glide.clear(imageView);
     }
 
     /**

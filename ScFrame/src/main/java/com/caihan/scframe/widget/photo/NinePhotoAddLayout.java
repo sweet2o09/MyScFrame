@@ -13,8 +13,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.blankj.utilcode.util.ScreenUtils;
-import com.bumptech.glide.Glide;
 import com.caihan.scframe.R;
+import com.caihan.scframe.utils.imageloader.ScImageLoader;
 import com.caihan.scframe.widget.imageview.SquareImageView;
 import com.caihan.scframe.widget.recyclerview.GridDividerItemDecoration;
 import com.caihan.scframe.widget.recyclerview.ItemDragAdapter;
@@ -328,13 +328,13 @@ public class NinePhotoAddLayout extends RecyclerView {
                 squareImageView.setImageResource(mPlusDrawableResId);
                 squareImageView.setTag(R.id.nine_photo_image_iv, "none");
             } else {
-                Glide.with(mContext)
-                        .load(item.getNinePhotoImageUrl())
-                        .placeholder(mDefDrawableResId)
-                        .fallback(mDefDrawableResId)
-                        .override(itemSize, itemSize)
-                        .dontAnimate()
-                        .into(squareImageView);
+                ScImageLoader.getInstance()
+                        .display(item.getNinePhotoImageUrl(),
+                                mDefDrawableResId,
+                                mDefDrawableResId,
+                                itemSize,
+                                itemSize,
+                                squareImageView);
                 squareImageView.setTag(R.id.nine_photo_image_iv, "Normal");
             }
         }

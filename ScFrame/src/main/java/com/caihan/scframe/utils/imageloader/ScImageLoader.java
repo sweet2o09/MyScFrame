@@ -191,12 +191,17 @@ public final class ScImageLoader implements ImageLoaderDelegate {
     }
 
     @Override
-    public void pause(Activity activity) {
-        mDelegate.pause(activity);
+    public void pause(Context context) {
+        mDelegate.pause(context);
     }
 
     @Override
-    public void resume(Activity activity) {
-        mDelegate.resume(activity);
+    public void resume(Context context) {
+        mDelegate.resume(context);
+    }
+
+    @Override
+    public void clearImageView(ImageView imageView) {
+        mDelegate.clearImageView(imageView);
     }
 }

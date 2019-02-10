@@ -101,6 +101,22 @@ public class NinePhotoShowActivity
             }
         }, mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
+//        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    //空闲状态
+//                    ScImageLoader.getInstance().resume(NinePhotoShowActivity.this);
+//                } else {
+//                    ScImageLoader.getInstance().pause(NinePhotoShowActivity.this);
+//                }
+//            }
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//            }
+//        });
     }
 
     private void getData(boolean isRefresh) {
