@@ -87,17 +87,17 @@ dependencies {
     api "com.android.support:support-annotations:${rootProject.ext.supportLibVersion}"
 
     /** 安卓工具类库 */
-    api 'com.blankj:utilcode:1.23.2'
+    api 'com.blankj:utilcode:1.23.4'
 
     /** Android智能下拉刷新框架 */
     api 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
     api 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.3'
 
     /** RecyclerAdapter框架 */
-    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.40'
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'
 
     /** ImmersionBar沉浸式状态栏和沉浸式导航栏管理 */
-    api 'com.gyf.barlibrary:barlibrary:2.3.0'
+    api 'com.gyf.immersionbar:immersionbar:2.3.3'
 
     /** EventBus加速模式 */
     api 'org.greenrobot:eventbus:3.1.1'
@@ -151,7 +151,7 @@ dependencies {
     api 'com.google.code.gson:gson:2.8.5'
 
     /** 混淆配置 */
-    api 'com.blankj:free-proguard:0.0.8'
+    api 'com.blankj:free-proguard:0.0.10'
 
 //    /** RxEasyHttp */
 //    api 'com.zhouyou:rxeasyhttp:2.1.3'

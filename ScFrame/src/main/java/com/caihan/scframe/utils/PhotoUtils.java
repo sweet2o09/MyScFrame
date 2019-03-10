@@ -349,6 +349,9 @@ public class PhotoUtils {
      * @param srcFile
      */
     private void sendBroadcast(File srcFile) {
+        if (!ImageUtils.isImage(srcFile)) {
+            return;
+        }
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         Uri uri = createFileUri(srcFile);
         mediaScanIntent.setData(uri);

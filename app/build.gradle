@@ -128,10 +128,6 @@ android {
      */
     productFlavors {
         android {
-//            String ldy_app_name = properties.getProperty('LDY_APP_NAME')
-//            String property = new String(properties.getProperty('LDY_APP_NAME').getBytes("ISO8859-1"),"utf-8")
-//            println "ldy_app_name = "+ldy_app_name
-//            println "property = "+property
             // 每个环境包名不同
             applicationId properties.getProperty('APPLICATION_ID')
             versionCode Integer.parseInt(properties.getProperty('APP_VERSION_CODE'))
@@ -141,8 +137,8 @@ android {
             resValue "string", "app_name", new String(properties.getProperty('APP_NAME').getBytes("utf-8"), "utf-8")
 //            resValue "bool", "isrRank", 'false'
             // 动态修改 常量 字段
-            buildConfigField "String", "APP_URL_SC", '"http://easysupport-test.laidy.cn/easySupport"'
-            buildConfigField "String", "LDY_APP_VERSION", properties.getProperty('INTERNAL_APP_VERSION')
+            buildConfigField "String", "APP_URL_SC", properties.getProperty('APP_URL_SC')
+            buildConfigField "String", "SC_APP_VERSION", properties.getProperty('INTERNAL_APP_VERSION')
             buildConfigField "boolean", "DEBUG_RELEASE", properties.getProperty('DEBUG_RELEASE')
             buildConfigField "int", "API_SETTING", properties.getProperty('API_SETTING')
             buildConfigField "int", "H5_SETTING", properties.getProperty('H5_SETTING')
@@ -240,8 +236,8 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
     // Optional, if you use support library fragments:
-    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.1'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
 }

@@ -36,8 +36,9 @@
     rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
 
-#barlibrary:2.3.0
+#barlibrary:2.3.3
 -keep class com.gyf.barlibrary.* {*;}
+-dontwarn com.gyf.barlibrary.**
 
 #permission:1.1.2
 -keepclassmembers class ** {
