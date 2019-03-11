@@ -32,7 +32,6 @@
     <style name="AppTheme.ColorTranslucentTheme" parent="AppTheme.SplashTheme"/>
 
 
-
     <style name="loading_dialog" parent="android:Theme.Dialog">
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowIsTranslucent">false</item>
@@ -72,4 +71,18 @@
         <item name="android:background">@color/line_10dp_color</item>
     </style>
 
+
+    <style name="base_toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:background">@color/scframe_toolbar_bg_color</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <!--Light系列的主题,字体是黑色的,menu菜单背景是白色-->
+    <style name="base_toolbar_theme_Light" parent="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <!--Dark系列的主题,字体是白色的,menu菜单背景是黑色-->
+    <style name="base_toolbar_theme_Dark" parent="@style/ThemeOverlay.AppCompat.Dark"/>
 </resources>

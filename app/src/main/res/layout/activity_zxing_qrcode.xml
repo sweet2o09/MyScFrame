@@ -81,7 +81,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="右边文字"
-                android:textColor="@color/white"
+                android:textColor="@color/scframe_toolbar_text_color"
                 android:textSize="@dimen/scframe_toolbar_right_text_size"
                 android:visibility="visible"
                 tools:visibility="visible"/>
