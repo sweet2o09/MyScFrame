@@ -186,7 +186,7 @@ android {
     //移除lint检测的error
     lintOptions {
         abortOnError false //执行lint检查，有任何的错误或者警告提示，都会终止构建，我们可以将其关掉。
-        disable 'MissingTranslation', 'WifiManagerLeak', 'DuplicateIds'
+        disable 'MissingTranslation', 'WifiManagerLeak', 'DuplicateIds','GoogleAppIndexingWarning'
         // 防止在发布的时候出现因MissingTranslation导致Build Failed!
     }
 

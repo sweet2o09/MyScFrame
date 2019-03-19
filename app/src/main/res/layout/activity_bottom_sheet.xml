@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.coordinator.BottomSheetActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/app_base_toolbar_layout"/>
+    </android.support.design.widget.AppBarLayout>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"/>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    <!--layout_anchor的属性，连同layout_anchorGravity一起，
+    可以用来放置与其他视图关联在一起的悬浮视图-->
+    <RelativeLayout
+        android:id="@+id/bottom_sheet_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="bottom"
+        android:background="@color/colorAccent"
+        android:visibility="invisible"
+        app:layout_anchor="@+id/bottom_sheet_layout"
+        app:layout_anchorGravity="top"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="23dp"
+            android:src="@drawable/toast_error"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="点击收起BottomSheet"
+            android:textColor="#ffffff"/>
+    </RelativeLayout>
+
+    <!--behavior_peekHeight 属性是设置bottomSheet 折叠时的高度-->
+    <!--behavior_hideable="false"说明这个BottomSheet不可以被手动滑动隐藏，
+    设置为true则可以滑到屏幕最底部隐藏。-->
+    <RelativeLayout
+        android:id="@+id/bottom_sheet_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:minHeight="100dp"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="56dp"
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        tools:ignore="MissingPrefix">
+
+        <TextView
+            android:id="@+id/bottom_sheet_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="这是一个BottomSheet"/>
+
+        <ImageView
+            android:id="@+id/bottom_sheet_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/bottom_sheet_tv"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:minHeight="100dp"
+            android:padding="10dp"
+            android:scaleType="centerInside"/>
+    </RelativeLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>
