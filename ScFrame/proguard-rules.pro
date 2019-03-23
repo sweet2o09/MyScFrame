@@ -50,3 +50,8 @@
 
 #实现该接口的类都不加入混淆
 -keep class * implements com.caihan.scframe.utils.IUnProguard
+
+#RxEasyHttp:2.1.5
+-keep class com.zhouyou.http.model.** {*;}
+-keep class com.zhouyou.http.cache.model.** {*;}
+-keep class com.zhouyou.http.cache.stategy.**{*;}

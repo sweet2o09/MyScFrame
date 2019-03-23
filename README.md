@@ -45,6 +45,7 @@
             android:name="android.max_aspect"
             android:value="2.4"/>
 ```
+### 11.引入RxEasyHttp
 
 ## 感谢
 感谢大家点开我的github,希望能留下你的start与issues

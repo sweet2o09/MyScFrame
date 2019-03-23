@@ -1,6 +1,5 @@
 package com.caihan.scframe.rxjava;
 
-import com.caihan.scframe.framework.v1.support.MvpView;
 import com.caihan.scframe.framework.v1.support.mvp.BaseView;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
@@ -20,10 +19,10 @@ import io.reactivex.disposables.Disposable;
 public abstract class RxSubscriber<T> implements Observer<T> {
 
     private boolean cancelLoading = true;
-    private MvpView mMvpView;
+    private BaseView mBaseView;
 
-    public RxSubscriber(MvpView mvpView) {
-        this.mMvpView = mvpView;
+    public RxSubscriber(BaseView baseView) {
+        this.mBaseView = baseView;
     }
 
     public RxSubscriber(boolean cancelLoading) {
@@ -39,7 +38,7 @@ public abstract class RxSubscriber<T> implements Observer<T> {
     public void onComplete() {
         //对Complete事件作出响应
 //        if (cancelLoading) {
-//            mMvpView.dismissRequestLoading();
+//            mBaseView.dismissRequestLoading();
 //        }
     }
 
@@ -47,10 +46,10 @@ public abstract class RxSubscriber<T> implements Observer<T> {
     public void onError(Throwable e) {
         //对Error事件作出响应
         if (cancelLoading) {
-            mMvpView.dismissRequestLoading();
+            mBaseView.dismissRequestLoading();
         }
         if (e != null) {
-            mMvpView.onRequestError(e.getMessage());
+            mBaseView.onRequestError(e.getMessage());
             _onError(e);
         }
     }
@@ -59,7 +58,7 @@ public abstract class RxSubscriber<T> implements Observer<T> {
     public void onNext(T t) {
         //接收到的数据
         if (cancelLoading) {
-            mMvpView.dismissRequestLoading();
+            mBaseView.dismissRequestLoading();
         }
         _onNext(t);
     }

@@ -9,7 +9,7 @@
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/scframe_base_toolbar_layout"/>
+        layout="@layout/app_base_toolbar_layout"/>
 
     <Button
         android:id="@+id/show_dialog_btn"

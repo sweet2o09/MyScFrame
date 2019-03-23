@@ -2,6 +2,8 @@ package app.caihan.myscframe.ui.welcome;
 
 import android.support.constraint.ConstraintLayout;
 
+import com.caihan.scframe.permission.PermissionGroup;
+import com.caihan.scframe.permission.base.OnPermissionListener;
 import com.caihan.scframe.rxjava.RxCountDown;
 import com.caihan.scframe.utils.log.ScLog;
 import com.trello.rxlifecycle2.android.ActivityEvent;
@@ -36,6 +38,20 @@ public class WelcomeActivity extends BaseScActivity {
     @Override
     protected void onCreate() {
         setImmersion();
+        requestPermission(new OnPermissionListener() {
+            @Override
+            public void onPermissionSuccessful() {
+                initDisposable();
+            }
+
+            @Override
+            public void onPermissionFailure() {
+
+            }
+        }, PermissionGroup.STORAGE);
+    }
+
+    private void initDisposable(){
         RxCountDown.countdown(3)
                 .compose(this.<Long>bindUntilEvent(ActivityEvent.DESTROY))
                 .doOnDispose(new Action() {
@@ -69,7 +85,6 @@ public class WelcomeActivity extends BaseScActivity {
                         ScLog.debug("onComplete");
                     }
                 });
-
     }
 
     @OnClick(R.id.content_view)

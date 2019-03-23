@@ -66,7 +66,7 @@ ext {
     //com.android.support相同版本号
     supportLibVersion = "26.1.0"
     //retrofit2相同版本号
-    retrofit2 = "2.3.0"
+    retrofit2 = "2.4.0"
     versionCode = 100
     versionName = "1.0.0"
 }

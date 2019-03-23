@@ -355,13 +355,16 @@
 #Retrofit2.x
 -dontwarn retrofit2.**
 -keep class retrofit2.** { *; }
+-keepattributes Exceptions
+
+# Retrolambda
+-dontwarn java.lang.invoke.*
 
 #RxJava RxAndroid
--dontwarn rx.*
 -dontwarn sun.misc.**
 -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
-   long producerIndex;
-   long consumerIndex;
+    long producerIndex;
+    long consumerIndex;
 }
 -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
     rx.internal.util.atomic.LinkedQueueNode producerNode;
@@ -369,10 +372,17 @@
 -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
     rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
+-keepclassmembers class rx.android.**{*;}
 
 #Gson
+-keep class com.google.gson.stream.** { *; }
+-keepattributes EnclosingMethod
+-keep class org.xz_sale.entity.**{*;}
+-keep class com.google.gson.** {*;}
+-keep class com.google.**{*;}
 -keep class sun.misc.Unsafe { *; }
 -keep class com.google.gson.stream.** { *; }
+-keep class com.google.gson.examples.android.model.** { *; }
 # 这是你定义的实体类
 #-keep class com.sunloto.shandong.bean.** { *; }
 
@@ -383,11 +393,9 @@
 -keep class * implements com.caihan.scframe.utils.IUnProguard
 
 #okhttp
--keep class com.squareup.okhttp.** { *; }
--keep interface com.squareup.okhttp.** { *; }
--keep class okhttp3.** { *; }
--keep interface okhttp3.** { *; }
--dontwarn com.squareup.okhttp.**
+-dontwarn com.squareup.okhttp3.**
+-keep class com.squareup.okhttp3.** { *;}
+-dontwarn okio.**
 
 #RxLifeCycle
 -dontwarn com.trello.rxlifecycle2.**

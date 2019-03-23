@@ -87,7 +87,8 @@ public abstract class ScFileOptionsUtils {
      */
     public enum Suffix {
         JPG(".jpg"),
-        TXT(".txt");
+        TXT(".txt"),
+        APK(".apk");
 
         Suffix(String suffix) {
             this.suffix = suffix;
