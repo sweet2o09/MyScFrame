@@ -87,13 +87,7 @@ public class BottomSheetActivity
     @Override
     protected void onCreateMvp() {
         setImmersion();
-        mToolbarTitle.setText("BottomSheet的使用");
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        setBaseToolbarLayout(mToolbar,"BottomSheet的使用");
         mBehavior = BottomSheetBehavior.from(mBottomSheetLayout);
         initRefreshView();
         initRecyclerView();

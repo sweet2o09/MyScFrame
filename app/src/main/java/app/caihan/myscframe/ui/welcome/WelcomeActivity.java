@@ -52,7 +52,7 @@ public class WelcomeActivity extends BaseScActivity {
     }
 
     private void initDisposable(){
-        RxCountDown.countdown(3)
+        RxCountDown.countdown(2)
                 .compose(this.<Long>bindUntilEvent(ActivityEvent.DESTROY))
                 .doOnDispose(new Action() {
                     @Override

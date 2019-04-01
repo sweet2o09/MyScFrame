@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -19,6 +20,8 @@ public class MainActivity extends BaseScActivity {
 
     @BindView(R.id.content_layout)
     LinearLayout mContentLayout;
+    @BindView(R.id.banner_iv)
+    ImageView mImageView;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     private ArrayList<HomeItem> mDataList;
@@ -31,7 +34,7 @@ public class MainActivity extends BaseScActivity {
 
     @Override
     public void setImmersion() {
-        getImmersion().setImmersionDarkFont2(mContentLayout, true);
+        getImmersion().setImmersionTransparentStatusBar();
     }
 
     @Override

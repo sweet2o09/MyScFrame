@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/month_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_margin="15dp"
+        android:layout_toEndOf="@+id/launcher_iv"
+        android:textColor="@color/normal_text_color"
+        android:textSize="14sp"
+        tools:text="10月"/>
+
+    <ImageView
+        android:id="@+id/bottom_iv"
+        style="@style/Frame_HorizontalLine_Height_1px"
+        android:layout_below="@+id/launcher_iv"/>
+
+</RelativeLayout>

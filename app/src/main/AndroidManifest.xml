@@ -39,15 +39,16 @@
         android:supportsRtl="true"
         android:theme="@style/BaseAppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.http.RequestJobGetActivity">
-        </activity>
+
         <!-- 适配华为刘海屏 -->
         <meta-data
             android:name="android.notch_support"
-            android:value="true"/> <!-- 适配小米刘海屏 -->
+            android:value="true"/>
+        <!-- 适配小米刘海屏 -->
         <meta-data
             android:name="notch.config"
-            android:value="portrait|landscape"/> <!-- 适配oppo、vivo刘海屏,适配全面屏 -->
+            android:value="portrait|landscape"/>
+        <!-- 适配oppo、vivo刘海屏,适配全面屏 -->
         <meta-data
             android:name="android.max_aspect"
             android:value="2.4"/>
@@ -92,6 +93,10 @@
         <activity android:name=".ui.http.RequestJobActivity">
         </activity>
         <activity android:name=".ui.http.RequestJobDownloadActivity">
+        </activity>
+        <activity android:name=".ui.recyclerview.TopAdsorptionActivity">
+        </activity>
+        <activity android:name=".ui.http.RequestJobGetActivity">
         </activity>
     </application>
 
