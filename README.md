@@ -61,13 +61,13 @@
 
 ## Contact
 
-[![jianshu][jianshuSvg]][jianshu][![QQ][qqSvg]][qq]
+[![jianshu][jianshuSvg]][jianshu] ![QQ][qqSvg]
 
 ![logo2][logo2]
 
 
 [logo]: https://raw.githubusercontent.com/sweet2o09/MyScFrame/master/art/logo.png
-[logo]: https://raw.githubusercontent.com/sweet2o09/MyScFrame/master/art/logo2.png
+[logo2]: https://raw.githubusercontent.com/sweet2o09/MyScFrame/master/art/logo2.png
 
 [aucSvg]: https://img.shields.io/badge/MyScFrame-v1.0.0-brightgreen.svg
 [auc]: https://github.com/sweet2o09/MyScFrame
@@ -82,4 +82,3 @@
 [jianshu]: https://www.jianshu.com/u/b55a43d1711d
 
 [qqSvg]: https://img.shields.io/badge/QQ-93234929-34a48e.svg
-[qq]:
