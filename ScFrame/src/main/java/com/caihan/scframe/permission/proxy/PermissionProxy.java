@@ -3,8 +3,15 @@ package com.caihan.scframe.permission.proxy;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
+import com.blankj.utilcode.util.Utils;
+import com.caihan.scframe.R;
 import com.caihan.scframe.permission.base.IRationaleDialogListener;
 import com.caihan.scframe.permission.base.ISettingDialogListener;
 import com.caihan.scframe.permission.base.OnPermissionListener;
@@ -13,6 +20,7 @@ import com.yanzhenjie.permission.PermissionNo;
 import com.yanzhenjie.permission.PermissionYes;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RationaleListener;
+import com.yanzhenjie.permission.SettingService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +138,10 @@ public class PermissionProxy implements PermissionDelegate {
                             mRationaleDialogListener.showRationaleDialog(requestCode, rationale);
                         } else if (mShowRationaleDialog) {
                             // 这里的对话框可以自定义，只要调用rationale.resume()就可以继续申请。
-                            AndPermission.rationaleDialog(mContext, rationale).show();
+                            if (mContext instanceof Activity && !((Activity)mContext).isFinishing()){
+//                                AndPermission.rationaleDialog(mContext, rationale).show();
+                                rationaleDialog(rationale);
+                            }
                         }
                     }
                 })
@@ -162,16 +173,13 @@ public class PermissionProxy implements PermissionDelegate {
         //用户否勾选了不再提示并且拒绝了权限，那么提示用户到设置中授权
         if (AndPermission.hasAlwaysDeniedPermission(mContext, permissions)) {
             if (mSettingDialogListener != null) {
-//                AndPermission.defaultSettingDialog((Activity) mContext, REQUEST_CODE_SETTING)
-//                        .setTitle(R.string.title_dialog)
-//                        .setMessage(R.string.message_permission_failed)
-//                        .setPositiveButton(R.string.ok)
-//                        .setNegativeButton(R.string.no, null)
-//                        .show();
                 mSettingDialogListener.showSettingDialog(REQUEST_CODE_SETTING);
             } else {
                 //用默认的提示语。
-                AndPermission.defaultSettingDialog((Activity) mContext, REQUEST_CODE_SETTING).show();
+                if (mContext instanceof Activity && !((Activity)mContext).isFinishing()){
+//                    AndPermission.defaultSettingDialog((Activity) mContext, REQUEST_CODE_SETTING).show();
+                    defaultSettingDialog(REQUEST_CODE_SETTING);
+                }
             }
         } else {
             mListener.onPermissionFailure();
@@ -213,6 +221,80 @@ public class PermissionProxy implements PermissionDelegate {
         this.mShowRationaleDialog = true;
         this.mRationaleDialogListener = null;
         this.mSettingDialogListener = null;
+    }
+
+    /**
+     * 权限被拒绝弹窗
+     *
+     * @param rationale
+     */
+    private void rationaleDialog(final Rationale rationale) {
+        new MaterialDialog.Builder(mContext)
+                .theme(Theme.LIGHT)
+                .cancelable(false)
+                .title(R.string.permission_title_permission_rationale)
+                .content(R.string.permission_message_permission_rationale)
+                .positiveText(R.string.permission_resume)
+                .negativeText(R.string.permission_cancel)
+                .positiveColorRes(R.color.scframe_dialog_positive_color)
+                .negativeColorRes(R.color.scframe_dialog_negative_color)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        rationale.resume();
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        rationale.cancel();
+                    }
+                })
+                .show();
+    }
+
+    /**
+     * 跳转系统设置弹窗
+     *
+     * @param requestCode
+     */
+    private void defaultSettingDialog(final int requestCode){
+        final SettingService settingService = new SettingService() {
+            @Override
+            public void cancel() {
+                mListener.onPermissionFailure();
+            }
+
+            @Override
+            public void execute() {
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.setData(Uri.parse("package:" + Utils.getApp().getPackageName()));
+//                Utils.getApp().startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                ((Activity)mContext).startActivityForResult(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), requestCode);
+            }
+        };
+        new MaterialDialog.Builder(mContext)
+                .theme(Theme.LIGHT)
+                .cancelable(false)
+                .title(R.string.permission_title_permission_failed)
+                .content(R.string.permission_message_permission_failed)
+                .positiveText(R.string.permission_setting)
+                .negativeText(R.string.permission_cancel)
+                .positiveColorRes(R.color.scframe_dialog_positive_color)
+                .negativeColorRes(R.color.scframe_dialog_negative_color)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        settingService.execute();
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        settingService.cancel();
+                    }
+                })
+                .show();
     }
 
 }

@@ -106,6 +106,7 @@ public abstract class BaseActivity
         sereenOrientation();
         setSoftInputMode();
         super.onCreate(savedInstanceState);
+        isLauncherTaskRoot(isLauncherAct());
         mContext = this;
         mSavedInstanceState = savedInstanceState;
         initContentView();
@@ -324,6 +325,26 @@ public abstract class BaseActivity
      */
     protected void hideSoftKeyBoard() {
         KeyboardUtils.hideSoftInput(this);
+    }
+
+    /**
+     * 解决安装界面直接点击打开应用再按home键返回桌面，重新进入app重复实例化launcher activity的问题
+     * https://www.cnblogs.com/sunsh/articles/4846320.html
+     */
+    private void isLauncherTaskRoot(boolean isLauncher){
+        if (isLauncher && !this.isTaskRoot()) {
+            //如果你就放在launcher Activity中话，这里可以直接return了
+            Intent mainIntent = getIntent();
+            String action = mainIntent.getAction();
+            if (mainIntent.hasCategory(Intent.CATEGORY_LAUNCHER) && action.equals(Intent.ACTION_MAIN)) {
+                finish();
+                return;
+            }
+        }
+    }
+
+    protected boolean isLauncherAct(){
+        return false;
     }
 
     //**********沉浸式效果 start****************************************//

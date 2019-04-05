@@ -79,7 +79,7 @@ public class ZxingGenerateActivity extends BaseScActivity {
         mZxingCodeEncoder.setBarParameter(SizeUtils.dp2px(200), SizeUtils.dp2px(100))
                 .createBarCode("9781234567897", mImageView2);
 
-        Bitmap logoBitmap = ImageUtils.getBitmap(R.drawable.ic_zxing_logo);
+        Bitmap logoBitmap = ImageUtils.getBitmap(R.mipmap.ic_launcher_round);
         mZxingCodeEncoder.setQrParameter(SizeUtils.dp2px(150), SizeUtils.dp2px(150))
                 .createQRImage("https://github.com/sweet2o09/MyScFrame", mImageView3, logoBitmap);
     }

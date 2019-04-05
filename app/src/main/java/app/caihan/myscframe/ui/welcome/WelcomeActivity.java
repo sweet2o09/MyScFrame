@@ -2,6 +2,7 @@ package app.caihan.myscframe.ui.welcome;
 
 import android.support.constraint.ConstraintLayout;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.caihan.scframe.permission.PermissionGroup;
 import com.caihan.scframe.permission.base.OnPermissionListener;
 import com.caihan.scframe.rxjava.RxCountDown;
@@ -26,6 +27,11 @@ public class WelcomeActivity extends BaseScActivity {
     private Disposable mDisposable;
 
     @Override
+    protected boolean isLauncherAct() {
+        return true;
+    }
+
+    @Override
     public void setImmersion() {
         getImmersion().setImmersionTransparent();
     }
@@ -46,7 +52,8 @@ public class WelcomeActivity extends BaseScActivity {
 
             @Override
             public void onPermissionFailure() {
-
+                AppUtils.exitApp();
+//                initDisposable();
             }
         }, PermissionGroup.STORAGE);
     }
