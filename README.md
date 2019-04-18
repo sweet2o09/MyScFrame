@@ -56,6 +56,9 @@
 ### 13.RecyclerView.ItemDecoration实现顶部吸附
 `TopAdsorptionActivity`
 
+### 14.基于ViewGroup实现流式布局
+`FlowLayoutActivity`<p/>[Android基于ViewGroup实现流式布局](https://www.jianshu.com/p/2ed499fff984)
+
 ## 感谢
 感谢大家点开我的github,希望能留下你的start与issues
 

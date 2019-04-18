@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ScFlowLayout">
+        <!--最大显示行数-->
+        <attr name="max_show_row" format="integer" />
+        <!--对齐方式-->
+        <attr name="line_gravity">
+            <enum name="top" value="-1" />
+            <enum name="center" value="0" />
+            <enum name="bottom" value="1" />
+        </attr>
+    </declare-styleable>
+</resources>

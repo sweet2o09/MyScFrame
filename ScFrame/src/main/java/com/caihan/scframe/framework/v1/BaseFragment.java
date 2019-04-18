@@ -61,6 +61,10 @@ public abstract class BaseFragment
      * 是否是首次展示Fragment
      */
     protected boolean mIsFirstVisite = true;
+    /**
+     * 数据总条数不超过一页数据时是否隐藏底部加载更多结束文字
+     */
+    private boolean mHideLoadMoreEnd = true;
 
     protected View mRootView = null;
 
@@ -316,7 +320,7 @@ public abstract class BaseFragment
      *
      * @return
      */
-    public IRequestLoad getRequestLoading() {
+    private IRequestLoad getRequestLoading() {
         if (mRequestLoading == null) {
             mRequestLoading = new DefaultRequestLoading(getActivity());
         }
@@ -337,13 +341,14 @@ public abstract class BaseFragment
     @Override
     public void dismissRequestLoading() {
         if (mRequestLoading != null && mRequestLoading.isShowing()) {
-            getRequestLoading().dismiss();
+            mRequestLoading.dismiss();
         }
     }
 
     protected void onDestroyRequestLoading() {
         if (mRequestLoading != null) {
-            getRequestLoading().onDestroy();
+            mRequestLoading.onDestroy();
+            mRequestLoading = null;
         }
     }
 
@@ -413,7 +418,7 @@ public abstract class BaseFragment
 //        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
-    public void finish(){
+    public void finish() {
         getActivity().finish();
     }
 
@@ -423,7 +428,7 @@ public abstract class BaseFragment
 //        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
-    private void overridePendingTransition(int enterAnim, int exitAnim){
+    private void overridePendingTransition(int enterAnim, int exitAnim) {
         getActivity().overridePendingTransition(enterAnim, exitAnim);
     }
 
@@ -478,6 +483,15 @@ public abstract class BaseFragment
     }
 
     /**
+     * 设置数据不超过一页时是否隐藏加载更多结束
+     *
+     * @param hideLoadMoreEnd
+     */
+    protected void setHideLoadMoreEnd(boolean hideLoadMoreEnd) {
+        mHideLoadMoreEnd = hideLoadMoreEnd;
+    }
+
+    /**
      * 判断分页是否完成,并且当不满一页数据的时候,不显示LoadMore布局
      *
      * @param adapter
@@ -490,7 +504,7 @@ public abstract class BaseFragment
         }
         if (isRefresh) {
             if (total <= onePageSize) {
-                adapter.loadMoreEnd(true);
+                adapter.loadMoreEnd(mHideLoadMoreEnd);
             }
         } else {
             if (adapter.getData().size() >= total) {

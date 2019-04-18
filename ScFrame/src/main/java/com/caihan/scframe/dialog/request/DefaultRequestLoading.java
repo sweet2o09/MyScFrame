@@ -62,13 +62,14 @@ public class DefaultRequestLoading implements IRequestLoad {
     @Override
     public void dismiss() {
         if (isShowing()) {
-            getRequestLoading().dismiss();
+            mRequestLoading.dismiss();
         }
     }
 
     @Override
     public void onDestroy() {
         dismiss();
+        mContext = null;
         mRequestLoading = null;
     }
 }

@@ -15,6 +15,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.caihan.scframe.R;
@@ -200,7 +201,6 @@ public class WeChatSwitchBtn extends View implements View.OnClickListener {
     }
 
     private void init(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        if (isInEditMode()) return;
         initTypedArray(context, attrs, defStyleAttr);
         initPaint();
         setOnClickListener(this);
@@ -316,23 +316,30 @@ public class WeChatSwitchBtn extends View implements View.OnClickListener {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         //软键盘谈起的时候会调用到,因此可变参数不能写在这里
-        int wMode = MeasureSpec.getMode(widthMeasureSpec);
-        int hMode = MeasureSpec.getMode(heightMeasureSpec);
-        int wSize = MeasureSpec.getSize(widthMeasureSpec);
-        int hSize = MeasureSpec.getSize(heightMeasureSpec);
-        int resultWidth = wSize;
-        int resultHeight = hSize;
+        // 获取宽-测量规则的模式和大小
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        // 获取高-测量规则的模式和大小
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        // 设置wrap_content的默认宽 / 高值
         Resources r = Resources.getSystem();
-        //lp = wrapcontent时 指定默认值
-        if (wMode == MeasureSpec.AT_MOST) {
-            resultWidth = (int) TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, DEF_W, r.getDisplayMetrics());
+        // 默认宽/高的设定并无固定依据,根据需要灵活设置
+        int mWidth = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, DEF_W, r.getDisplayMetrics());
+        int mHeight = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, DEF_H, r.getDisplayMetrics());
+
+        // 当布局参数设置为wrap_content时，设置默认值
+        if (getLayoutParams().width == ViewGroup.LayoutParams.WRAP_CONTENT
+                && getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT) {
+            setMeasuredDimension(mWidth, mHeight);
+            // 宽 / 高任意一个布局参数为= wrap_content时，都设置默认值
+        } else if (getLayoutParams().width == ViewGroup.LayoutParams.WRAP_CONTENT) {
+            setMeasuredDimension(mWidth, heightSize);
+        } else if (getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT) {
+            setMeasuredDimension(widthSize, mHeight);
         }
-        if (hMode == MeasureSpec.AT_MOST) {
-            resultHeight = (int) TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, DEF_H, r.getDisplayMetrics());
-        }
-        setMeasuredDimension(resultWidth, resultHeight);
     }
 
     @Override

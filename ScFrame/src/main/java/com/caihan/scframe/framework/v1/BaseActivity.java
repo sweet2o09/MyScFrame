@@ -40,7 +40,7 @@ import io.reactivex.disposables.Disposable;
  * <p>
  * 实现功能:<br/>
  * 1.ActionBar开关,默认关闭<br/>
- * 2.横竖屏开关,默认竖屏<br/>
+ * 2.横竖屏开关,默认竖屏(禁止分屏)<br/>
  * 3.输入法弹出是否改变布局,默认改变<br/>
  * 4.动态权限<br/>
  * 5.沉浸式<br/>
@@ -74,6 +74,10 @@ public abstract class BaseActivity
      * 数据变更智能刷新,变更后是否需要自动刷新数据,刷新后记得设置成false
      */
     private boolean mGoAutoRefresh = false;
+    /**
+     * 数据总条数不超过一页数据时是否隐藏底部加载更多结束文字
+     */
+    private boolean mHideLoadMoreEnd = true;
 
     /**
      * 用于网络请求的Dialog
@@ -215,11 +219,12 @@ public abstract class BaseActivity
      * @param listener
      * @param permissionArray
      */
-    public void requestPermission(OnPermissionListener listener,
+    public void requestPermission(@NonNull OnPermissionListener listener,
                                   @NonNull String[]... permissionArray) {
         onDestroyPermission();
         mPermission = new ScPermission.Builder(mContext)
-                .setListener(listener).build();
+                .setListener(listener)
+                .build();
         mPermission.request(permissionArray);
     }
 
@@ -229,11 +234,12 @@ public abstract class BaseActivity
      * @param listener
      * @param permissionArray
      */
-    public void requestPermission(OnPermissionListener listener,
+    public void requestPermission(@NonNull OnPermissionListener listener,
                                   @NonNull ArrayList<String> permissionArray) {
         onDestroyPermission();
         mPermission = new ScPermission.Builder(mContext)
-                .setListener(listener).build();
+                .setListener(listener)
+                .build();
         mPermission.request(permissionArray);
     }
 
@@ -331,7 +337,7 @@ public abstract class BaseActivity
      * 解决安装界面直接点击打开应用再按home键返回桌面，重新进入app重复实例化launcher activity的问题
      * https://www.cnblogs.com/sunsh/articles/4846320.html
      */
-    private void isLauncherTaskRoot(boolean isLauncher){
+    private void isLauncherTaskRoot(boolean isLauncher) {
         if (isLauncher && !this.isTaskRoot()) {
             //如果你就放在launcher Activity中话，这里可以直接return了
             Intent mainIntent = getIntent();
@@ -343,7 +349,7 @@ public abstract class BaseActivity
         }
     }
 
-    protected boolean isLauncherAct(){
+    protected boolean isLauncherAct() {
         return false;
     }
 
@@ -418,7 +424,7 @@ public abstract class BaseActivity
      *
      * @return
      */
-    public IRequestLoad getRequestLoading() {
+    private IRequestLoad getRequestLoading() {
         if (mRequestLoading == null) {
             mRequestLoading = new DefaultRequestLoading(this);
         }
@@ -437,13 +443,14 @@ public abstract class BaseActivity
     @Override
     public void dismissRequestLoading() {
         if (mRequestLoading != null && mRequestLoading.isShowing()) {
-            getRequestLoading().dismiss();
+            mRequestLoading.dismiss();
         }
     }
 
     protected void onDestroyRequestLoading() {
         if (mRequestLoading != null) {
-            getRequestLoading().onDestroy();
+            mRequestLoading.onDestroy();
+            mRequestLoading = null;
         }
     }
 
@@ -585,6 +592,15 @@ public abstract class BaseActivity
     }
 
     /**
+     * 设置数据不超过一页时是否隐藏加载更多结束
+     *
+     * @param hideLoadMoreEnd
+     */
+    protected void setHideLoadMoreEnd(boolean hideLoadMoreEnd) {
+        mHideLoadMoreEnd = hideLoadMoreEnd;
+    }
+
+    /**
      * 判断分页是否完成,并且当不满一页数据的时候,不显示LoadMore布局
      *
      * @param adapter
@@ -597,7 +613,7 @@ public abstract class BaseActivity
         }
         if (isRefresh) {
             if (total <= onePageSize) {
-                adapter.loadMoreEnd(true);
+                adapter.loadMoreEnd(mHideLoadMoreEnd);
             }
         } else {
             if (adapter.getData().size() >= total) {

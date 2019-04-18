@@ -18,15 +18,17 @@ import io.reactivex.disposables.Disposable;
  */
 public abstract class RxSubscriber<T> implements Observer<T> {
 
-    private boolean cancelLoading = true;
+    private boolean mCancelLoading = true;
     private BaseView mBaseView;
 
     public RxSubscriber(BaseView baseView) {
-        this.mBaseView = baseView;
+        mBaseView = baseView;
+        mCancelLoading = true;
     }
 
-    public RxSubscriber(boolean cancelLoading) {
-        this.cancelLoading = cancelLoading;
+    public RxSubscriber(BaseView baseView,boolean cancelLoading) {
+        mBaseView = baseView;
+        mCancelLoading = cancelLoading;
     }
 
     @Override
@@ -45,26 +47,28 @@ public abstract class RxSubscriber<T> implements Observer<T> {
     @Override
     public void onError(Throwable e) {
         //对Error事件作出响应
-        if (cancelLoading) {
+        if (mCancelLoading && mBaseView != null) {
             mBaseView.dismissRequestLoading();
         }
         if (e != null) {
-            mBaseView.onRequestError(e.getMessage());
-            _onError(e);
+            if (mBaseView != null) {
+                mBaseView.onRequestError(e.getMessage());
+            }
+            onRxError(e);
         }
     }
 
     @Override
     public void onNext(T t) {
         //接收到的数据
-        if (cancelLoading) {
+        if (mCancelLoading && mBaseView != null) {
             mBaseView.dismissRequestLoading();
         }
-        _onNext(t);
+        onRxNext(t);
     }
 
 
-    public abstract void _onNext(T t);
+    public abstract void onRxNext(T t);
 
-    public abstract void _onError(Throwable error);
+    public abstract void onRxError(Throwable error);
 }

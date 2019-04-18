@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_margin="5dp"
+    android:background="@drawable/s_btn_bg_radius10_stroke1"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
+    android:gravity="center"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/flow_item_iv"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginRight="8dp"
+        android:src="@mipmap/ic_launcher_round"/>
+
+    <TextView
+        android:id="@+id/flow_item_tv"
+        android:layout_width="wrap_content"
+        android:textColor="@drawable/s_text_color_main"
+        tools:text="测试"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

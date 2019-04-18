@@ -34,13 +34,13 @@ public class BottomSheetPresenter extends MvpBasePresenter<BottomSheetContract.V
                 .compose(RxSchedulers.request((RxAppCompatActivity) getView()))
                 .subscribe(new RxSubscriber<List<ResultsBean>>(getView()) {
                     @Override
-                    public void _onNext(List<ResultsBean> resultsBeans) {
+                    public void onRxNext(List<ResultsBean> resultsBeans) {
                         getView().getDataFinish(isRefresh, resultsBeans, 78);
                         addPage();
                     }
 
                     @Override
-                    public void _onError(Throwable error) {
+                    public void onRxError(Throwable error) {
                         getView().getDataError(isRefresh, error.getMessage(), 78);
                     }
                 });

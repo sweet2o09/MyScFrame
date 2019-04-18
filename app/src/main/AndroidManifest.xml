@@ -98,6 +98,8 @@
         </activity>
         <activity android:name=".ui.http.RequestJobGetActivity">
         </activity>
+        <activity android:name=".ui.flowlayout.FlowLayoutActivity">
+        </activity>
     </application>
 
 </manifest>

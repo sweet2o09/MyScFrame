@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-import com.blankj.utilcode.util.Utils;
 import com.caihan.scframe.R;
 import com.caihan.scframe.permission.base.IRationaleDialogListener;
 import com.caihan.scframe.permission.base.ISettingDialogListener;
@@ -22,6 +21,7 @@ import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RationaleListener;
 import com.yanzhenjie.permission.SettingService;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class PermissionProxy implements PermissionDelegate {
 
     private static final String TAG = "PermissionProxy";
 
-    private Context mContext;
+    private WeakReference<Context> mContext;
 
     /**
      * For Android 6.0
@@ -85,7 +85,7 @@ public class PermissionProxy implements PermissionDelegate {
 
     @Override
     public void setContext(Context context) {
-        this.mContext = context;
+        this.mContext = new WeakReference<>(context);
     }
 
     @Override
@@ -120,32 +120,34 @@ public class PermissionProxy implements PermissionDelegate {
 
     @Override
     public void request(@NonNull String[]... permissionsArray) {
-        AndPermission.with(mContext)
-                .requestCode(REQUEST_CODE_ASK_PERMISSIONS)
-                .permission(permissionsArray)
-                .callback(this)
-                .rationale(new RationaleListener() {
-                    /**
-                     * rationale作用是：用户拒绝一次权限，再次申请时先征求用户同意，再打开授权对话框；
-                     * 这样避免用户勾选不再提示，导致以后无法申请权限。
-                     * 你也可以不设置
-                     * @param requestCode
-                     * @param rationale
-                     */
-                    @Override
-                    public void showRequestPermissionRationale(int requestCode, Rationale rationale) {
-                        if (mRationaleDialogListener != null) {
-                            mRationaleDialogListener.showRationaleDialog(requestCode, rationale);
-                        } else if (mShowRationaleDialog) {
-                            // 这里的对话框可以自定义，只要调用rationale.resume()就可以继续申请。
-                            if (mContext instanceof Activity && !((Activity)mContext).isFinishing()){
-//                                AndPermission.rationaleDialog(mContext, rationale).show();
-                                rationaleDialog(rationale);
+        if (mContext != null && mContext.get() != null) {
+            AndPermission.with(mContext.get())
+                    .requestCode(REQUEST_CODE_ASK_PERMISSIONS)
+                    .permission(permissionsArray)
+                    .callback(this)
+                    .rationale(new RationaleListener() {
+                        /**
+                         * rationale作用是：用户拒绝一次权限，再次申请时先征求用户同意，再打开授权对话框；
+                         * 这样避免用户勾选不再提示，导致以后无法申请权限。
+                         * 你也可以不设置
+                         * @param requestCode
+                         * @param rationale
+                         */
+                        @Override
+                        public void showRequestPermissionRationale(int requestCode, Rationale rationale) {
+                            if (mRationaleDialogListener != null) {
+                                mRationaleDialogListener.showRationaleDialog(requestCode, rationale);
+                            } else if (mShowRationaleDialog) {
+                                if (mContext.get() instanceof Activity && !((Activity) mContext.get()).isFinishing()) {
+                                    // 这里的对话框可以自定义，只要调用rationale.resume()就可以继续申请。
+//                            AndPermission.rationaleDialog(mContext, rationale).show();
+                                    rationaleDialog(rationale);
+                                }
                             }
                         }
-                    }
-                })
-                .start();
+                    })
+                    .start();
+        }
     }
 
     @Override
@@ -161,7 +163,7 @@ public class PermissionProxy implements PermissionDelegate {
     @PermissionYes(REQUEST_CODE_ASK_PERMISSIONS)
     public void onSuccess(List<String> permissions) {
         mListener.onPermissionSuccessful();
-        if (mPermissionList != null){
+        if (mPermissionList != null) {
             mPermissionList.clear();
         }
     }
@@ -171,12 +173,13 @@ public class PermissionProxy implements PermissionDelegate {
         mPermissionList = new ArrayList<>();
         mPermissionList.addAll(permissions);
         //用户否勾选了不再提示并且拒绝了权限，那么提示用户到设置中授权
-        if (AndPermission.hasAlwaysDeniedPermission(mContext, permissions)) {
+        if (mContext != null && mContext.get() != null && AndPermission.hasAlwaysDeniedPermission(mContext.get(), permissions)) {
             if (mSettingDialogListener != null) {
                 mSettingDialogListener.showSettingDialog(REQUEST_CODE_SETTING);
             } else {
-                //用默认的提示语。
-                if (mContext instanceof Activity && !((Activity)mContext).isFinishing()){
+                if (mContext != null && mContext.get() != null && mContext.get() instanceof Activity
+                        && !((Activity) mContext.get()).isFinishing()) {
+                    //用默认的提示语。
 //                    AndPermission.defaultSettingDialog((Activity) mContext, REQUEST_CODE_SETTING).show();
                     defaultSettingDialog(REQUEST_CODE_SETTING);
                 }
@@ -192,8 +195,7 @@ public class PermissionProxy implements PermissionDelegate {
             case REQUEST_CODE_SETTING:
                 //从设置那边回来后看是否还需要继续检查权限
                 if (mPermissionList != null && mPermissionList.size() > 0) {
-                    request(mPermissionList.toArray(
-                            new String[mPermissionList.size()]));
+                    request(mPermissionList.toArray(new String[mPermissionList.size()]));
                 }
                 break;
             default:
@@ -208,7 +210,7 @@ public class PermissionProxy implements PermissionDelegate {
      * @return
      */
     @Override
-    public boolean isPermissionRequest(int requestCode){
+    public boolean isPermissionRequest(int requestCode) {
         return requestCode == REQUEST_CODE_SETTING;
     }
 
@@ -229,28 +231,30 @@ public class PermissionProxy implements PermissionDelegate {
      * @param rationale
      */
     private void rationaleDialog(final Rationale rationale) {
-        new MaterialDialog.Builder(mContext)
-                .theme(Theme.LIGHT)
-                .cancelable(false)
-                .title(R.string.permission_title_permission_rationale)
-                .content(R.string.permission_message_permission_rationale)
-                .positiveText(R.string.permission_resume)
-                .negativeText(R.string.permission_cancel)
-                .positiveColorRes(R.color.scframe_dialog_positive_color)
-                .negativeColorRes(R.color.scframe_dialog_negative_color)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        rationale.resume();
-                    }
-                })
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        rationale.cancel();
-                    }
-                })
-                .show();
+        if (mContext != null && mContext.get() != null) {
+            new MaterialDialog.Builder(mContext.get())
+                    .theme(Theme.LIGHT)
+                    .cancelable(false)
+                    .title(R.string.permission_title_permission_rationale)
+                    .content(R.string.permission_message_permission_rationale)
+                    .positiveText(R.string.permission_resume)
+                    .negativeText(R.string.permission_cancel)
+                    .positiveColorRes(R.color.scframe_dialog_positive_color)
+                    .negativeColorRes(R.color.scframe_dialog_negative_color)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            rationale.resume();
+                        }
+                    })
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            rationale.cancel();
+                        }
+                    })
+                    .show();
+        }
     }
 
     /**
@@ -258,43 +262,48 @@ public class PermissionProxy implements PermissionDelegate {
      *
      * @param requestCode
      */
-    private void defaultSettingDialog(final int requestCode){
-        final SettingService settingService = new SettingService() {
-            @Override
-            public void cancel() {
-                mListener.onPermissionFailure();
-            }
+    private void defaultSettingDialog(final int requestCode) {
+        if (mContext != null && mContext.get() != null) {
+            final SettingService settingService = new SettingService() {
+                @Override
+                public void execute() {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", mContext.get().getPackageName(), null);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setData(uri);
+                    ((Activity) mContext.get()).startActivityForResult(intent, requestCode);
+                }
 
-            @Override
-            public void execute() {
-                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                intent.setData(Uri.parse("package:" + Utils.getApp().getPackageName()));
-//                Utils.getApp().startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                ((Activity)mContext).startActivityForResult(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), requestCode);
-            }
-        };
-        new MaterialDialog.Builder(mContext)
-                .theme(Theme.LIGHT)
-                .cancelable(false)
-                .title(R.string.permission_title_permission_failed)
-                .content(R.string.permission_message_permission_failed)
-                .positiveText(R.string.permission_setting)
-                .negativeText(R.string.permission_cancel)
-                .positiveColorRes(R.color.scframe_dialog_positive_color)
-                .negativeColorRes(R.color.scframe_dialog_negative_color)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        settingService.execute();
+                @Override
+                public void cancel() {
+                    if (mListener != null) {
+                        mListener.onPermissionFailure();
                     }
-                })
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        settingService.cancel();
-                    }
-                })
-                .show();
+                }
+            };
+            new MaterialDialog.Builder(mContext.get())
+                    .theme(Theme.LIGHT)
+                    .cancelable(false)
+                    .title(R.string.permission_title_permission_failed)
+                    .content(R.string.permission_message_permission_failed)
+                    .positiveText(R.string.permission_setting)
+                    .negativeText(R.string.permission_cancel)
+                    .positiveColorRes(R.color.scframe_dialog_positive_color)
+                    .negativeColorRes(R.color.scframe_dialog_negative_color)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            settingService.execute();
+                        }
+                    })
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            settingService.cancel();
+                        }
+                    })
+                    .show();
+        }
     }
 
 }

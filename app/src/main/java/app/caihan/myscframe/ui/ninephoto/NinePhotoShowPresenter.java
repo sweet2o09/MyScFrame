@@ -64,12 +64,12 @@ public class NinePhotoShowPresenter extends MvpBasePresenter<NinePhotoShowContra
         }).compose(RxSchedulers.io_main())
                 .subscribe(new RxSubscriber<NinePhotoShowBean>(getView()) {
                     @Override
-                    public void _onNext(NinePhotoShowBean ninePhotoShowBean) {
+                    public void onRxNext(NinePhotoShowBean ninePhotoShowBean) {
                         getView().getDataFinish(isRefresh, ninePhotoShowBean);
                     }
 
                     @Override
-                    public void _onError(Throwable error) {
+                    public void onRxError(Throwable error) {
                         getView().getDataError();
                     }
                 });

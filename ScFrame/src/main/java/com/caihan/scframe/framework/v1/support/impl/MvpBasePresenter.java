@@ -7,6 +7,7 @@ import android.support.annotation.UiThread;
 
 import com.caihan.scframe.framework.v1.support.MvpPresenter;
 import com.caihan.scframe.framework.v1.support.MvpView;
+import com.caihan.scframe.utils.log.ScLog;
 
 import java.lang.ref.WeakReference;
 
@@ -45,7 +46,8 @@ public abstract class MvpBasePresenter<V extends MvpView> implements MvpPresente
     @NonNull
     protected V getView() {
         if (!viewAttachedAtLeastOnce) {
-            throw new IllegalStateException("View层还未绑定,请先绑定");
+//            throw new IllegalStateException("View层还未绑定,请先绑定");
+            ScLog.e("View层还未绑定,请先绑定");
         }
         if (view != null) {
             V realView = view.get();
@@ -53,7 +55,9 @@ public abstract class MvpBasePresenter<V extends MvpView> implements MvpPresente
                 return realView;
             }
         }
-        throw new IllegalStateException("View层已经被释放掉了!");
+        ScLog.e("View层已经被释放掉了!");
+        return null;
+//        throw new IllegalStateException("View层已经被释放掉了!");
     }
 
     @UiThread

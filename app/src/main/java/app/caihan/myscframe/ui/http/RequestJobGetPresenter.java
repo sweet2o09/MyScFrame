@@ -56,13 +56,13 @@ public class RequestJobGetPresenter extends MvpBasePresenter<RequestJobGetContra
                 .compose(RxSchedulers.request((RxAppCompatActivity) getView()))
                 .subscribe(new RxSubscriber<List<ResultsBean>>(getView()) {
                     @Override
-                    public void _onNext(List<ResultsBean> resultsBeans) {
+                    public void onRxNext(List<ResultsBean> resultsBeans) {
                         ScLog.debug("   onObservable :: " + resultsBeans.toString());
                         getView().nexObservable(0);
                     }
 
                     @Override
-                    public void _onError(Throwable error) {
+                    public void onRxError(Throwable error) {
                         ScLog.debug(error.getMessage());
                         getView().nexObservable(0);
                     }
@@ -74,14 +74,14 @@ public class RequestJobGetPresenter extends MvpBasePresenter<RequestJobGetContra
                 .compose(RxSchedulers.request((RxAppCompatActivity) getView()))
                 .subscribe(new RxSubscriber<String>(getView()) {
                     @Override
-                    public void _onNext(String gankApiResult) {
+                    public void onRxNext(String gankApiResult) {
                         GankResult gankResult = JsonAnalysis.getInstance().fromJson(gankApiResult, GankResult.class);
                         ScLog.debug("   onObservable1 :: " + gankResult.toString());
                         getView().nexObservable(1);
                     }
 
                     @Override
-                    public void _onError(Throwable error) {
+                    public void onRxError(Throwable error) {
                         ScLog.debug(error.getMessage());
                         getView().nexObservable(1);
                     }
@@ -96,14 +96,14 @@ public class RequestJobGetPresenter extends MvpBasePresenter<RequestJobGetContra
                 .compose(RxSchedulers.request((RxAppCompatActivity) getView()))
                 .subscribe(new RxSubscriber<String>(getView()) {
                     @Override
-                    public void _onNext(String stringApiResult) {
+                    public void onRxNext(String stringApiResult) {
                         GankResult gankResult = JsonAnalysis.getInstance().fromJson(stringApiResult, GankResult.class);
                         ScLog.debug("   onObservable2 :: " + gankResult.toString());
                         getView().nexObservable(2);
                     }
 
                     @Override
-                    public void _onError(Throwable error) {
+                    public void onRxError(Throwable error) {
                         ScLog.debug(error.getMessage());
                         getView().nexObservable(2);
                     }

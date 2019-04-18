@@ -1,7 +1,9 @@
 package com.caihan.scframe.rxjava;
 
-import com.caihan.scframe.framework.v1.support.MvpView;
+import android.support.annotation.NonNull;
+
 import com.caihan.scframe.framework.v1.support.mvp.BaseView;
+import com.trello.rxlifecycle2.LifecycleProvider;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.trello.rxlifecycle2.components.RxFragment;
@@ -79,8 +81,27 @@ public class RxSchedulers {
     }
 
     /**
+     * 用于网络请求绑定Rxlifecycle与io_main
+     *
+     * @param lifecycleProvider
+     * @param event
+     * @param <T>
+     * @param <E>
+     * @return
+     */
+    public static <T,E> ObservableTransformer<T, T> request(
+            @NonNull final LifecycleProvider<E> lifecycleProvider, @NonNull final E event) {
+        return new ObservableTransformer<T, T>() {
+            @Override
+            public ObservableSource<T> apply(Observable<T> upstream) {
+                return bindLifeCycle(upstream, lifecycleProvider,event);
+            }
+        };
+    }
+
+    /**
      * 用于网络请求绑定Rxlifecycle,LoadingView与io_main
-     * 请与{@link RxSubscriber#RxSubscriber(MvpView)}配合使用
+     * 请与{@link RxSubscriber#RxSubscriber(BaseView)}配合使用
      *
      * @param activity
      * @param view
@@ -111,7 +132,7 @@ public class RxSchedulers {
 
     /**
      * 用于网络请求绑定Rxlifecycle,LoadingView与io_main
-     * 请与{@link RxSubscriber#RxSubscriber(MvpView)}配合使用
+     * 请与{@link RxSubscriber#RxSubscriber(BaseView)}配合使用
      * 默认开启Loading
      *
      * @param activity
@@ -138,7 +159,7 @@ public class RxSchedulers {
 
     /**
      * 用于网络请求绑定Rxlifecycle,LoadingView与io_main
-     * 请与{@link RxSubscriber#RxSubscriber(MvpView)}配合使用
+     * 请与{@link RxSubscriber#RxSubscriber(BaseView)}配合使用
      *
      * @param rxFragment
      * @param view
@@ -168,7 +189,7 @@ public class RxSchedulers {
 
     /**
      * 用于网络请求绑定Rxlifecycle,LoadingView与io_main
-     * 请与{@link RxSubscriber#RxSubscriber(MvpView)}配合使用
+     * 请与{@link RxSubscriber#RxSubscriber(BaseView)}配合使用
      *
      * @param v4Fragment
      * @param view
@@ -183,6 +204,39 @@ public class RxSchedulers {
             @Override
             public ObservableSource<T> apply(Observable<T> upstream) {
                 return bindLifeCycle(upstream, v4Fragment)
+                        .doOnSubscribe(new Consumer<Disposable>() {
+                            @Override
+                            public void accept(Disposable disposable) throws Exception {
+                                if (isShowLoading) {
+                                    view.showRequestLoading();
+                                } else {
+                                    view.dismissRequestLoading();
+                                }
+                            }
+                        });
+            }
+        };
+    }
+
+    /**
+     * 用于网络请求绑定Rxlifecycle,LoadingView与io_main
+     * 请与{@link RxSubscriber#RxSubscriber(BaseView)}配合使用
+     *
+     * @param lifecycleProvider
+     * @param event
+     * @param view
+     * @param isShowLoading
+     * @param <T>
+     * @param <E>
+     * @return
+     */
+    public static <T, E> ObservableTransformer<T, T> request(
+            @NonNull final LifecycleProvider<E> lifecycleProvider, @NonNull final E event,
+            final BaseView view, final boolean isShowLoading) {
+        return new ObservableTransformer<T, T>() {
+            @Override
+            public ObservableSource<T> apply(Observable<T> upstream) {
+                return bindLifeCycle(upstream, lifecycleProvider, event)
                         .doOnSubscribe(new Consumer<Disposable>() {
                             @Override
                             public void accept(Disposable disposable) throws Exception {
@@ -252,6 +306,23 @@ public class RxSchedulers {
     private static <T> Observable<T> bindLifeCycle(
             Observable<T> observable, com.trello.rxlifecycle2.components.support.RxFragment v4Fragment) {
         return observable.compose(v4Fragment.<T>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * 自定义Rxlifecycle2管理RxJava
+     *
+     * @param observable
+     * @param lifecycleProvider
+     * @param event
+     * @param <T>
+     * @param <E>
+     * @return
+     */
+    private static <T, E> Observable<T> bindLifeCycle(
+            Observable<T> observable, @NonNull LifecycleProvider<E> lifecycleProvider, @NonNull E event) {
+        return observable.compose(lifecycleProvider.<T>bindUntilEvent(event))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
