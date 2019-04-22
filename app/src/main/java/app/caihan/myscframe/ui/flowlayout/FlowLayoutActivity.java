@@ -6,7 +6,6 @@ import android.view.View;
 import com.caihan.scframe.utils.log.ScLog;
 import com.caihan.scframe.widget.flowlayout.BaseTagFlowAdapter;
 import com.caihan.scframe.widget.flowlayout.ScFlowLayout;
-import com.caihan.scframe.widget.flowlayout.TagFlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class FlowLayoutActivity extends BaseScActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.flow_layout)
-    TagFlowLayout mFlowLayout;
+    ScFlowLayout mFlowLayout;
 
     private List<FlowLayoutItem> list;
 
@@ -59,6 +58,7 @@ public class FlowLayoutActivity extends BaseScActivity {
         setImmersion();
         setBaseToolbarLayout(mToolbar, "流式布局Adapter");
         setList();
+        mFlowLayout.setSelectedMax(1);
         mFlowLayoutAdapter = new FlowLayoutAdapter();
         mFlowLayoutAdapter.bindToFlowLayout(mFlowLayout);
         mFlowLayoutAdapter.setNewData(list);
@@ -69,12 +69,12 @@ public class FlowLayoutActivity extends BaseScActivity {
                 ScLog.debug("onItemClick position = " + position);
             }
         });
-        mFlowLayoutAdapter.setOnItemChildClickListener(new BaseTagFlowAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseTagFlowAdapter adapter, View view, int position) {
-                ScLog.debug("onItemChildClick position = " + position);
-            }
-        });
+//        mFlowLayoutAdapter.setOnItemChildClickListener(new BaseTagFlowAdapter.OnItemChildClickListener() {
+//            @Override
+//            public void onItemChildClick(BaseTagFlowAdapter adapter, View view, int position) {
+//                ScLog.debug("onItemChildClick position = " + position);
+//            }
+//        });
     }
 
     private void setList() {
@@ -99,22 +99,6 @@ public class FlowLayoutActivity extends BaseScActivity {
         FlowLayoutItem flowLayoutItem;
         int index;
         int indexType;
-        for (int i = 0; i < 13; i++) {
-            index = (int) (Math.random() * mVals.length);
-            indexType = (int) (Math.random() * mTypes.length);
-            flowLayoutItem = new FlowLayoutItem();
-            flowLayoutItem.setType(mTypes[i % 3 == 0 ? 0 : 1]);
-            flowLayoutItem.setMsg(mVals[i]);
-            list.add(flowLayoutItem);
-        }
-    }
-
-    private void setList3() {
-        list = new ArrayList<>();
-        list.clear();
-        FlowLayoutItem flowLayoutItem;
-        int index;
-        int indexType;
         for (int i = 0; i < 5; i++) {
             flowLayoutItem = new FlowLayoutItem();
             flowLayoutItem.setType(mTypes[0]);
@@ -131,7 +115,8 @@ public class FlowLayoutActivity extends BaseScActivity {
         }
     }
 
-    @OnClick({R.id.line_top_btn, R.id.line_center_btn, R.id.line_bottom_btn})
+    @OnClick({R.id.line_top_btn, R.id.line_center_btn, R.id.line_bottom_btn,
+            R.id.tag_left_btn, R.id.tag_center_btn, R.id.tag_right_btn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.line_top_btn:
@@ -142,6 +127,15 @@ public class FlowLayoutActivity extends BaseScActivity {
                 break;
             case R.id.line_bottom_btn:
                 mFlowLayout.setLineGravity(ScFlowLayout.LINE_GRAVITY_BOTTOM);
+                break;
+            case R.id.tag_left_btn:
+                mFlowLayout.setTagGravity(ScFlowLayout.TAG_GRAVITY_LEFT);
+                break;
+            case R.id.tag_center_btn:
+                mFlowLayout.setTagGravity(ScFlowLayout.TAG_GRAVITY_CENTER);
+                break;
+            case R.id.tag_right_btn:
+                mFlowLayout.setTagGravity(ScFlowLayout.TAG_GRAVITY_RIGHT);
                 break;
         }
         setList();

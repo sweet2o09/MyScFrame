@@ -1,7 +1,11 @@
 package com.caihan.scframe.widget.flowlayout;
 
+import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
+import android.util.SparseArray;
 import android.util.SparseIntArray;
+
+import java.util.ArrayList;
 
 /**
  * MultiItemEntity模式
@@ -26,6 +30,22 @@ public abstract class BaseMultiItemTagFlowAdapter<T extends TagFlowItemEntity, K
             mLayoutResIds = new SparseIntArray();
         }
         mLayoutResIds.put(type, layoutResId);
+    }
+
+    /**
+     * 对子View绑定TagView的选中状态
+     *
+     * @param viewResId
+     */
+    protected void setCheckedStateViewId(int type, @IdRes int... viewResId){
+        if (mCheckedStateViewResIds == null) {
+            mCheckedStateViewResIds = new SparseArray();
+        }
+        ArrayList<Integer> viewResIds = mCheckedStateViewResIds.get(type,new ArrayList<Integer>());
+        for (int viewId : viewResId) {
+            viewResIds.add(viewId);
+        }
+        mCheckedStateViewResIds.put(type, viewResIds);
     }
 
     /**

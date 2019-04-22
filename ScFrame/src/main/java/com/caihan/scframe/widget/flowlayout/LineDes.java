@@ -14,6 +14,7 @@ import java.util.List;
 public class LineDes {
     //行高度以最高的view为基准
     int rowsMaxHeight;
+    int rowsMaxWidth;
     //一行收集到的item
     List<View> views = new ArrayList<>();
 

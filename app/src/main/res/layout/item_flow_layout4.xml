@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:orientation="horizontal"
-    android:layout_margin="2dp"
-    android:background="@color/colorMain"
+    android:background="@drawable/s_btn_bg_radius10_solid"
     android:paddingTop="15dp"
     android:paddingBottom="15dp"
     android:paddingLeft="8dp"
@@ -18,7 +17,7 @@
         android:layout_width="wrap_content"
         android:gravity="center"
         android:textSize="14sp"
-        android:textColor="@color/white"
+        android:textColor="@drawable/s_text_color_red"
         android:layout_height="wrap_content"
         tools:text="测试"/>
 

@@ -1,8 +1,10 @@
 package com.caihan.scframe.widget.flowlayout;
 
 import android.content.Context;
+import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +13,9 @@ import android.view.ViewGroup;
 import com.blankj.utilcode.util.SizeUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author caihan
@@ -30,13 +34,16 @@ public abstract class BaseTagFlowAdapter<T, K extends BaseTagFlowViewHolder> {
     private OnItemChildLongClickListener mOnItemChildLongClickListener;
     protected Context mContext;
     protected SparseIntArray mLayoutResIds;
-    protected LayoutInflater mLayoutInflater;
+    protected SparseArray<ArrayList<Integer>> mCheckedStateViewResIds;
+    private HashMap<Integer, TagView> mCheckedPosList = new HashMap<>();
+    private LayoutInflater mLayoutInflater;
     protected List<T> mData;
-    private TagFlowLayout mFlowLayout;
+    private ScFlowLayout mFlowLayout;
     private int leftMargin;
     private int topMargin;
     private int rightMargin;
     private int bottomMargin;
+    private int mSelectedMax = -1;//-1为不限制数量
 
     /**
      * MultiItemEntity模式
@@ -73,15 +80,31 @@ public abstract class BaseTagFlowAdapter<T, K extends BaseTagFlowViewHolder> {
         mLayoutResIds.put(DEFAULT_VIEW_TYPE, layoutResId);
     }
 
+    /**
+     * 对子View绑定TagView的选中状态
+     *
+     * @param viewResId
+     */
+    private void setCheckedStateViewId(@IdRes int... viewResId) {
+        if (mCheckedStateViewResIds == null) {
+            mCheckedStateViewResIds = new SparseArray();
+        }
+        ArrayList<Integer> viewResIds = mCheckedStateViewResIds.get(DEFAULT_VIEW_TYPE, new ArrayList<Integer>());
+        for (int viewId : viewResId) {
+            viewResIds.add(viewId);
+        }
+        mCheckedStateViewResIds.put(DEFAULT_VIEW_TYPE, viewResIds);
+    }
+
     private int getLayoutId(int viewType) {
         return mLayoutResIds.get(viewType, TYPE_NOT_FOUND);
     }
 
-    protected TagFlowLayout getFlowLayout() {
+    protected ScFlowLayout getFlowLayout() {
         return mFlowLayout;
     }
 
-    private void setFlowLayout(TagFlowLayout flowLayout) {
+    private void setFlowLayout(ScFlowLayout flowLayout) {
         mFlowLayout = flowLayout;
     }
 
@@ -91,7 +114,7 @@ public abstract class BaseTagFlowAdapter<T, K extends BaseTagFlowViewHolder> {
         }
     }
 
-    public void bindToFlowLayout(TagFlowLayout flowLayout) {
+    public void bindToFlowLayout(ScFlowLayout flowLayout) {
         if (getFlowLayout() != null) {
             throw new RuntimeException("Don't bind twice");
         }
@@ -99,6 +122,15 @@ public abstract class BaseTagFlowAdapter<T, K extends BaseTagFlowViewHolder> {
         getFlowLayout().setAdapter(this);
         this.mContext = mFlowLayout.getContext();
         this.mLayoutInflater = LayoutInflater.from(mContext);
+        mSelectedMax = mFlowLayout.getSelectedMax();
+    }
+
+    public int getSelectedMax() {
+        return mSelectedMax;
+    }
+
+    public void setSelectedMax(int selectedMax) {
+        mSelectedMax = selectedMax;
     }
 
     /**
@@ -108,6 +140,16 @@ public abstract class BaseTagFlowAdapter<T, K extends BaseTagFlowViewHolder> {
      */
     public void setNewData(@Nullable List<T> data) {
         this.mData = data == null ? new ArrayList<T>() : data;
+    }
+
+    /**
+     * 重绘
+     */
+    public void requestLayout() {
+        if (mFlowLayout != null) {
+            mFlowLayout.requestLayout();
+            mFlowLayout.invalidate();
+        }
     }
 
     public void notifyDataSetChanged() {
@@ -123,13 +165,26 @@ public abstract class BaseTagFlowAdapter<T, K extends BaseTagFlowViewHolder> {
 
     private void addNewView() {
         mFlowLayout.removeAllViews();
+        mCheckedPosList.clear();
         TagView tagViewContainer = null;
         K baseViewHolder = null;
         T data = null;
+        int viewType = DEFAULT_VIEW_TYPE;
         for (int i = 0; i < getCount(); i++) {
             data = getItem(i);
-            baseViewHolder = onCreateViewHolder(mFlowLayout, getDefItemViewType(data), i);
+            viewType = getDefItemViewType(data);
+            baseViewHolder = onCreateViewHolder(mFlowLayout, viewType, i);
             tagViewContainer = new TagView(mContext);
+            //关键代码,使得内部View可以使用TagView的状态
+            if (mCheckedStateViewResIds != null) {
+                ArrayList<Integer> viewResId = mCheckedStateViewResIds.get(viewType, new ArrayList<Integer>());
+                for (Integer stateViewId : viewResId) {
+                    View stateView = baseViewHolder.getView(stateViewId.intValue());
+                    if (stateView != null) {
+                        stateView.setDuplicateParentStateEnabled(true);
+                    }
+                }
+            }
             baseViewHolder.itemView.setDuplicateParentStateEnabled(true);
             if (baseViewHolder.itemView.getLayoutParams() != null) {
                 tagViewContainer.setLayoutParams(baseViewHolder.itemView.getLayoutParams());
@@ -144,16 +199,25 @@ public abstract class BaseTagFlowAdapter<T, K extends BaseTagFlowViewHolder> {
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             baseViewHolder.itemView.setLayoutParams(lp);
             tagViewContainer.addView(baseViewHolder.itemView);
-            mFlowLayout.addView(tagViewContainer);
-
-            convert(baseViewHolder, data);
 
             //处理选中与非选中逻辑
-            if (setSelected(data, i)) {
-                onSelected(tagViewContainer, i);
+            if (setDefSelected(data, i)) {
+                if (mSelectedMax == 1 && mCheckedPosList.size() > 0) {
+                    int oldSelected = 0;
+                    TagView oldTagView;
+                    for (Map.Entry<Integer, TagView> entry : mCheckedPosList.entrySet()) {
+                        oldSelected = entry.getKey();
+                        oldTagView = entry.getValue();
+                        setChildUnChecked(oldSelected, oldTagView);
+                    }
+                    mCheckedPosList.clear();
+                }
+                mCheckedPosList.put(i, tagViewContainer);
+                setChildChecked(i, tagViewContainer);
             }
 
-            baseViewHolder.itemView.setClickable(false);
+            mFlowLayout.addView(tagViewContainer);
+            convert(baseViewHolder, data);
             bindViewClickListener(tagViewContainer, baseViewHolder);
         }
     }
@@ -193,7 +257,7 @@ public abstract class BaseTagFlowAdapter<T, K extends BaseTagFlowViewHolder> {
         return mLayoutInflater.inflate(layoutResId, parent, false);
     }
 
-    private void bindViewClickListener(TagView tagView, final BaseTagFlowViewHolder baseViewHolder) {
+    private void bindViewClickListener(final TagView tagView, final BaseTagFlowViewHolder baseViewHolder) {
         if (baseViewHolder == null || tagView == null) {
             return;
         }
@@ -205,6 +269,7 @@ public abstract class BaseTagFlowAdapter<T, K extends BaseTagFlowViewHolder> {
             tagView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    doSelect(tagView, baseViewHolder.getPosition());
                     setOnItemClick(v, baseViewHolder.getPosition());
                 }
             });
@@ -217,6 +282,44 @@ public abstract class BaseTagFlowAdapter<T, K extends BaseTagFlowViewHolder> {
                 }
             });
         }
+    }
+
+    private void doSelect(TagView tagView, int position) {
+        if (!tagView.isChecked()) {
+            if (mSelectedMax == 1) {
+                //处理max_select=1的情况
+                int oldSelected = 0;
+                TagView oldTagView;
+                for (Map.Entry<Integer, TagView> entry : mCheckedPosList.entrySet()) {
+                    oldSelected = entry.getKey();
+                    oldTagView = entry.getValue();
+                    setChildUnChecked(oldSelected, oldTagView);
+                }
+                setChildChecked(position, tagView);
+                mCheckedPosList.clear();
+                mCheckedPosList.put(position, tagView);
+            } else {
+                if (mSelectedMax > 1 && mCheckedPosList.size() >= mSelectedMax) {
+                    return;
+                }
+                //多选
+                setChildChecked(position, tagView);
+                mCheckedPosList.put(position, tagView);
+            }
+        } else {
+            setChildUnChecked(position, tagView);
+            mCheckedPosList.remove(position);
+        }
+    }
+
+    private void setChildChecked(int position, TagView view) {
+        view.setChecked(true);
+        onSelected(view, position);
+    }
+
+    private void setChildUnChecked(int position, TagView view) {
+        view.setChecked(false);
+        unSelected(view, position);
     }
 
     /**
@@ -238,7 +341,7 @@ public abstract class BaseTagFlowAdapter<T, K extends BaseTagFlowViewHolder> {
      * @param t
      * @return
      */
-    protected boolean setSelected(T t, int position) {
+    protected boolean setDefSelected(T t, int position) {
         return false;
     }
 

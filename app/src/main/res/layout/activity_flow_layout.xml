@@ -51,13 +51,54 @@
             android:text="行底部对齐"/>
     </LinearLayout>
 
-    <com.caihan.scframe.widget.flowlayout.TagFlowLayout
+    <LinearLayout
+        android:id="@+id/tag_gravity_layout"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/line_gravity_layout"
+        android:layout_marginTop="8dp"
+        android:weightSum="3"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/tag_left_btn"
+            style="@style/BtnStyle.BgGreen_TextWhite_Radius10"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="8dp"
+            android:layout_height="wrap_content"
+            android:text="tag左对齐"/>
+
+        <Button
+            android:id="@+id/tag_center_btn"
+            style="@style/BtnStyle.BgGreen_TextWhite_Radius10"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_height="wrap_content"
+            android:text="tag居中对齐"/>
+
+        <Button
+            android:id="@+id/tag_right_btn"
+            style="@style/BtnStyle.BgGreen_TextWhite_Radius10"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="tag右对齐"/>
+    </LinearLayout>
+
+    <com.caihan.scframe.widget.flowlayout.ScFlowLayout
         android:id="@+id/flow_layout"
         android:layout_marginTop="36dp"
-        android:layout_below="@+id/line_gravity_layout"
+        flow:item_space="4dp"
+        flow:line_space="5dp"
+        android:layout_below="@+id/tag_gravity_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        flow:line_gravity="bottom"
         flow:max_show_row="0"/>
 
 </RelativeLayout>

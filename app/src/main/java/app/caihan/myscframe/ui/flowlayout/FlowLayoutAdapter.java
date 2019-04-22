@@ -3,7 +3,6 @@ package app.caihan.myscframe.ui.flowlayout;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.caihan.scframe.utils.log.ScLog;
 import com.caihan.scframe.widget.flowlayout.BaseMultiItemTagFlowAdapter;
 import com.caihan.scframe.widget.flowlayout.BaseTagFlowViewHolder;
 
@@ -24,6 +23,8 @@ public class FlowLayoutAdapter extends BaseMultiItemTagFlowAdapter<FlowLayoutIte
         super();
         addItemType(1, R.layout.item_flow_layout3);
         addItemType(2, R.layout.item_flow_layout4);
+        setCheckedStateViewId(1,R.id.flow_item_tv);
+        setCheckedStateViewId(2,R.id.flow_item_tv);
     }
 
     @Override
@@ -36,25 +37,27 @@ public class FlowLayoutAdapter extends BaseMultiItemTagFlowAdapter<FlowLayoutIte
         int type = helper.getViewType();
         switch (type) {
             case 1:
-                helper.setText(R.id.flow_item_tv, item.getMsg())
-                        .addOnClickListener(R.id.flow_item_tv);
+                helper.setText(R.id.flow_item_tv, item.getMsg());
                 break;
             case 2:
-                helper.setText(R.id.flow_item_tv, item.getMsg())
-                        .addOnClickListener(R.id.flow_item_tv);
+                helper.setText(R.id.flow_item_tv, item.getMsg());
                 break;
             default:
                 break;
         }
     }
 
+
+    @Override
+    protected boolean setDefSelected(FlowLayoutItem flowLayoutItem, int position) {
+        return "Android".equals(flowLayoutItem.getMsg());
+    }
+
     @Override
     protected void onSelected(View view, int position) {
-        ScLog.debug("onSelected position = " + position);
     }
 
     @Override
     protected void unSelected(View view, int position) {
-        ScLog.debug("unSelected position = " + position);
     }
 }

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--可点击并选中 -->
+    <!--可点击并选中-->
     <item android:state_checked="true">
         <shape>
             <!-- 实心 -->
-            <solid android:color="@color/white"/>
+            <solid android:color="@color/colorMain"/>
             <!-- 圆角 -->
             <corners
                 android:radius="10dp"/>
-            <stroke android:color="@color/colorMain" android:width="1dp"/>
         </shape>
     </item>
 
@@ -25,12 +24,10 @@
     <!--平时-->
     <item>
         <shape>
-            <!-- 实心 -->
-            <solid android:color="@color/white"/>
+            <solid android:color="@color/color_BEEBD9"/>
             <!-- 圆角 -->
             <corners
                 android:radius="10dp"/>
-            <stroke android:color="@color/color_FF8034" android:width="1dp"/>
         </shape>
     </item>
 

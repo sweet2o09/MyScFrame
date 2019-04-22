@@ -3,11 +3,22 @@
     <declare-styleable name="ScFlowLayout">
         <!--最大显示行数-->
         <attr name="max_show_row" format="integer" />
-        <!--对齐方式-->
+        <!--最大选中数量-->
+        <attr name="max_select" format="integer"/>
+        <!--行对齐方式-->
         <attr name="line_gravity">
             <enum name="top" value="-1" />
             <enum name="center" value="0" />
             <enum name="bottom" value="1" />
         </attr>
+        <attr name="tag_gravity">
+            <enum name="left" value="-1" />
+            <enum name="center" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+        <!--item间距-->
+        <attr name="item_space" format="dimension"/>
+        <!--行间距-->
+        <attr name="line_space" format="dimension"/>
     </declare-styleable>
 </resources>

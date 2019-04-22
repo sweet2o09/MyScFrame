@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
+import android.support.v4.text.TextUtilsCompat;
 import android.util.AttributeSet;
+import android.util.LayoutDirection;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import com.caihan.scframe.R;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -32,13 +35,24 @@ public class ScFlowLayout extends ViewGroup {
     public static final int LINE_GRAVITY_CENTER = 0;
     public static final int LINE_GRAVITY_BOTTOM = 1;
 
+    public static final int TAG_GRAVITY_LEFT = -1;
+    public static final int TAG_GRAVITY_CENTER = 0;
+    public static final int TAG_GRAVITY_RIGHT = 1;
+
     //用来存储每一行的高度，主要让子类去实现几行的流式布局
     protected SparseArray<Integer> mHeightLines = new SparseArray<>();
     protected int mMeasuredWidth;
     protected int mMeasuredHeight;
     private volatile SparseArray<LineDes> mLineDesArray = new SparseArray();
+    private int mLayoutDirection;
     private int mMaxShowRow = 0;
     private int mLineGravity = LINE_GRAVITY_TOP;
+    private int mTagGravity = TAG_GRAVITY_LEFT;
+    private float mItemSpace = 0;
+    private float mLineSpace = 0;
+    protected int mSelectedMax = -1;//-1为不限制数量
+    private BaseTagFlowAdapter mAdapter;
+
 
     public ScFlowLayout(Context context) {
         this(context, null);
@@ -67,9 +81,22 @@ public class ScFlowLayout extends ViewGroup {
     private void initTypedArray(Context context, AttributeSet attrs, int defStyleAttr) {
         TypedArray typedArray = context.obtainStyledAttributes(
                 attrs, R.styleable.ScFlowLayout, defStyleAttr, 0);
-        //对齐方式
+
         mMaxShowRow = typedArray.getInt(R.styleable.ScFlowLayout_max_show_row, 0);
         mLineGravity = typedArray.getInt(R.styleable.ScFlowLayout_line_gravity, LINE_GRAVITY_TOP);
+        mTagGravity = typedArray.getInt(R.styleable.ScFlowLayout_tag_gravity, TAG_GRAVITY_LEFT);
+        mSelectedMax = typedArray.getInt(R.styleable.ScFlowLayout_max_select, -1);
+        mItemSpace = typedArray.getDimension(R.styleable.ScFlowLayout_item_space, 0);
+        mLineSpace = typedArray.getDimension(R.styleable.ScFlowLayout_line_space, 0);
+
+        mLayoutDirection = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault());
+        if (mLayoutDirection == LayoutDirection.RTL) {
+            if (mTagGravity == TAG_GRAVITY_LEFT) {
+                mTagGravity = TAG_GRAVITY_RIGHT;
+            } else {
+                mTagGravity = TAG_GRAVITY_LEFT;
+            }
+        }
         typedArray.recycle();  //注意回收
     }
 
@@ -81,15 +108,48 @@ public class ScFlowLayout extends ViewGroup {
         this.mLineGravity = mlineGravity;
     }
 
+    public int getTagGravity() {
+        return mTagGravity;
+    }
+
+    public void setTagGravity(int tagGravity) {
+        mTagGravity = tagGravity;
+        if (mLayoutDirection == LayoutDirection.RTL) {
+            if (mTagGravity == TAG_GRAVITY_LEFT) {
+                mTagGravity = TAG_GRAVITY_RIGHT;
+            } else {
+                mTagGravity = TAG_GRAVITY_LEFT;
+            }
+        }
+    }
+
     public int getMaxShowRow() {
         return mMaxShowRow;
     }
 
     public void setMaxShowRow(int maxShowRow) {
         mMaxShowRow = maxShowRow;
-        requestLayout();
-        invalidate();
     }
+
+    public int getSelectedMax() {
+        return mSelectedMax;
+    }
+
+    public void setSelectedMax(int selectedMax) {
+        mSelectedMax = selectedMax;
+        if (mAdapter != null) {
+            mAdapter.setSelectedMax(mSelectedMax);
+        }
+    }
+
+    public BaseTagFlowAdapter getAdapter() {
+        return mAdapter;
+    }
+
+    public void setAdapter(BaseTagFlowAdapter adapter) {
+        mAdapter = adapter;
+    }
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -100,8 +160,8 @@ public class ScFlowLayout extends ViewGroup {
         // 获取高-测量规则的模式和大小
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-        //由于计算子view所占宽度，这里传值需要自身减去PaddingRight宽度，PaddingLeft会在接下来计算子元素位置时加上
-        Map<String, Integer> compute = compute(widthSize - getPaddingRight(), widthMeasureSpec, heightMeasureSpec);
+        //由于计算子view所占宽度
+        Map<String, Integer> compute = compute(widthSize, widthMeasureSpec, heightMeasureSpec);
 
         mMeasuredWidth = widthSize;
         mMeasuredHeight = heightSize;
@@ -142,11 +202,7 @@ public class ScFlowLayout extends ViewGroup {
     }
 
     private void onLayoutTop() {
-        for (int i = 0; i < getChildCount(); i++) {
-            View child = getChildAt(i);
-            Rect rect = (Rect) getChildAt(i).getTag();
-            child.layout(rect.left, rect.top, rect.right, rect.bottom);
-        }
+        onChildLayout(LINE_GRAVITY_TOP);
     }
 
     private void onLayoutCenter() {
@@ -165,7 +221,7 @@ public class ScFlowLayout extends ViewGroup {
         getLineDesArray().clear();
         int lineIndex = 0;//行数
         int rowsMaxHeight = 0;
-        int rowsWidth = getPaddingLeft();//当前行已占宽度(注意需要加上paddingLeft)
+        int rowsWidth = getPaddingLeft() + getPaddingRight();//当前行已占宽度(注意需要加上paddingLeft)
         MarginLayoutParams marginParams;//子元素margin
         LineDes lineDes = new LineDes();
         for (int i = 0; i < getChildCount(); i++) {
@@ -194,6 +250,7 @@ public class ScFlowLayout extends ViewGroup {
             //累加上该行子元素宽度
             rowsWidth += childWidth;
             lineDes.rowsMaxHeight = rowsMaxHeight;
+            lineDes.rowsMaxWidth = rowsWidth;
             lineDes.views.add(child);
             if (i == getChildCount() - 1) {
                 getLineDesArray().put(lineIndex, lineDes);
@@ -212,7 +269,7 @@ public class ScFlowLayout extends ViewGroup {
         mHeightLines.clear();
         int lineIndex = 0;//行数
         MarginLayoutParams marginParams;//子元素margin
-        int rowsWidth = getPaddingLeft();//当前行已占宽度(注意需要加上paddingLeft)
+        int rowsWidth = getPaddingLeft() + getPaddingRight();//当前行已占宽度(注意需要加上paddingLeft)
         int columnHeight = getPaddingTop();//当前行顶部已占高度(注意需要加上paddingTop)
         int rowsMaxHeight = 0;//当前行所有子元素的最大高度（用于换行累加高度）
         for (int i = 0; i < getChildCount(); i++) {
@@ -236,13 +293,12 @@ public class ScFlowLayout extends ViewGroup {
                 columnHeight += rowsMaxHeight;
                 //重置该行最大高度
                 rowsMaxHeight = childHeight;
-                mHeightLines.put(lineIndex, rowsMaxHeight);
             } else {
                 rowsMaxHeight = Math.max(rowsMaxHeight, childHeight);
-                mHeightLines.put(lineIndex, rowsMaxHeight);
             }
             //累加上该行子元素宽度
             rowsWidth += childWidth;
+            mHeightLines.put(lineIndex, rowsMaxHeight);
             // 判断时占的宽段时加上margin计算，设置顶点位置时不包括margin位置，
             // 不然margin会不起作用，这是给View设置tag,在onlayout给子元素设置位置再遍历取出
             Rect rect = new Rect(
@@ -262,7 +318,7 @@ public class ScFlowLayout extends ViewGroup {
             //多行
             flowMap.put(ALL_CHILD_WIDTH, flowWidth);
         }
-        //FlowLayout测量高度 = 当前行顶部已占高度 +当前行内子元素最大高度+FlowLayout的PaddingBottom
+        //FlowLayout测量高度 = 当前顶部已占高度 +当前行内子元素最大高度+FlowLayout的PaddingBottom
         int flowHeight = columnHeight + rowsMaxHeight + getPaddingBottom();
         flowMap.put(ALL_CHILD_HEIGHT, flowHeight);
         return flowMap;
@@ -279,17 +335,42 @@ public class ScFlowLayout extends ViewGroup {
                 Rect rect = (Rect) child.getTag();
                 int childWidth = (rect.bottom - rect.top);
                 //如果是当前行的高度大于了该view的高度话，此时需要重新放该view了
+                int diffvalue = 0;
                 if (childWidth < lineDes.rowsMaxHeight) {
-                    int diffvalue = 0;
-                    if (lineGravity == LINE_GRAVITY_CENTER) {
-                        diffvalue = (lineDes.rowsMaxHeight - childWidth) / 2;
-                    } else if (lineGravity == LINE_GRAVITY_BOTTOM) {
-                        diffvalue = lineDes.rowsMaxHeight - childWidth;
+                    switch (lineGravity) {
+                        case LINE_GRAVITY_TOP:
+                            break;
+                        case LINE_GRAVITY_CENTER:
+                            diffvalue = (lineDes.rowsMaxHeight - childWidth) / 2;
+                            rect.top += diffvalue;
+                            rect.bottom += diffvalue;
+                            break;
+                        case LINE_GRAVITY_BOTTOM:
+                            diffvalue = lineDes.rowsMaxHeight - childWidth;
+                            rect.top += diffvalue;
+                            rect.bottom += diffvalue;
+                            break;
+                        default:
+                            break;
                     }
-                    child.layout(rect.left, rect.top + diffvalue, rect.right, rect.bottom + diffvalue);
-                } else {
-                    child.layout(rect.left, rect.top, rect.right, rect.bottom);
                 }
+                switch (mTagGravity) {
+                    case TAG_GRAVITY_LEFT:
+                        break;
+                    case TAG_GRAVITY_CENTER:
+                        diffvalue = (mMeasuredWidth - getPaddingLeft() - getPaddingRight() - lineDes.rowsMaxWidth) / 2;
+                        rect.left += diffvalue;
+                        rect.right += diffvalue;
+                        break;
+                    case TAG_GRAVITY_RIGHT:
+                        diffvalue = mMeasuredWidth - (lineDes.rowsMaxWidth + getPaddingLeft());
+                        rect.left += diffvalue;
+                        rect.right += diffvalue;
+                        break;
+                    default:
+                        break;
+                }
+                child.layout(rect.left, rect.top, rect.right, rect.bottom);
             }
         }
         getLineDesArray().clear();
