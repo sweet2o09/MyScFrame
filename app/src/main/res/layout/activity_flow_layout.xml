@@ -94,7 +94,8 @@
     <com.caihan.scframe.widget.flowlayout.ScFlowLayout
         android:id="@+id/flow_layout"
         android:layout_marginTop="36dp"
-        flow:item_space="4dp"
+        android:padding="5dp"
+        flow:item_space="5dp"
         flow:line_space="5dp"
         android:layout_below="@+id/tag_gravity_layout"
         android:layout_width="match_parent"

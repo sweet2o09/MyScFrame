@@ -19,7 +19,16 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * 流式布局2
+ * 流式布局
+ * <p>
+ * 使用adapter的形式绑定并处理数据
+ * 支持多种布局一同展示
+ * 支持多行,单行,指定显示行数
+ * 支持Item左对齐,居中对齐,右对齐
+ * 支持行布局顶部对齐,居中对齐,底部对齐
+ * 支持选中状态
+ * 支持设置行间距
+ * 支持设置item间距
  *
  * @author caihan
  * @date 2019/4/10
@@ -39,10 +48,9 @@ public class ScFlowLayout extends ViewGroup {
     public static final int TAG_GRAVITY_CENTER = 0;
     public static final int TAG_GRAVITY_RIGHT = 1;
 
-    //用来存储每一行的高度，主要让子类去实现几行的流式布局
-    protected SparseArray<Integer> mHeightLines = new SparseArray<>();
     protected int mMeasuredWidth;
     protected int mMeasuredHeight;
+    //用来存储每一行的宽和高还有子View，主要让子类去实现几行的流式布局
     private volatile SparseArray<LineDes> mLineDesArray = new SparseArray();
     private int mLayoutDirection;
     private int mMaxShowRow = 0;
@@ -170,14 +178,22 @@ public class ScFlowLayout extends ViewGroup {
         }
         if (getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT) {
             mMeasuredHeight = compute.get(ALL_CHILD_HEIGHT);
+            if (mLineDesArray.size() > 1) {
+                //加上行间距
+                mMeasuredHeight += mLineSpace * (mLineDesArray.size() - 1);
+            }
         }
         if (mMaxShowRow != 0) {
             mMeasuredHeight = 0;
-            int lineCount = Math.min(mHeightLines.size(), mMaxShowRow);
+            int lineCount = Math.min(mLineDesArray.size(), mMaxShowRow);
             for (int i = 0; i < lineCount; i++) {
-                mMeasuredHeight += mHeightLines.get(i);
+                mMeasuredHeight += mLineDesArray.get(i).rowsMaxHeight;
             }
-            mMeasuredHeight += getPaddingTop() + getPaddingBottom();
+            mMeasuredHeight += getPaddingBottom();
+            if (lineCount > 1) {
+                //加上行间距
+                mMeasuredHeight += mLineSpace * (lineCount - 1);
+            }
         }
         setMeasuredDimension(mMeasuredWidth, mMeasuredHeight);
     }
@@ -218,44 +234,6 @@ public class ScFlowLayout extends ViewGroup {
     }
 
     private void onChildLayout(int lineGravity) {
-        getLineDesArray().clear();
-        int lineIndex = 0;//行数
-        int rowsMaxHeight = 0;
-        int rowsWidth = getPaddingLeft() + getPaddingRight();//当前行已占宽度(注意需要加上paddingLeft)
-        MarginLayoutParams marginParams;//子元素margin
-        LineDes lineDes = new LineDes();
-        for (int i = 0; i < getChildCount(); i++) {
-            View child = getChildAt(i);
-            //获取元素测量宽度和高度
-            int measuredWidth = child.getMeasuredWidth();
-            int measuredHeight = child.getMeasuredHeight();
-            //获取元素的margin
-            marginParams = (MarginLayoutParams) child.getLayoutParams();
-            //子元素所占宽度 = MarginLeft+ child.getMeasuredWidth+MarginRight  注意此时不能child.getWidth,因为界面没有绘制完成，此时wdith为0
-            int childWidth = marginParams.leftMargin + marginParams.rightMargin + measuredWidth;
-            //该布局添加进去后会超过总宽度->换行
-            if (rowsWidth + childWidth > mMeasuredWidth) {
-                getLineDesArray().put(lineIndex, lineDes);
-                lineDes = new LineDes();
-                lineIndex++;
-                //formatAboveLine中已经清空,算是新的一行
-                //重置该行最大高度
-                rowsMaxHeight = measuredHeight;
-                //重置行宽度
-                rowsWidth = getPaddingLeft() + getPaddingRight();
-            } else {
-                //子布局高度与最大行高作比较
-                rowsMaxHeight = Math.max(rowsMaxHeight, measuredHeight);
-            }
-            //累加上该行子元素宽度
-            rowsWidth += childWidth;
-            lineDes.rowsMaxHeight = rowsMaxHeight;
-            lineDes.rowsMaxWidth = rowsWidth;
-            lineDes.views.add(child);
-            if (i == getChildCount() - 1) {
-                getLineDesArray().put(lineIndex, lineDes);
-            }
-        }
         formatAboveLine(lineGravity);
     }
 
@@ -266,12 +244,13 @@ public class ScFlowLayout extends ViewGroup {
      * @return 返回子元素总所占宽度和高度（用于计算Flowlayout的AT_MOST模式设置宽高）
      */
     private Map<String, Integer> compute(int flowWidth, int widthMeasureSpec, int heightMeasureSpec) {
-        mHeightLines.clear();
+        getLineDesArray().clear();
         int lineIndex = 0;//行数
         MarginLayoutParams marginParams;//子元素margin
-        int rowsWidth = getPaddingLeft() + getPaddingRight();//当前行已占宽度(注意需要加上paddingLeft)
+        int rowsWidth = getPaddingLeft();//当前行已占宽度(注意需要加上paddingLeft)
         int columnHeight = getPaddingTop();//当前行顶部已占高度(注意需要加上paddingTop)
         int rowsMaxHeight = 0;//当前行所有子元素的最大高度（用于换行累加高度）
+        LineDes lineDes = new LineDes();
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
             //遍历去调用所有子元素的measure方法（child.getMeasuredHeight()才能获取到值，否则为0）
@@ -285,10 +264,12 @@ public class ScFlowLayout extends ViewGroup {
             int childWidth = marginParams.leftMargin + marginParams.rightMargin + measuredWidth;
             int childHeight = marginParams.topMargin + marginParams.bottomMargin + measuredHeight;
             //该布局添加进去后会超过总宽度->换行
-            if (rowsWidth + childWidth > flowWidth) {
+            if (rowsWidth + childWidth > flowWidth - getPaddingRight()) {
+                getLineDesArray().put(lineIndex, lineDes);
+                lineDes = new LineDes();
                 lineIndex++;
                 //重置行宽度
-                rowsWidth = getPaddingLeft() + getPaddingRight();
+                rowsWidth = getPaddingLeft();
                 //累加上该行子元素最大高度
                 columnHeight += rowsMaxHeight;
                 //重置该行最大高度
@@ -298,7 +279,6 @@ public class ScFlowLayout extends ViewGroup {
             }
             //累加上该行子元素宽度
             rowsWidth += childWidth;
-            mHeightLines.put(lineIndex, rowsMaxHeight);
             // 判断时占的宽段时加上margin计算，设置顶点位置时不包括margin位置，
             // 不然margin会不起作用，这是给View设置tag,在onlayout给子元素设置位置再遍历取出
             Rect rect = new Rect(
@@ -307,13 +287,21 @@ public class ScFlowLayout extends ViewGroup {
                     rowsWidth - marginParams.rightMargin,
                     columnHeight + childHeight - marginParams.bottomMargin);
             child.setTag(rect);
+            lineDes.rowsMaxHeight = rowsMaxHeight;
+            lineDes.rowsMaxWidth = rowsWidth;
+            lineDes.views.add(child);
+            //累加上item间距
+            rowsWidth += mItemSpace;
+            if (i == getChildCount() - 1) {
+                getLineDesArray().put(lineIndex, lineDes);
+            }
         }
 
         //返回子元素总所占宽度和高度（用于计算Flowlayout的AT_MOST模式设置宽高）
         Map<String, Integer> flowMap = new HashMap<>();
         //单行
         if (lineIndex == 0) {
-            flowMap.put(ALL_CHILD_WIDTH, rowsWidth);
+            flowMap.put(ALL_CHILD_WIDTH, (int) (rowsWidth - mItemSpace));
         } else {
             //多行
             flowMap.put(ALL_CHILD_WIDTH, flowWidth);
@@ -358,18 +346,23 @@ public class ScFlowLayout extends ViewGroup {
                     case TAG_GRAVITY_LEFT:
                         break;
                     case TAG_GRAVITY_CENTER:
-                        diffvalue = (mMeasuredWidth - getPaddingLeft() - getPaddingRight() - lineDes.rowsMaxWidth) / 2;
-                        rect.left += diffvalue;
-                        rect.right += diffvalue;
+                        diffvalue = (mMeasuredWidth - getPaddingRight() - lineDes.rowsMaxWidth) / 2;
+                        if (diffvalue > 0) {
+                            rect.left += diffvalue;
+                            rect.right += diffvalue;
+                        }
                         break;
                     case TAG_GRAVITY_RIGHT:
-                        diffvalue = mMeasuredWidth - (lineDes.rowsMaxWidth + getPaddingLeft());
+                        diffvalue = mMeasuredWidth - lineDes.rowsMaxWidth - getPaddingRight();
                         rect.left += diffvalue;
                         rect.right += diffvalue;
                         break;
                     default:
                         break;
                 }
+                //加上行间距
+                rect.top += mLineSpace * i;
+                rect.bottom += mLineSpace * i;
                 child.layout(rect.left, rect.top, rect.right, rect.bottom);
             }
         }
@@ -393,8 +386,6 @@ public class ScFlowLayout extends ViewGroup {
 
     @Override
     protected void onDetachedFromWindow() {
-        mHeightLines.clear();
-        mHeightLines = null;
         mLineDesArray.clear();
         mLineDesArray = null;
         super.onDetachedFromWindow();
