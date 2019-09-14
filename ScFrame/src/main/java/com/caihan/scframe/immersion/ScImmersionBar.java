@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.caihan.scframe.immersion.base.AbstractImmersion;
 import com.gyf.barlibrary.ImmersionBar;
+import com.gyf.barlibrary.OnKeyboardListener;
 
 /**
  * 沉浸式效果<br/>
@@ -153,8 +154,9 @@ public class ScImmersionBar extends AbstractImmersion {
     /**
      * 解决软键盘与底部输入框冲突问题
      */
-    public void keyboardEnable() {
+    public void keyboardEnable(OnKeyboardListener listener) {
         mImmersionBar.keyboardEnable(true)
+                .setOnKeyboardListener(listener)
                 .init();
     }
 
@@ -162,9 +164,9 @@ public class ScImmersionBar extends AbstractImmersion {
      * 状态栏颜色
      *
      * @param statusBarColor 状态栏颜色，资源文件（R.color.xxx）
-     * @param isDarkFont 是否修改状态栏文字颜色 true = 黑色字,false = 白色字
+     * @param isDarkFont     是否修改状态栏文字颜色 true = 黑色字,false = 白色字
      */
-    public void statusBarColor(@ColorRes int statusBarColor,boolean isDarkFont){
+    public void statusBarColor(@ColorRes int statusBarColor, boolean isDarkFont) {
         mImmersionBar.statusBarColor(statusBarColor)
                 .statusBarDarkFont(isDarkFont, 0.2f)
                 .init();

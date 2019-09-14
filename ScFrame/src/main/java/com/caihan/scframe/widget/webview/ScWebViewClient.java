@@ -72,7 +72,7 @@ public class ScWebViewClient extends WebViewClient {
             return true;
         }
         if (mBodyListener != null) {
-            view.loadUrl(mBodyListener.setBody(url));
+            mBodyListener.shouldOverrideUrlLoading(view,url);
         } else {
             view.loadUrl(url);
         }
@@ -87,7 +87,7 @@ public class ScWebViewClient extends WebViewClient {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-        return super.shouldOverrideUrlLoading(view, request);
+        return shouldOverrideUrlLoading(view, request.getUrl().toString());
     }
 
     @Override
@@ -95,6 +95,9 @@ public class ScWebViewClient extends WebViewClient {
         //在网络情况较差的情况下,等页面finish后再发起图片加载,减少loading时间
         if (!view.getSettings().getLoadsImagesAutomatically()) {
             view.getSettings().setLoadsImagesAutomatically(true);
+        }
+        if (mBodyListener != null){
+            mBodyListener.onPageFinished(view,url);
         }
 //        CookieManager cookieManager = CookieManager.getInstance();
 //        String CookieStr = cookieManager.getCookie(url);
@@ -104,11 +107,13 @@ public class ScWebViewClient extends WebViewClient {
     @Override
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
         // handler.cancel();// Android默认的处理方式
-        handler.proceed();// 接受所有网站的证书
+//        handler.proceed();// 接受所有网站的证书
         // handleMessage(Message msg);// 进行其他处理
     }
 
     public interface OnUrlBodyListener {
-        String setBody(String url);
+        void shouldOverrideUrlLoading(WebView view, String url);
+
+        void onPageFinished(WebView view, String url);
     }
 }

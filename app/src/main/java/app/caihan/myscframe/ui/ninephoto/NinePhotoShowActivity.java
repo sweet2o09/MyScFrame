@@ -9,11 +9,8 @@ import android.widget.TextView;
 
 import com.caihan.scframe.widget.photo.NinePhotoItem;
 import com.caihan.scframe.widget.photo.NinePhotoLayout;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.loadmore.SimpleLoadMoreView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import app.caihan.myscframe.R;
 import app.caihan.myscframe.base.BaseScMvpActivity;
@@ -61,13 +58,7 @@ public class NinePhotoShowActivity
     @Override
     protected void onCreateMvp() {
         setImmersion();
-        mToolbarTitle.setText("九宫格展示");
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        setBaseToolbarLayout(mToolbar,"九宫格展示");
         initRefreshView();
         initRecyclerView();
         mRefreshLayout.autoRefresh();
@@ -78,12 +69,7 @@ public class NinePhotoShowActivity
         mRefreshLayout.setEnableHeaderTranslationContent(false);
         //是否在刷新的时候禁止列表的操作
         mRefreshLayout.setDisableContentWhenRefresh(true);
-        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                getData(true);
-            }
-        });
+        mRefreshLayout.setOnRefreshListener(refreshlayout -> getData(true));
     }
 
     private void initRecyclerView() {
@@ -93,12 +79,9 @@ public class NinePhotoShowActivity
         mAdapter.setEmptyView(R.layout.scframe_base_error_layout, mRecyclerView);
         mAdapter.isUseEmpty(false);
         mAdapter.setLoadMoreView(new SimpleLoadMoreView());
-        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                mRefreshLayout.setEnableRefresh(false);
-                getData(false);
-            }
+        mAdapter.setOnLoadMoreListener(() -> {
+            mRefreshLayout.setEnableRefresh(false);
+            getData(false);
         }, mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
 //        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

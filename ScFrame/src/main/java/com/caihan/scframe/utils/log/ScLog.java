@@ -17,12 +17,14 @@ import com.blankj.utilcode.util.LogUtils;
 public final class ScLog {
 
     private static final String DEBUG_TAG = "DebugLog";
+    private static final String APP_REQUEST = "AppRequest";
     private static final int MAX_LEN = 4000;
 
     /**
      * log开关
      */
     public static boolean sDebug = false;
+
     private ScLog() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
@@ -85,6 +87,10 @@ public final class ScLog {
         debug(DEBUG_TAG, msg.toString());
     }
 
+    public static void appRequest(Object msg) {
+        debug(APP_REQUEST, msg.toString());
+    }
+
     /**
      * 使用Log来显示调试信息,因为log在实现上每个message有4k字符长度限制
      * 所以这里使用自己分节的方式来输出足够长度的message
@@ -109,8 +115,8 @@ public final class ScLog {
         }
     }
 
-    private static void showDebugLog(String tag, String subMsg){
-        if (sDebug){
+    private static void showDebugLog(String tag, String subMsg) {
+        if (sDebug) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
                 Log.d(tag, subMsg);
             } else {

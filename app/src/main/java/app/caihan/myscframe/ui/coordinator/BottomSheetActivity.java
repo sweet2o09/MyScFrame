@@ -18,8 +18,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.loadmore.SimpleLoadMoreView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.List;
 
@@ -92,7 +90,7 @@ public class BottomSheetActivity
         initRefreshView();
         initRecyclerView();
         setListener();
-        mRefreshLayout.autoRefresh(1000);
+        mRefreshLayout.autoRefresh();
     }
 
     private void initRefreshView() {
@@ -100,12 +98,7 @@ public class BottomSheetActivity
         mRefreshLayout.setEnableHeaderTranslationContent(false);
         //是否在刷新的时候禁止列表的操作
         mRefreshLayout.setDisableContentWhenRefresh(true);
-        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                getData(true);
-            }
-        });
+        mRefreshLayout.setOnRefreshListener(refreshlayout -> getData(true));
     }
 
     private void initRecyclerView() {
@@ -120,23 +113,17 @@ public class BottomSheetActivity
         mAdapter.setEmptyView(R.layout.scframe_base_error_layout, mRecyclerView);
         mAdapter.isUseEmpty(false);
         mAdapter.setLoadMoreView(new SimpleLoadMoreView());
-        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                mRefreshLayout.setEnableRefresh(false);
-                getData(false);
-            }
+        mAdapter.setOnLoadMoreListener(() -> {
+            mRefreshLayout.setEnableRefresh(false);
+            getData(false);
         }, mRecyclerView);
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                showToast("点击了第" + position + "张图片");
-                ScImageLoader.getInstance()
-                        .display(mAdapter.getItem(position).getUrl(),
-                                R.drawable.image_nine_photo_def,
-                                R.drawable.image_nine_photo_def,
-                                mBottomSheetIv);
-            }
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            showToast("点击了第" + position + "张图片");
+            ScImageLoader.getInstance()
+                    .display(mAdapter.getItem(position).getUrl(),
+                            R.drawable.image_nine_photo_def,
+                            R.drawable.image_nine_photo_def,
+                            mBottomSheetIv);
         });
     }
 
@@ -168,20 +155,14 @@ public class BottomSheetActivity
         });
 
 
-        mBottomSheetBarLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //点击顶部工具栏 将底栏变为折叠状态
-                showToast("关闭BottomSheet");
-                mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            }
+        mBottomSheetBarLayout.setOnClickListener(v -> {
+            //点击顶部工具栏 将底栏变为折叠状态
+            showToast("关闭BottomSheet");
+            mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         });
 
-        mBottomSheetLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //空实现,为了处理展开时会相应Adapter的点击事件
-            }
+        mBottomSheetLayout.setOnClickListener(v -> {
+            //空实现,为了处理展开时会相应Adapter的点击事件
         });
 
         //recyclerView滑动监听

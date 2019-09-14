@@ -139,7 +139,7 @@ public class WeChatSwitchBtn extends View implements View.OnClickListener {
     private boolean mIsToggleOn = false;//当前开关标记
     private boolean isTouchEvent = false;//是否由滑动事件消费掉
     private boolean isMoveing = false;//是否还在Touch相应中
-    private boolean mEnabled = true;//是否点击响应
+    private boolean isTouchEnabled = false;//是否点滑动相应事件
 
     private ObjectAnimator mOpenAnimator;
     private ObjectAnimator mCloseAnimator;
@@ -445,14 +445,14 @@ public class WeChatSwitchBtn extends View implements View.OnClickListener {
                 if (mGestureUtils.getGesture(ScGestureUtils.Gesture.PullLeft)) {
                     //左滑,关闭
                     isTouchEvent = true;
-                    if (mEnabled) {
+                    if (isTouchEnabled) {
                         touchToggle(false);
                     }
                     return true;
                 } else if (mGestureUtils.getGesture(ScGestureUtils.Gesture.PullRight)) {
                     //右滑,开启
                     isTouchEvent = true;
-                    if (mEnabled) {
+                    if (isTouchEnabled) {
                         touchToggle(true);
                     }
                     return true;
@@ -480,8 +480,11 @@ public class WeChatSwitchBtn extends View implements View.OnClickListener {
 
     @Override
     public void setEnabled(boolean enabled) {
-        mEnabled = enabled;
         super.setEnabled(enabled);
+    }
+
+    public void setTouchEnabled(boolean touchEnabled) {
+        isTouchEnabled = touchEnabled;
     }
 
     /**

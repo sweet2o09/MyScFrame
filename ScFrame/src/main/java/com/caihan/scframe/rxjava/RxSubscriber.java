@@ -52,7 +52,7 @@ public abstract class RxSubscriber<T> implements Observer<T> {
         }
         if (e != null) {
             if (mBaseView != null) {
-                mBaseView.onRequestError(e.getMessage());
+                mBaseView.onRequestError(e.toString());
             }
             onRxError(e);
         }

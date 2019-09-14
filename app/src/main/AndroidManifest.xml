@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="app.caihan.myscframe">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="app.caihan.myscframe">
 
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <uses-permission android:name="android.permission.READ_SMS"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.READ_CALENDAR"/>
-    <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <application
         android:name=".MyApp"
@@ -39,67 +39,48 @@
         android:supportsRtl="true"
         android:theme="@style/BaseAppTheme"
         tools:replace="android:allowBackup">
-
         <!-- 适配华为刘海屏 -->
         <meta-data
             android:name="android.notch_support"
-            android:value="true"/>
-        <!-- 适配小米刘海屏 -->
+            android:value="true" /> <!-- 适配小米刘海屏 -->
         <meta-data
             android:name="notch.config"
-            android:value="portrait|landscape"/>
-        <!-- 适配oppo、vivo刘海屏,适配全面屏 -->
+            android:value="portrait|landscape" /> <!-- 适配oppo、vivo刘海屏,适配全面屏 -->
         <meta-data
             android:name="android.max_aspect"
-            android:value="2.4"/>
+            android:value="2.4" />
 
         <activity
             android:name=".ui.welcome.WelcomeActivity"
             android:theme="@style/BaseAppTheme.ImageTranslucentTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.home.MainActivity"/>
-        <activity android:name=".ui.qrcode.ZxingQrcodeActivity"/>
-        <activity android:name=".ui.qrcode.ZxingQrcodeDemoActivity"/>
-        <activity android:name=".ui.qrcode.ZxingGenerateActivity"/>
-        <activity android:name=".ui.switchbtn.WeChatSwitchBtnActivity">
-        </activity>
-        <activity android:name=".ui.ninephoto.NinePhotoAddActivity">
-        </activity>
-        <activity android:name=".ui.ninephoto.NinePhotoShowActivity">
-        </activity>
-        <activity android:name=".ui.gallery.SystemGalleryActivity">
-        </activity>
-        <activity android:name=".ui.imageloader.ImageLoaderActivity">
-        </activity>
-        <activity android:name=".ui.dialog.DialogQueueActivity">
-        </activity>
-        <activity android:name=".ui.imageloader.ImageLoaderListActivity">
-        </activity>
-        <activity android:name=".ui.leakcanary.LeakCanaryActivity">
-        </activity>
-        <activity android:name=".ui.leakcanary.LeakCanaryActivity2">
-        </activity>
-        <activity android:name=".ui.traverse.TraverseSDcardActivity">
-        </activity>
-        <activity android:name=".ui.coordinator.BottomSheetActivity">
-        </activity>
-        <activity android:name=".ui.coordinator.CoordinatorActivity">
-        </activity>
-        <activity android:name=".ui.http.RequestJobActivity">
-        </activity>
-        <activity android:name=".ui.http.RequestJobDownloadActivity">
-        </activity>
-        <activity android:name=".ui.recyclerview.TopAdsorptionActivity">
-        </activity>
-        <activity android:name=".ui.http.RequestJobGetActivity">
-        </activity>
-        <activity android:name=".ui.flowlayout.FlowLayoutActivity">
-        </activity>
+        <activity android:name=".ui.home.MainActivity" />
+        <activity android:name=".ui.qrcode.ZxingQrcodeActivity" />
+        <activity android:name=".ui.qrcode.ZxingQrcodeDemoActivity" />
+        <activity android:name=".ui.qrcode.ZxingGenerateActivity" />
+        <activity android:name=".ui.switchbtn.WeChatSwitchBtnActivity" />
+        <activity android:name=".ui.ninephoto.NinePhotoAddActivity" />
+        <activity android:name=".ui.ninephoto.NinePhotoShowActivity" />
+        <activity android:name=".ui.gallery.SystemGalleryActivity" />
+        <activity android:name=".ui.imageloader.ImageLoaderActivity" />
+        <activity android:name=".ui.dialog.DialogQueueActivity" />
+        <activity android:name=".ui.imageloader.ImageLoaderListActivity" />
+        <activity android:name=".ui.leakcanary.LeakCanaryActivity" />
+        <activity android:name=".ui.leakcanary.LeakCanaryActivity2" />
+        <activity android:name=".ui.traverse.TraverseSDcardActivity" />
+        <activity android:name=".ui.coordinator.BottomSheetActivity" />
+        <activity android:name=".ui.coordinator.CoordinatorActivity" />
+        <activity android:name=".ui.http.RequestJobActivity" />
+        <activity android:name=".ui.http.RequestJobDownloadActivity" />
+        <activity android:name=".ui.recyclerview.TopAdsorptionActivity" />
+        <activity android:name=".ui.http.RequestJobGetActivity" />
+        <activity android:name=".ui.flowlayout.FlowLayoutActivity" />
+        <activity android:name=".ui.imageloader.LongImageActivity" />
     </application>
 
 </manifest>

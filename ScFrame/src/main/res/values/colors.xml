@@ -5,7 +5,7 @@
     <color name="colorPrimaryDark">#2299ee</color>
     <color name="colorPrimaryOverlay">#cc0094ff</color>
     <color name="colorAccent">#FF4081</color>
-
+    <color name="colorMain">@color/color_FF5252</color>
     <color name="colorTextTitle">#333333</color>
     <color name="colorTextContent">#444444</color>
     <color name="colorTextAssistant">#888888</color>

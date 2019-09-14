@@ -6,6 +6,7 @@ import com.zhouyou.http.callback.CallClazzProxy;
 import com.zhouyou.http.callback.DownloadProgressCallBack;
 import com.zhouyou.http.exception.ApiException;
 import com.zhouyou.http.model.ApiResult;
+import com.zhouyou.http.model.HttpHeaders;
 import com.zhouyou.http.request.DownloadRequest;
 import com.zhouyou.http.request.GetRequest;
 import com.zhouyou.http.request.PostRequest;
@@ -104,6 +105,36 @@ public final class ScHttpManager {
         return new PostRequest(url)
                 .params(keyValues)
                 .execute(clazz);
+    }
+
+    public static <T> Observable<T> post(String url, Map<String, String> keyValues,
+                                         CallClazzProxy<? extends ApiResult<T>, T> proxy) {
+        return new PostRequest(url)
+                .params(keyValues)
+                .execute(proxy);
+    }
+
+    public static <T> Observable<T> post(String url, HttpHeaders headers, Map<String, String> keyValues,
+                                         CallClazzProxy<? extends ApiResult<T>, T> proxy) {
+        return new PostRequest(url)
+                .headers(headers)
+                .params(keyValues)
+                .execute(proxy);
+    }
+
+    public static <T> Observable<T> postList(String url, Map<String, String> keyValues,
+                                             CallClazzProxy<? extends ApiResult<T>, T> proxy) {
+        return new PostRequest(url)
+                .params(keyValues)
+                .execute(proxy);
+    }
+
+    public static <T> Observable<T> post(String url, Map<String, String> keyValues, int retryCount,
+                                         CallClazzProxy<? extends ApiResult<T>, T> proxy) {
+        return new PostRequest(url)
+                .params(keyValues)
+                .retryCount(retryCount)
+                .execute(proxy);
     }
 
 

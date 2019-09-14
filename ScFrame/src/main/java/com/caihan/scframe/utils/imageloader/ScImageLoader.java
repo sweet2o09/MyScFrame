@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.caihan.scframe.utils.imageloader.glide.GlideDelegate;
 import com.caihan.scframe.utils.imageloader.glide.transformations.RoundedCornersTransformation;
+import com.caihan.scframe.utils.log.ScLog;
 
 import java.io.File;
 
@@ -62,10 +63,12 @@ public final class ScImageLoader implements ImageLoaderDelegate {
 
     private ScImageLoader() {
         mDelegate = new GlideDelegate();
+        ScLog.debug(TAG, "ScImageLoader 初始化成功!");
     }
 
     private ScImageLoader(ImageLoaderDelegate delegate) {
         mDelegate = delegate;
+        ScLog.debug(TAG, "ScImageLoader 初始化成功! 自定义图片处理接口!");
     }
 
     public void display(String path, ImageView imageView) {

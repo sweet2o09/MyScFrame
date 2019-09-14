@@ -33,7 +33,7 @@ public final class ScHttp {
     private static final String TAG = "ScHttp";
     public static final long DEFAULT_MILLISECONDS = 60000;//默认的超时时间
     private static final int DEFAULT_RETRY_COUNT = 0;//默认重试次数
-    private static final int DEFAULT_RETRY_INCREASEDELAY = 500;//默认重试叠加时间
+    private static final int DEFAULT_RETRY_INCREASEDELAY = 0;//默认重试叠加时间
     private static final int DEFAULT_RETRY_DELAY = 500;//默认重试延时
     private static final long DEFAULT_CACHE_MAX_SIZE = 50 * 1024 * 1024;//全局的缓存大小,默认50M
 
@@ -95,6 +95,16 @@ public final class ScHttp {
         }
         sBuilder = builder;
         getInstance();
+    }
+
+    /**
+     * 更改baseurl
+     *
+     * @param url
+     */
+    public static void changeBaseUrl(String url){
+        EasyHttp.getInstance()
+                .setBaseUrl(url);//设置全局公共参数
     }
 
     /**

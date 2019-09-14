@@ -47,7 +47,8 @@ public final class DefaultDialog {
                 .positiveText("确定")
                 .negativeText("取消")
                 .positiveColorRes(R.color.scframe_dialog_positive_color)
-                .negativeColorRes(R.color.scframe_dialog_negative_color);
+                .negativeColorRes(R.color.scframe_dialog_negative_color)
+                .neutralColorRes(R.color.scframe_dialog_negative_color);
     }
 
     /**
@@ -60,6 +61,7 @@ public final class DefaultDialog {
         return new MaterialDialog.Builder(context)
                 .theme(Theme.LIGHT)
                 .positiveColorRes(R.color.scframe_dialog_positive_color)
-                .negativeColorRes(R.color.scframe_dialog_negative_color);
+                .negativeColorRes(R.color.scframe_dialog_negative_color)
+                .neutralColorRes(R.color.scframe_dialog_negative_color);
     }
 }

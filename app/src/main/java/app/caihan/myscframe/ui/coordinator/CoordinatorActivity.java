@@ -16,8 +16,6 @@ import com.caihan.scframe.widget.recyclerview.NoScrollRecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.loadmore.SimpleLoadMoreView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,12 +89,7 @@ public class CoordinatorActivity
         mRefreshLayout.setEnableHeaderTranslationContent(false);
         //是否在刷新的时候禁止列表的操作
         mRefreshLayout.setDisableContentWhenRefresh(true);
-        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                getData(true);
-            }
-        });
+        mRefreshLayout.setOnRefreshListener(refreshlayout -> getData(true));
     }
 
     private void initRecyclerView() {

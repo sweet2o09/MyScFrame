@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
@@ -428,11 +430,15 @@ public class ScWebView extends WebView implements View.OnLongClickListener, IWeb
     /**
      * ScWebview退出时，进行销毁操作
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void destroy() {
         loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
-        clearCache(true);
         clearHistory();
+        setWebChromeClient(null);
+        setWebViewClient(null);
+        clearCache(true);
+        removeAllViews();
         ((ViewGroup) getParent()).removeView(this);
         //清理Webview缓存数据库
         try {
@@ -441,6 +447,13 @@ public class ScWebView extends WebView implements View.OnLongClickListener, IWeb
         } catch (Exception e) {
             e.printStackTrace();
         }
+        CookieManager.getInstance().removeAllCookies(new ValueCallback<Boolean>() {
+            @Override
+            public void onReceiveValue(Boolean value) {
+
+            }
+        });
+
         mBodyListener = null;
         mCallBack = null;
         super.destroy();

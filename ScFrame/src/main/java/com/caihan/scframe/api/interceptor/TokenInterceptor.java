@@ -12,7 +12,7 @@ import okhttp3.Response;
  * @e-mail 93234929@qq.com
  * 维护者
  */
-class TokenInterceptor extends BaseExpiredInterceptor {
+public class TokenInterceptor extends BaseExpiredInterceptor {
 //    private ApiResult apiResult;
 //    private AuthModel authModel = null;
     @Override

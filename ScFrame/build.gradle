@@ -87,11 +87,11 @@ dependencies {
     api "com.android.support:support-annotations:${rootProject.ext.supportLibVersion}"
 
     /** 安卓工具类库 */
-    api 'com.blankj:utilcode:1.23.4'
+    api 'com.blankj:utilcode:1.25.9'
 
     /** Android智能下拉刷新框架 */
-    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
-    api 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.3'
+    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'
+    api 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0'
 
     /** RecyclerAdapter框架 */
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'

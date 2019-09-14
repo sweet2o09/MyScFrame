@@ -2,7 +2,7 @@
 <resources>
 
     <style name="ScFrameProgressBar" parent="@android:style/Widget.Material.ProgressBar">
-        <item name="android:indeterminateTint">@color/color_FF5252</item>
+        <item name="android:indeterminateTint">@color/colorMain</item>
         <item name="android:indeterminateTintMode">src_atop</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
