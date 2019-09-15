@@ -94,7 +94,7 @@ dependencies {
     api 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0'
 
     /** RecyclerAdapter框架 */
-    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
 
     /** ImmersionBar沉浸式状态栏和沉浸式导航栏管理 */
     api 'com.gyf.immersionbar:immersionbar:2.3.3'

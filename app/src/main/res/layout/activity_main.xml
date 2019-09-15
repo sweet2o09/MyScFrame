@@ -12,7 +12,7 @@
         android:id="@+id/banner_iv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:src="@drawable/banner"/>
 
     <android.support.v7.widget.RecyclerView
